@@ -1,0 +1,24 @@
+{
+  "name": "spearwolf",
+  "version": "0.0.1",
+  "description": "various javascript helpers and experiments",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "start": "serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spearwolf/spearwolf-js.git"
+  },
+  "author": "Wolfger Schramm <wolfger@spearwolf.de>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/spearwolf/spearwolf-js/issues"
+  },
+  "homepage": "https://github.com/spearwolf/spearwolf-js#readme",
+  "devDependencies": {
+    "serve": "^10.1.1"
+  }
+}
