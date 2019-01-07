@@ -22,11 +22,11 @@
 <body>
   <div id=output></div>
   <script type=module>
-    import appendTo from '../src/appendTo.js';
+    import appendTo from '../appendTo.js';
 
     const println = appendTo('#output', '\n');
 
-    import('../src/Foo.js').then(({ default: foo }) => {
+    import('../Foo.js').then(({ default: foo }) => {
       println(foo(23));
     });
 
