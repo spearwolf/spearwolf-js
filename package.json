@@ -7,7 +7,10 @@
     "example": "examples"
   },
   "scripts": {
-    "start": "parcel --out-dir build/examples examples/*.html"
+    "start": "parcel --out-dir build/examples examples/*.html",
+    "test:build": "parcel build --no-hmr --out-dir build/tests tests/index.html",
+    "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html",
+    "test:serve": "serve build/tests"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,10 @@
   },
   "homepage": "https://github.com/spearwolf/spearwolf-js#readme",
   "devDependencies": {
-    "parcel": "^1.11.0"
+    "assert": "^1.4.1",
+    "mocha": "^5.2.0",
+    "parcel-bundler": "^1.11.0",
+    "serve": "^10.1.1"
   },
   "dependencies": {
     "three": "^0.100.0"
