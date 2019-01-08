@@ -1,3 +1,3 @@
-import bar from './Bar.js';
+import { bar } from './Bar.js';
 
-export default (x) => `foo: ${bar(x)}`;
+export const foo = (x) => `foo: ${bar(x)}`;

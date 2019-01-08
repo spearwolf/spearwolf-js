@@ -1,2 +1,1 @@
-
-export default (x) => `bar: ${x}`;
+export const bar = (x) => `bar: ${x}`;

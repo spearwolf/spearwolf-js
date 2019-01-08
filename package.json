@@ -2,11 +2,12 @@
   "name": "spearwolf",
   "version": "0.0.1",
   "description": "various javascript helpers and experiments",
+  "module": "index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "start": "parcel examples/*.html"
+    "start": "parcel --out-dir build/examples examples/*.html"
   },
   "repository": {
     "type": "git",
