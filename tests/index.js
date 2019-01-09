@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import 'mocha/mocha.css';
 import 'mocha/mocha.js';
 

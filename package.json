@@ -7,6 +7,7 @@
     "example": "examples"
   },
   "scripts": {
+    "eslint": "eslint .",
     "start": "parcel --out-dir build/examples examples/*.html",
     "test:build": "parcel build --no-hmr --out-dir build/tests tests/index.html",
     "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html",
@@ -24,6 +25,9 @@
   "homepage": "https://github.com/spearwolf/spearwolf-js#readme",
   "devDependencies": {
     "assert": "^1.4.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.12.0",
+    "eslint-config-problems": "^2.0.0",
     "mocha": "^5.2.0",
     "parcel-bundler": "^1.11.0",
     "serve": "^10.1.1"
