@@ -6,6 +6,7 @@ mocha.setup('bdd');
 mocha.checkLeaks();
 mocha.globals(['parcelRequire']);
 
-require('../Foo.spec.js');
+require('../src/Foo.spec.js');
+require('../src/Three.spec.js');
 
 mocha.run();

@@ -2,16 +2,16 @@
   "name": "spearwolf",
   "version": "0.0.1",
   "description": "various javascript helpers and experiments",
-  "module": "index.js",
+  "module": "src/index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
+    "clean": "rimraf build",
     "eslint": "eslint .",
     "start": "parcel --out-dir build/examples examples/*.html",
-    "test:build": "parcel build --no-hmr --out-dir build/tests tests/index.html",
-    "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html",
-    "test:serve": "serve build/tests"
+    "test:serve": "serve build/tests",
+    "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html"
   },
   "repository": {
     "type": "git",
@@ -29,10 +29,12 @@
     "eslint": "^5.12.0",
     "eslint-config-problems": "^2.0.0",
     "mocha": "^5.2.0",
-    "parcel-bundler": "^1.11.0",
-    "serve": "^10.1.1"
+    "parcel": "^1.11.0",
+    "rimraf": "^2.6.3",
+    "serve": "^10.1.1",
+    "three": "^0.100.0"
   },
-  "dependencies": {
+  "peerDependencies": {
     "three": "^0.100.0"
   }
 }
