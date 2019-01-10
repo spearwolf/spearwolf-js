@@ -10,6 +10,8 @@
   "scripts": {
     "clean": "rimraf build",
     "eslint": "eslint .",
+    "tsc": "tsc",
+    "types:check": "tsc --allowJs --checkJs src/index.d.ts",
     "start": "parcel --out-dir build/examples examples/*.html",
     "test:serve": "serve build/tests",
     "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html"
@@ -33,7 +35,8 @@
     "parcel": "^1.11.0",
     "rimraf": "^2.6.3",
     "serve": "^10.1.1",
-    "three": "^0.100.0"
+    "three": "^0.100.0",
+    "typescript": "^3.2.2"
   },
   "peerDependencies": {
     "three": "^0.100.0"
