@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "various javascript helpers and experiments",
   "module": "src/index.js",
+  "types": "src/index.d.ts",
   "directories": {
     "example": "examples"
   },

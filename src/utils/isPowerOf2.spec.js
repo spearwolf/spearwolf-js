@@ -1,4 +1,4 @@
-/* eslint-env jest */
+/* eslint-env mocha */
 import assert from 'assert';
 
 import { isPowerOf2 } from '.';
