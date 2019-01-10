@@ -6,7 +6,14 @@ mocha.setup('bdd');
 mocha.checkLeaks();
 mocha.globals(['parcelRequire']);
 
-require('../src/Foo.spec.js');
-require('../src/Three.spec.js');
+describe('utils', () => {
+
+  require('../src/utils/findNextPowerOf2.spec.js');
+  require('../src/utils/get.spec.js');
+  require('../src/utils/isPowerOf2.spec.js');
+  require('../src/utils/maxOf.spec.js');
+  require('../src/utils/pick.spec.js');
+
+});
 
 mocha.run();

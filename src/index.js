@@ -1,2 +1,5 @@
-export * from './Foo.js';
-export * from './Bar.js';
+import * as utils from './utils/index.js';
+
+export {
+  utils,
+}
