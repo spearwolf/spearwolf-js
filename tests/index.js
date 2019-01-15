@@ -16,4 +16,10 @@ describe('utils', () => {
 
 });
 
+describe('core', () => {
+
+  require('../src/core/AABB2.spec.js');
+
+});
+
 mocha.run();

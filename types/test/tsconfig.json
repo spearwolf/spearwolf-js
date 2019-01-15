@@ -17,7 +17,9 @@
   "files": [
     "../index.d.ts",
     "../utils.d.ts",
-    "utils-test.ts"
+    "../core.d.ts",
+    "utils-test.ts",
+    "core-test.ts",
   ],
   "compileOnSave": false
 }

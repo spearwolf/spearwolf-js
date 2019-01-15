@@ -3,5 +3,6 @@
 // Definitions by: Wolfger Schramm https://www.spearwolf.de
 
 export * from './utils';
+export * from './core';
 
 export as namespace spearwolf;
