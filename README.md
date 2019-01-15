@@ -1,9 +1,9 @@
 # spearwolf-js
-various javascript (+ typescript types) helpers and classes for webgl experiments.
+various javascript (+ typescript types) helpers and classes for various webgl experiments!
 
 ## Development Setup
 
-You will need [Node.js]() **version v10+**.
+You will need [Node.js](https://nodejs.org/) **version v10+**.
 
 After cloning the repo, run:
 
@@ -35,7 +35,7 @@ $ npm run test:serve
 
 - __`src`__: contains the source code. codebase is written in state-of-the-art modern javascript (ES2017 or whatever the latest version is at the moment)
 
-- __`types`__: contains type definitions for typescript. Use `npm run test:types` to test the types.
+- __`types`__: contains manually handwritten type definitions for typescript. Use `npm run test:types` to test the types.
 
   - `types/test/`: contains the tests for the type definitions
 
