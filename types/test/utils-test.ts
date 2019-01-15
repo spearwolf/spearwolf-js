@@ -8,8 +8,8 @@ import {
   maxOf,
   pick,
   sample,
+  toFloatColors,
 } from 'spearwolf-js';
-import { toFloatColors } from '../utils';
 
 let x: number;
 let y: boolean;
