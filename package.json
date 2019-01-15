@@ -9,11 +9,10 @@
   },
   "scripts": {
     "clean": "rimraf build",
-    "eslint": "eslint .",
-    "tsc": "tsc",
-    "types:check": "tsc --allowJs --checkJs src/index.d.ts",
     "start": "parcel --out-dir build/examples examples/*.html",
+    "test:eslint": "eslint .",
     "test:serve": "serve build/tests",
+    "test:types": "tsc -p ./types/test/tsconfig.json",
     "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html"
   },
   "repository": {
