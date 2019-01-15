@@ -39,4 +39,5 @@ $ npm run test:serve
 
   - `types/test/`: contains the tests for the type definitions
 
+- __`tests`__: the starting point for the tests. the tests are written with [Mocha](https://mochajs.org/). Put in here all your assets needed for testing.
 
