@@ -1,5 +1,1 @@
-import * as utils from './utils/index.js';
-
-export {
-  utils,
-}
+export * from './utils';
