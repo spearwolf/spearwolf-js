@@ -8,7 +8,7 @@ You will need [Node.js](https://nodejs.org/) **version v10+**.
 After cloning the repo, run:
 
 ```sh
-$ npm i
+$ npm install
 ```
 
 To start the examples, run:
