@@ -1,5 +1,5 @@
 /*!
-@file spearwolf-js - various javascript helpers and experiments
+@file spearwolf-js - various javascript helpers and classes for various three.js/webgl experiments!
 @author Wolfger Schramm <wolfger@spearwolf.de>
 @version 0.0.1
 
