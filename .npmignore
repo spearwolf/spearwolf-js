@@ -11,3 +11,4 @@ types/test
 .eslintignore
 .eslintrc.yaml
 .size-snapshot.json
+*.spec.js
