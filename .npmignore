@@ -6,8 +6,8 @@ browserslist
 examples
 scripts
 tests
+types/test
 .editorconfig
 .eslintignore
 .eslintrc.yaml
 .size-snapshot.json
-README.md
