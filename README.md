@@ -14,7 +14,7 @@ $ npm i
 To start the examples, run:
 
 ```sh
-$ npm run start
+$ npm start
 ```
 
 To build and watch all tests, run:
