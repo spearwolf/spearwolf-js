@@ -1,6 +1,0 @@
-{
-  "plugins": [
-    ["@babel/plugin-proposal-object-rest-spread", { "loose": false, "useBuiltIns": false }],
-    ["@babel/plugin-proposal-class-properties", { "loose": true }]
-  ]
-}
