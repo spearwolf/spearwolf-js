@@ -1,5 +1,5 @@
 # spearwolf-js
-various javascript (+ typescript types) helpers and classes for various webgl experiments!
+various javascript (+ typescript types) helpers and classes for various [three.js](https://threejs.org/)/webgl experiments!
 
 ## Development Setup
 
