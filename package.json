@@ -13,7 +13,7 @@
     "build:esm": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.esm.js",
     "build": "run-p build:*",
     "clean": "rimraf build dist",
-    "start": "parcel --out-dir build/examples examples/*.html",
+    "start": "parcel --no-hmr --out-dir build/examples examples/*.html",
     "test:eslint": "eslint .",
     "test:serve": "serve build/tests",
     "test:types": "tsc -p ./types/test/tsconfig.json",
