@@ -10,3 +10,4 @@ tests
 .eslintignore
 .eslintrc.yaml
 .size-snapshot.json
+README.md
