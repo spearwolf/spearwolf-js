@@ -1,5 +1,4 @@
 
-export { default as DataRef } from './DataRef';
 export { default as findNextPowerOf2 } from './findNextPowerOf2';
 export { default as generateUuid } from './generateUuid';
 export { default as get } from './get';

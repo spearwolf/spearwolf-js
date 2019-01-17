@@ -1,4 +1,4 @@
-import generateUuid from './generateUuid';
+import { generateUuid } from '../utils';
 
 /**
  * @desc
@@ -11,21 +11,21 @@ import generateUuid from './generateUuid';
 class DataRef {
   constructor(type, data, hints = null) {
     this.type = type;
-    this.data_ = data;
+    this._data = data;
     this.id = (hints && hints.id) ? String(hints.id) : generateUuid();
     this.serial = (hints && typeof hints.serial === 'number') ? hints.serial : 1;
     this.hints = hints;
   }
 
   get data() {
-    return this.data_;
+    return this._data;
   }
 
   set data(next) {
-    const current = this.data_;
+    const current = this._data;
 
     if (next !== current) {
-      this.data_ = next;
+      this._data = next;
       this.touch();
     }
   }

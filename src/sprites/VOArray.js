@@ -1,4 +1,4 @@
-import DataRef from '../utils/DataRef';
+import { DataRef } from '../core';
 
 import createBufferView from './VOArray/createBufferView';
 import createLinkedTypedArrays from './VOArray/createLinkedTypedArrays';
