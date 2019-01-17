@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: 0 */
-import { readOption, maxOf, generateUuid } from '../..';
+import { readOption, maxOf, generateUuid } from '../../utils';
 
 import createVOs from './createVOs';
 

@@ -1,4 +1,4 @@
-import { VOArray } from '..';
+import { VOArray } from '../VOArray';
 
 import createAttributes from './createAttributes';
 import createAliases from './createAliases';
