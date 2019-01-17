@@ -9,6 +9,7 @@ import {
   pick,
   sample,
   toFloatColors,
+  generateUuid,
 } from 'spearwolf-js';
 
 let x: number;
@@ -51,3 +52,5 @@ x = sample<number>([1, 2, 3, 4]);
 
 [r, g, b] = toFloatColors([r, g, b]);
 [r, g, b, a] = toFloatColors([r, g, b, a]);
+
+const s: string = generateUuid();

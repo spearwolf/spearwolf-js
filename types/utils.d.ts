@@ -9,3 +9,4 @@ export function maxOf(a: number, b: number): number;
 export function pick<T extends Object>(names: Array<string>): (obj: Object) => T;
 export function sample<T>(arr: Array<T>): T;
 export function toFloatColors(colors: Array<number>): Array<number>;
+export function generateUuid(): string;
