@@ -5,8 +5,10 @@ build
 browserslist
 examples
 scripts
+src
 tests
 types/test
+.babelrc-esm.json
 .editorconfig
 .eslintignore
 .eslintrc.yaml

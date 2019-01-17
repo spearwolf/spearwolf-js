@@ -3,14 +3,15 @@
   "version": "0.0.1",
   "description": "various javascript helpers and classes for various three.js/webgl experiments!",
   "main": "dist/spearwolf.js",
-  "module": "src/index.js",
+  "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
   "directories": {
     "example": "examples"
   },
   "scripts": {
     "build:umd": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.umd.js",
-    "build:esm": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.esm.js",
+    "build:esm-bundle": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.esm.js",
+    "build:esm": "cross-env NODE_ENV=production babel src --out-dir dist/esm --source-maps --ignore \"src/**/*.spec.js\",\"src/**/*.test.js\"",
     "build": "run-p build:*",
     "prepublishOnly": "run-p build:*",
     "clean": "rimraf build dist",
@@ -19,7 +20,8 @@
     "test:serve": "serve build/tests",
     "test:types": "tsc -p ./types/test/tsconfig.json",
     "test:watch": "parcel watch --no-hmr --out-dir build/tests tests/index.html",
-    "test": "run-s test:eslint test:types"
+    "test": "run-s test:eslint test:types",
+    "watch": "npm run build:esm -- --watch"
   },
   "repository": {
     "type": "git",
@@ -32,8 +34,10 @@
   },
   "homepage": "https://github.com/spearwolf/spearwolf-js#readme",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-proposal-decorators": "^7.2.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.2.3",
