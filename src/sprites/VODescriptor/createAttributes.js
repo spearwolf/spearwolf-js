@@ -51,7 +51,7 @@ export default (descriptor, attributesOrObject) => {
     byteOffset += BYTES_PER_ELEMENT[type] * attrSize;
   }
 
-  // bytes per vertex is always aligned to 4-bytes!
+  // ensure that bytes per vertex is always aligned to 4-bytes!
   descriptor.rightPadBytesPerVertex = byteOffset % 4 > 0 ? 4 - (byteOffset % 4) : 0;
 
   descriptor.bytesPerVertex = byteOffset + descriptor.rightPadBytesPerVertex;
