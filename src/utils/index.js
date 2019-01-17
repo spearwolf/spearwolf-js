@@ -1,5 +1,7 @@
 
+export { default as DataRef } from './DataRef';
 export { default as findNextPowerOf2 } from './findNextPowerOf2';
+export { default as generateUuid } from './generateUuid';
 export { default as get } from './get';
 export { default as hexCol2rgb } from './hexCol2rgb';
 export { default as hexCol2rgba } from './hexCol2rgba';

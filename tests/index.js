@@ -13,12 +13,19 @@ describe('utils', () => {
   require('../src/utils/isPowerOf2.spec.js');
   require('../src/utils/maxOf.spec.js');
   require('../src/utils/pick.spec.js');
+  require('../src/utils/DataRef.spec.js');
 
 });
 
 describe('core', () => {
 
   require('../src/core/AABB2.spec.js');
+
+});
+
+describe('sprites', () => {
+
+  require('../src/sprites/VOArray.spec.js');
 
 });
 
