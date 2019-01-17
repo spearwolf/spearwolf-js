@@ -1,12 +1,12 @@
-import { DataRef } from '../core';
+import { DataRef } from '../../core';
 
-import createBufferView from './VOArray/createBufferView';
-import createLinkedTypedArrays from './VOArray/createLinkedTypedArrays';
+import createBufferView from './createBufferView';
+import createLinkedTypedArrays from './createLinkedTypedArrays';
 
 /**
  * A wrapper for an ArrayBuffer which additional holds multiple references to typed arrays.
  */
-export default class VOArray {
+export class VOArray {
   /**
    * Create a VOArray
    *

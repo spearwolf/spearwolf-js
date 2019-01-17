@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import assert from 'assert';
 
-import VOArray from './VOArray';
+import { VOArray } from '.';
 
 describe('VOArray', () => {
   it('create instance', () => {

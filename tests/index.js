@@ -25,7 +25,9 @@ describe('core', () => {
 
 describe('sprites', () => {
 
-  require('../src/sprites/VOArray.spec.js');
+  require('../src/sprites/VOArray/VOArray.spec.js');
+  require('../src/sprites/VODescriptor/VODescriptor.spec.js');
+  require('../src/sprites/VOPool/VOPool.spec.js');
 
 });
 
