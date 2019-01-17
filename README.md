@@ -35,6 +35,12 @@ $ npm run test:serve
 
 - __`src`__: contains the source code. codebase is written in state-of-the-art modern javascript (ES2017 or whatever the latest version is at the moment)
 
+  - __`utils`___: low-level, commonly used utility functions
+  
+  - __`core`__: commonly used high-level objects, classes and concepts
+  
+  - __`sprites`__: vertex-objects, sprites and sprite-groups
+
 - __`types`__: contains manually handwritten type definitions for typescript. Use `npm run test:types` to test the types.
 
   - `types/test/`: contains the tests for the type definitions
