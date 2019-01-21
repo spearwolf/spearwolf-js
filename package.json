@@ -20,7 +20,7 @@
     "test:karma": "cross-env NODE_ENV=test karma start --single-run",
     "test:watch": "cross-env NODE_ENV=test karma start",
     "test:types": "tsc -p ./types/test/tsconfig.json",
-    "test": "run-p build:*",
+    "test": "npm-run-all --parallel test:eslint test:types --serial test:karma",
     "watch:esm": "npm run build:esm -- --watch"
   },
   "repository": {
