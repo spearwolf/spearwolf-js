@@ -8,7 +8,7 @@ scripts
 src
 tests
 types/test
-.babelrc-esm.json
+.babelrc
 .editorconfig
 .eslintignore
 .eslintrc.yaml

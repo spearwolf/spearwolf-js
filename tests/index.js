@@ -1,10 +1,11 @@
 /* eslint-env mocha */
-import 'mocha/mocha.css';
-import 'mocha/mocha.js';
+import '@babel/polyfill';
+import 'mocha/mocha';
 
-mocha.setup('bdd');
-mocha.checkLeaks();
-mocha.globals(['parcelRequire']);
+mocha.setup({
+  ui: 'bdd',
+  noHighlighting: true,
+});
 
 describe('utils', () => {
 
@@ -31,4 +32,5 @@ describe('sprites', () => {
 
 });
 
+mocha.checkLeaks();
 mocha.run();
