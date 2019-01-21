@@ -2,9 +2,9 @@
 module.exports = {
   mode: 'development',
   entry: {
-    'foo.js': [
+    'foo-bundle': [
       '@babel/polyfill',
-      './examples/foo.js',
+      './examples/src/foo.js',
     ],
   },
   devServer: {

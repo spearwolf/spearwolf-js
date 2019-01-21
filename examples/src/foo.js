@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { findNextPowerOf2 } from '../src';
+import { findNextPowerOf2 } from '../../src';
 
 import { appendTo } from './appendTo.js';
 
