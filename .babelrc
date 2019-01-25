@@ -3,5 +3,12 @@
     ["@babel/plugin-proposal-object-rest-spread", { "loose": true, "useBuiltIns": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": false }]
+  ],
+  "presets": [
+    ["@babel/preset-env", {
+      "debug": false,
+      "useBuiltIns": false,
+      "modules": false
+    }]
   ]
 }
