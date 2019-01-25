@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "various javascript helpers and classes for various three.js/webgl experiments!",
   "main": "dist/spearwolf.js",
-  "module": "dist/esm/index.js",
+  "module": "src/index.js",
   "types": "types/index.d.ts",
   "directories": {
     "example": "examples"
@@ -11,7 +11,6 @@
   "scripts": {
     "build:umd": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.umd.js",
     "build:esm-bundle": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.esm.js",
-    "build:esm": "cross-env NODE_ENV=production babel src --out-dir dist/esm --source-maps --ignore \"src/**/*.spec.js\",\"src/**/*.test.js\"",
     "build": "run-p build:*",
     "prepublishOnly": "run-p build:*",
     "clean": "rimraf build coverage dist",
@@ -20,8 +19,7 @@
     "test:karma": "cross-env NODE_ENV=test karma start --single-run",
     "test:watch": "cross-env NODE_ENV=test karma start",
     "test:types": "tsc -p ./types/test/tsconfig.json",
-    "test": "npm-run-all --parallel test:eslint test:types --serial test:karma",
-    "watch:esm": "npm run build:esm -- --watch"
+    "test": "npm-run-all --parallel test:eslint test:types --serial test:karma"
   },
   "repository": {
     "type": "git",
