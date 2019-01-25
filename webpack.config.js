@@ -2,14 +2,15 @@
 module.exports = {
   mode: 'development',
   entry: {
-    'foo-bundle': [
-      '@babel/polyfill',
-      './examples/src/foo.js',
-    ],
+    'version.bundle': ['@babel/polyfill', './examples/src/version.js'],
   },
   devServer: {
     port: 8080,
-    contentBase: 'examples',
+    contentBase: [
+      './examples',
+      './dist',
+      './node_modules',
+    ],
     watchContentBase: true,
     compress: true,
     host: '0.0.0.0',

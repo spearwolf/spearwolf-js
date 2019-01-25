@@ -18,60 +18,65 @@ export default ({
   external,
   name, // The variable name, representing your iife/umd bundle, by which other scripts on the same page can access it.
   outputAsModule,
-}) => ({
-  external,
-  input: 'src/index.js',
-  output: outputAsModule
-    ? {
-        globals,
-        file: path.join(root, 'dist', `${filename}.module.js`),
-        sourcemap: true,
-        sourcemapFile: path.join(root, 'dist', `${filename}.module.js.map`),
-        format: 'esm',
-      }
-    : {
-        name,
-        globals,
-        file: path.join(root, 'dist', `${filename}.js`),
-        sourcemap: true,
-        sourcemapFile: path.join(root, 'dist', `${filename}.js.map`),
-        format: 'umd',
-      },
-  plugins: [
-    bannerPlugin(require(path.join(root, 'package.json'))), // eslint-disable-line
-    babel({
-      exclude: [/node_modules/],
-      presets: [
-        [
-          '@babel/preset-env',
-          outputAsModule
-            ? {
-                debug: false,
-                useBuiltIns: 'usage',
-                targets: {
-                  esmodules: true,
+}) => {
+  const packageJson = require(path.join(root, 'package.json'))
+
+  return {
+    external,
+    input: 'src/index.js',
+    output: outputAsModule
+      ? {
+          globals,
+          file: path.join(root, 'dist', `${filename}.module.js`),
+          sourcemap: true,
+          sourcemapFile: path.join(root, 'dist', `${filename}.module.js.map`),
+          format: 'esm',
+        }
+      : {
+          name,
+          globals,
+          file: path.join(root, 'dist', `${filename}.js`),
+          sourcemap: true,
+          sourcemapFile: path.join(root, 'dist', `${filename}.js.map`),
+          format: 'umd',
+        },
+    plugins: [
+      bannerPlugin(packageJson), // eslint-disable-line
+      babel({
+        exclude: [/node_modules/],
+        presets: [
+          [
+            '@babel/preset-env',
+            outputAsModule
+              ? {
+                  debug: false,
+                  useBuiltIns: 'usage',
+                  targets: {
+                    esmodules: true,
+                  },
+                }
+              : {
+                  debug: false,
+                  modules: false,
+                  useBuiltIns: 'usage',
                 },
-              }
-            : {
-                debug: false,
-                modules: false,
-                useBuiltIns: 'usage',
-              },
+          ],
         ],
-      ],
-    }),
-    commonjs(),
-    resolve({
-      customResolveOptions: {
-        moduleDirectory: 'node_modules',
-      },
-    }),
-    replace({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-    sizeSnapshot(),
-    terser({
-      output: { comments: /^!/ },
-    }),
-  ],
-});
+      }),
+      commonjs(),
+      resolve({
+        customResolveOptions: {
+          moduleDirectory: 'node_modules',
+        },
+      }),
+      replace({
+        NODE_ENV: JSON.stringify('production'),
+        PACKAGE_VERSION: JSON.stringify(packageJson.version),
+      }),
+      sizeSnapshot(),
+      terser({
+        output: { comments: /^!/ },
+      }),
+    ],
+  };
+};

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>spearwolf-js: examples/umd</title>
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+    #output {
+      margin: 1em;
+      padding: 1em;
+
+      font-family: monospace;
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <dl>
+    <dt>THREE.REVISION</dt>
+    <dd id=threeRevision></dd>
+    <dt>spearwolf.VERSION</dt>
+    <dd id=spearwolfVersion></dd>
+  </dl>
+  <script src="/three/build/three.min.js"></script>
+  <script src="/spearwolf.js"></script>
+  <script>
+
+    console.log('hej ho ♥');
+
+    document.getElementById('threeRevision').textContent = `${THREE.REVISION}`;
+
+    document.getElementById('spearwolfVersion').textContent = `${spearwolf.VERSION}`;
+
+  </script>
+</body>
+</html>
