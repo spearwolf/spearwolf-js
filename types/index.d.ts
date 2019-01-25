@@ -4,5 +4,6 @@
 
 export * from './utils';
 export * from './core';
+export * from './textures';
 
 export as namespace spearwolf;
