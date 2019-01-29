@@ -7,7 +7,6 @@ examples
 scripts
 tests
 types/test
-.babelrc
 .editorconfig
 .eslintignore
 .eslintrc.yaml
