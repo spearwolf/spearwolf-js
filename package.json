@@ -1,6 +1,6 @@
 {
   "name": "spearwolf-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "various javascript helpers and classes for various three.js/webgl experiments!",
   "main": "dist/spearwolf.js",
   "module": "src/index.js",

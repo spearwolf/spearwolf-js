@@ -5,7 +5,6 @@ build
 browserslist
 examples
 scripts
-src
 tests
 types/test
 .babelrc
