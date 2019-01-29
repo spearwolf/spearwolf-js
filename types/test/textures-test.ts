@@ -20,7 +20,7 @@ el = p2.imgEl;
 let w: number;
 let h: number;
 
-p2.onLoaded.then((img: PowerOf2Image) => {
+p2.loaded.then((img: PowerOf2Image) => {
 
   w = img.width;
   h = img.height;

@@ -19,7 +19,7 @@ const convertToPowerOf2 = (image) => {
  */
 export class PowerOf2Image {
 
-  onLoaded = null;
+  loaded = null;
 
   imgEl = null;
 
@@ -46,7 +46,7 @@ export class PowerOf2Image {
     const imageHasValidSize = imgEl.width > 0 && imgEl.height > 0;
     if (waitUntilLoading || !imageHasValidSize) {
       this.imgEl = null;
-      this.onLoaded = new Promise((resolve) => {
+      this.loaded = new Promise((resolve) => {
         const origOnLoad = imgEl.onload;
         imgEl.onload = () => {
           if (origOnLoad) { origOnLoad.call(imgEl); }
@@ -56,7 +56,7 @@ export class PowerOf2Image {
       });
     } else {
       this.setImgEl(imgEl);
-      this.onLoaded = Promise.resolve(this);
+      this.loaded = Promise.resolve(this);
     }
   }
 

@@ -5,7 +5,7 @@ export type ImageSource = HTMLImageElement | HTMLCanvasElement | HTMLVideoElemen
 
 export class PowerOf2Image {
 
-  readonly onLoaded: Promise<PowerOf2Image>;
+  readonly loaded: Promise<PowerOf2Image>;
 
   imgEl: ImageSource;
 
@@ -48,4 +48,22 @@ export class Texture {
   readonly minT: number;
   readonly maxS: number;
   readonly maxT: number;
+}
+
+// === TextureAtlas ===
+
+export class TextureAtlas {
+
+  static load(path: string, basePath: string): Promise<TextureAtlas>;
+
+  constructor(baseTexture: Texture, data: Object);
+
+  addFrame(name: string, width: number, height: number, x: number, y: number): void;
+
+  frame(name: string): Texture;
+  randomFrame(): Texture;
+
+  frameNames(match?: string | RegExp): string[];
+  randomFrameName(): string;
+
 }
