@@ -3,7 +3,6 @@
 import assert from 'assert';
 
 import {
-  DataRef,
   Texture,
   PowerOf2Image,
 } from '.';
