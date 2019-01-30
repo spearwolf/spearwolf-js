@@ -41,12 +41,28 @@ export class ThreeCanvas extends THREE.EventDispatcher {
   height = 0;
 
   /**
+   * Time in *seconds*.
    * @readonly
    * @type {number}
    */
   now = 0;
 
   /**
+   * The time in *seconds* as it was at the last call of `frame()`.
+   * @readonly
+   * @type {number}
+   */
+  lastNow = 0;
+
+  /**
+   * Seconds passed since the last render / previous call to `frame()`.
+   * @readonly
+   * @type {number}
+   */
+  deltaTime = 0;
+
+  /**
+   * Current frame number. Initially set to 0.
    * @readonly
    * @type {number}
    */
@@ -170,6 +186,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
       now: this.now,
       frameNo: this.frameNo,
+      deltaTime: this.deltaTime,
 
       width: this.width,
       height: this.height,
@@ -178,9 +195,14 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
   frame(now = window.performance.now()) {
 
-    this.now = now;
+    this.now = now / 1000.0;
+
+    if (this.frameNo > 0) {
+      this.deltaTime = this.now - this.lastNow;
+    }
 
     this.resize();
+
     if (this.frameNo === 0) {
       this.dispatchResizeEvent();
     }
@@ -189,6 +211,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
     this.dispatchFrameEvent('frame');
 
+    this.lastNow = this.now;
     this.frameNo++;
 
   }

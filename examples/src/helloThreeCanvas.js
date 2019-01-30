@@ -26,12 +26,12 @@ scene.add(cube);
 
 const yAxis = new THREE.Vector3(0, 1, 0);
 
-tc.addEventListener('frame', ({ renderer, width, height }) => {
+tc.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 
-  scene.rotateOnAxis(yAxis, 0.01);
+  scene.rotateOnAxis(yAxis, deltaTime);
 
   renderer.render(scene, camera);
 
