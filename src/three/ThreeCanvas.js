@@ -86,11 +86,11 @@ export class ThreeCanvas extends THREE.EventDispatcher {
   _rafID = 0;
 
   /**
-   * @param {HTMLElement} el 
-   * @param {Object} [options] 
-   * @param {'canvas'|'container'} [options.resizeStrategy] 
-   * @param {number} [options.pixelRatio] 
-   * @param {string|THREE.Color} [options.clearColor] 
+   * @param {HTMLElement} el
+   * @param {Object} [options]
+   * @param {'canvas'|'container'} [options.resizeStrategy]
+   * @param {number} [options.pixelRatio]
+   * @param {string|THREE.Color} [options.clearColor]
    * @param {'highp'|'mediump'|'lowp'} [options.precision='mediump'] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
    * @param {boolean} [options.alpha] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
    * @param {boolean} [options.premultipliedAlpha] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)

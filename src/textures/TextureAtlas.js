@@ -38,8 +38,8 @@ export class TextureAtlas {
 
   /**
    * Create a texture atlas.
-   * @param {Texture} baseTexture 
-   * @param {Object} data - json texture atlas data 
+   * @param {Texture} baseTexture
+   * @param {Object} data - json texture atlas data
    */
   constructor(baseTexture, data) {
     this.baseTexture = baseTexture;
@@ -51,11 +51,11 @@ export class TextureAtlas {
 
   /**
    * Add a new named texture atlas frame.
-   * @param {string} name 
-   * @param {number} width 
-   * @param {number} height 
-   * @param {number} x 
-   * @param {number} y 
+   * @param {string} name
+   * @param {number} width
+   * @param {number} height
+   * @param {number} x
+   * @param {number} y
    */
   addFrame(name, width, height, x, y) {
     const tex = new Texture(this.baseTexture, width, height, x, y);
@@ -66,7 +66,7 @@ export class TextureAtlas {
 
   /**
    * Return a named frame.
-   * @param {string} name 
+   * @param {string} name
    * @returns {Texture}
    */
   frame(name) {
