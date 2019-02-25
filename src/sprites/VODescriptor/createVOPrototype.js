@@ -35,5 +35,6 @@ export default (descriptor, proto = {}) => {
     VOAttrDescriptor.defineProperties(attr, propertiesObject, descriptor);
   });
 
+  descriptor.propertiesObject = propertiesObject;
   descriptor.voPrototype = Object.create(proto, propertiesObject);
 };

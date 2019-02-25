@@ -3,10 +3,11 @@ module.exports = {
   mode: 'development',
   entry: {
     'version.bundle': ['@babel/polyfill', './examples/src/version.js'],
+    'vertexObject.bundle': ['@babel/polyfill', './examples/src/vertexObject.js'],
     'hello-three-canvas.bundle': ['@babel/polyfill', './examples/src/helloThreeCanvas.js'],
   },
   devServer: {
-    port: 8080,
+    port: 3000,
     contentBase: [
       './examples',
       './dist',
