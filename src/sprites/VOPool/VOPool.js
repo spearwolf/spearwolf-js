@@ -8,9 +8,9 @@ export default class VOPool {
    * @param {VODescriptor} descriptor - vertex object descriptor
    * @param {Object} [options] - Advanced options
    * @param {number} [options.capacity] - Maximum number of *vertex objects*
-   * @param {VOArray} [options.voArray] - Vertex object array
-   * @param {VertexObject} [options.voZero] - *vertex object* prototype
-   * @param {VertexObject} [options.voNew] - *vertex object* prototype
+   * @param {VOArray} [options.voArray] - A predefind vertex object array, otherwise a new one will be created
+   * @param {VertexObject} [options.voZero] - *vertex object* initializer
+   * @param {VertexObject} [options.voNew] - *vertex object* initializer
    * @param {number} [options.maxAllocVOSize] - never allocate more than `maxAllocVOSize` *vertex objects* at once
    * @param {string} [options.usage='dynamic'] - buffer `usage` hint, choose between `dynamic` or `static`
    * @param {string} [options.doubleBuffer] - buffer `doubleBuffer` hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
@@ -20,11 +20,13 @@ export default class VOPool {
   constructor(descriptor, options) {
     this.id = generateUuid();
     this.descriptor = descriptor;
+
     this.capacity = readOption(options, 'capacity', this.descriptor.maxIndexedVOPoolSize);
     this.maxAllocVOSize = readOption(options, 'maxAllocVOSize', 0);
     this.voZero = readOption(options, 'voZero', () => descriptor.createVO());
     this.voNew = readOption(options, 'voNew', () => descriptor.createVO());
     this.usage = readOption(options, 'usage', 'dynamic');
+
     this.voArray = readOption(options, 'voArray', () => descriptor.createVOArray(this.capacity, {
       usage: this.usage,
       autotouch: readOption(options, 'autotouch', this.usage === 'dynamic'),
@@ -66,7 +68,7 @@ export default class VOPool {
   }
 
   /**
-   * Allocate a *vertex object*
+   * Allocate a single *vertex object*
    * @return {VertexObject}
    */
 
@@ -116,7 +118,9 @@ export default class VOPool {
 
   free(vo) {
     if (Array.isArray(vo)) {
-      vo.forEach(this.free.bind(this));
+      for (let i=0, len=vo.length; i < len; ++i) {
+        this.free(vo[i]);
+      }
       return;
     }
 
