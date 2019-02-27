@@ -1,12 +1,11 @@
 import { VOArray } from '../VOArray';
 
-import initializeVO  from '../initializeVO';
-
-import createAttributes from './createAttributes';
 import createAliases from './createAliases';
-import createVOPrototype from './createVOPrototype';
+import createAttributes from './createAttributes';
 import createTypedArrays from './createTypedArrays';
 import createVO from './createVO';
+import createVOPrototype from './createVOPrototype';
+import initializeVO  from './initializeVO';
 
 /**
  * Vertex object descriptor.
