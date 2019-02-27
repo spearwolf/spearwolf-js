@@ -1,28 +1,14 @@
 /* eslint func-names: 0 */
 /* eslint no-param-reassign: 0 */
 import VOAttrDescriptor from './VOAttrDescriptor';
+import { toArray } from './toArray';
 
-/** @private */
-const toArray = descriptor => function (scalars) {
-  const arr = [];
-  const attrList = Array.isArray(scalars)
-    ? scalars.map(name => descriptor.attr[name])
-    : descriptor.attrList;
-  const len = attrList.length;
-
-  for (let i = 0; i < descriptor.vertexCount; ++i) {
-    for (let j = 0; j < len; ++j) {
-      const attr = attrList[j];
-      for (let k = 0; k < attr.size; ++k) {
-        arr.push(attr.getValue(this, i, k));
-      }
-    }
-  }
-  return arr;
-};
-
-/** @private */
-export default (descriptor, proto = {}) => {
+/**
+ * @private
+ * @param {VODescriptor} descriptor
+ * @param {Object} [methods]
+ */
+export default (descriptor, methods = {}) => {
   const propertiesObject = {
     toArray: {
       value: toArray(descriptor),
@@ -31,10 +17,9 @@ export default (descriptor, proto = {}) => {
 
   Object.keys(descriptor.attr).forEach((name) => {
     const attr = descriptor.attr[name];
-
     VOAttrDescriptor.defineProperties(attr, propertiesObject, descriptor);
   });
 
   descriptor.propertiesObject = propertiesObject;
-  descriptor.voPrototype = Object.create(proto, propertiesObject);
+  descriptor.voPrototype = Object.create(methods, propertiesObject);
 };

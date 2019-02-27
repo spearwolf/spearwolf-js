@@ -18,7 +18,7 @@ describe('VODescriptor', () => {
 
   before(() => {
     descriptor = new VODescriptor({
-      proto: {
+      methods: {
         foo() {
           return this.voArray.float32Array[0];
         },

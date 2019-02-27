@@ -17,12 +17,12 @@ import createVO from './createVO';
  * @param {number} [options.vertexCount=1] - number of vertices
  * @param {Object[]} options.attributes - list of vertex attribute descriptions (see example)
  * @param {Object} [options.aliases] - *optional* list of attribute aliases
- * @param {Object} [options.proto]
+ * @param {Object} [options.methods]
  *
  * @example
  * const descriptor = new VODescriptor({
  *
- *     proto: {
+ *     methods: {
  *         foo() {
  *             return this.voArray.float32Array[0];
  *         }
@@ -67,7 +67,7 @@ export default class VODescriptor {
     instanceOf,
     attributes,
     aliases,
-    proto,
+    methods,
   }) {
     /** Number of _vertices_ per _vertex object_ */
     this.vertexCount = parseInt(vertexCount, 10) || 1;
@@ -80,7 +80,7 @@ export default class VODescriptor {
 
     createAttributes(this, attributes);
     createAliases(this, aliases);
-    createVOPrototype(this, proto);
+    createVOPrototype(this, methods);
     createTypedArrays(this);
   }
 
