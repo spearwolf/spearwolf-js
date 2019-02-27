@@ -21,7 +21,7 @@ export class VOIndices {
 
     for (let i = 0; i < objectCount; ++i) {
       for (let j = 0; j < indices.length; ++j) {
-        arr.array[(i * arr.itemCount) + j] = indices[j] + ((i + objectOffset) * stride);
+        arr.indices[(i * arr.itemCount) + j] = indices[j] + ((i + objectOffset) * stride);
       }
     }
     return arr;
@@ -43,7 +43,7 @@ export class VOIndices {
     this.objectCount = objectCount;
     this.itemCount = itemCount;
     this.length = objectCount * itemCount;
-    this.array = new Array(this.length);
+    this.indices = new Array(this.length);
   }
 
 }
