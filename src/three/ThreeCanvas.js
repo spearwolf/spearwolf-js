@@ -195,6 +195,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
   frame(now = window.performance.now()) {
 
+    this.lastNow = this.now;
     this.now = now / 1000.0;
 
     if (this.frameNo > 0) {
@@ -211,9 +212,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
     this.dispatchFrameEvent('frame');
 
-    this.lastNow = this.now;
     this.frameNo++;
-
   }
 
   start() {
