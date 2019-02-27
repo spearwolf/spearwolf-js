@@ -31,6 +31,8 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
      */
     this._bufMap = new Map();
 
+    const isDynamic = spriteGroup.voPool.voArray.ref.hasHint('usage', 'dynamic');
+
     Object.keys(descriptor.attr).forEach(attrName => {
 
       const attr = descriptor.attr[attrName];
@@ -42,7 +44,7 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
         const stride = descriptor.bytesPerVertex / typedArray.BYTES_PER_ELEMENT;
 
         buffer = new THREE.InterleavedBuffer(typedArray, stride);
-        buffer.setDynamic(true); // TODO
+        buffer.setDynamic(isDynamic);
 
         this._buffers.push(buffer);
         this._bufMap.set(attr.type, buffer);
@@ -53,12 +55,18 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
       this.addAttribute(attrName, bufferAttr);
 
     });
+
+    spriteGroup.voPool.voArray.ref.serial = this.bufferVersion;
   }
 
   updateBuffers() {
     this._buffers.forEach((buf) => {
       buf.needsUpdate = true;
     });
+  }
+
+  get bufferVersion() {
+    return this._buffers[0].version;
   }
 
 }
