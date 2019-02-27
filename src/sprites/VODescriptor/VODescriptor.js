@@ -7,80 +7,83 @@ import createVO from './createVO';
 import createVOPrototype from './createVOPrototype';
 import initializeVO  from './initializeVO';
 
-/**
- * Vertex object descriptor.
- *
- * @class VODescriptor
- *
- * @param {Object} options
- * @param {number} [options.vertexCount=1] - number of vertices
- * @param {Object[]} options.attributes - list of vertex attribute descriptions (see example)
- * @param {Object} [options.aliases] - *optional* list of attribute aliases
- * @param {Object} [options.methods]
- *
- * @example
- * const descriptor = new VODescriptor({
- *
- *     methods: {
- *         foo() {
- *             return this.voArray.float32Array[0];
- *         }
- *     },
- *
- *     // vertex buffer layout
- *     // --------------------
- *     //
- *     // v0: (x0)(y0)(z0)(rotate)(s0)(t0)(tx)(ty)(scale)(opacity)
- *     // v1: (x1)(y1)(z1)(rotate)(s1)(t1)(tx)(ty)(scale)(opacity)
- *     // v2: (x2)(y2)(z2)(rotate)(s2)(t2)(tx)(ty)(scale)(opacity)
- *     // v3: (x3)(y3)(z3)(rotate)(s3)(t3)(tx)(ty)(scale)(opacity)
- *     //
- *     vertexCount: 4,
- *
- *     attributes: [
- *
- *         { name: 'position',  type: 'float32', size: 3, scalars: [ 'x', 'y', 'z' ] },
- *         { name: 'rotate',    type: 'float32', size: 1, uniform: true },
- *         { name: 'texCoords', type: 'float32', size: 2, scalars: [ 's', 't' ] },
- *         { name: 'translate', type: 'float32', size: 2, scalars: [ 'tx', 'ty' ], uniform: true },
- *         { name: 'scale',     type: 'float32', size: 1, uniform: true },
- *         { name: 'opacity',   type: 'float32', size: 1, uniform: true }
- *
- *     ],
- *
- *     aliases: {
- *
- *         pos2d: { size: 2, type: 'float32', offset: 0 },
- *         posZ:  { size: 1, type: 'float32', offset: 2, uniform: true },
- *         r:     { size: 1, type: 'float32', offset: 3 },
- *         uv:    'texCoords',
- *
- *     }
- *
- * });
- *
- */
 export default class VODescriptor {
-  constructor({
-    vertexCount,
-    instanceOf,
-    attributes,
-    aliases,
-    methods,
-  }) {
-    /** Number of _vertices_ per _vertex object_ */
-    this.vertexCount = parseInt(vertexCount, 10) || 1;
 
-    /** Returns `true` if this vertex object is *instanced* */
+  /**
+   * Vertex object descriptor
+   *
+   * @param {Object} options
+   * @param {number|string} [options.vertexCount=1] - number of vertices
+   * @param {Object[]} options.attributes - vertex attribute descriptions
+   * @param {Object} [options.aliases] - attribute aliases
+   * @param {Object} [options.methods]
+   * @param {VODescriptor} [options.instanceOf]
+   *
+   * @example
+   * const descriptor = new VODescriptor({
+   *
+   *     methods: {
+   *         foo() {
+   *             return this.voArray.float32Array[0];
+   *         }
+   *     },
+   *
+   *     // vertex buffer layout
+   *     // --------------------
+   *     //
+   *     // v0: (x0)(y0)(z0)(rotate)(s0)(t0)(tx)(ty)(scale)(opacity)
+   *     // v1: (x1)(y1)(z1)(rotate)(s1)(t1)(tx)(ty)(scale)(opacity)
+   *     // v2: (x2)(y2)(z2)(rotate)(s2)(t2)(tx)(ty)(scale)(opacity)
+   *     // v3: (x3)(y3)(z3)(rotate)(s3)(t3)(tx)(ty)(scale)(opacity)
+   *     //
+   *     vertexCount: 4,
+   *
+   *     attributes: [
+   *
+   *         { name: 'position',  type: 'float32', size: 3, scalars: [ 'x', 'y', 'z' ] },
+   *         { name: 'rotate',    type: 'float32', size: 1, uniform: true },
+   *         { name: 'texCoords', type: 'float32', size: 2, scalars: [ 's', 't' ] },
+   *         { name: 'translate', type: 'float32', size: 2, scalars: [ 'tx', 'ty' ], uniform: true },
+   *         { name: 'scale',     type: 'float32', size: 1, uniform: true },
+   *         { name: 'opacity',   type: 'float32', size: 1, uniform: true }
+   *
+   *     ],
+   *
+   *     aliases: {
+   *
+   *         pos2d: { size: 2, type: 'float32', offset: 0 },
+   *         posZ:  { size: 1, type: 'float32', offset: 2, uniform: true },
+   *         r:     { size: 1, type: 'float32', offset: 3 },
+   *         uv:    'texCoords',
+   *
+   *     }
+   *
+   * });
+   *
+   */
+
+  constructor({ vertexCount, instanceOf, attributes, aliases, methods }) {
+
+    /**
+     * Number of vertices per vertex object
+     * @type {number}
+     */
+    this.vertexCount = typeof vertexCount === 'number' ? vertexCount : parseInt(vertexCount, 10) || 1;
+
+    /**
+     * Returns `true` if this vertex object is *instanced*
+     * @type {boolean}
+     */
     this.isInstanced = instanceOf != null;
 
-    /** @type VODescriptor */
+    /** @type {VODescriptor} */
     this.base = instanceOf;
 
     createAttributes(this, attributes);
     createAliases(this, aliases);
     createVOPrototype(this, methods);
     createTypedArrays(this);
+
   }
 
   /**

@@ -6,10 +6,20 @@ import {
   TYPED_ARRAY_GETTER,
 } from './typedArrayHelpers';
 
-/** @private */
+/**
+ * @private
+ * @param {string} name
+ * @returns {string}
+ */
 const camelize = name => name[0].toUpperCase() + name.substr(1);
 
-/** @private */
+/**
+ * @private
+ * @param {VOAttrDescriptor} attrDesc
+ * @param {string} name
+ * @param {number} index
+ * @returns {string}
+ */
 const attrPostfix = (attrDesc, name, index) => {
   if (attrDesc.scalars) {
     const postfix = attrDesc.scalars[index];
@@ -64,12 +74,13 @@ const setV1u = (getArray, vertexCount, vertexAttrCount, offset) => function (val
 };
 
 /**
- * Vertex object *attribute* descriptor.
+ * Vertex object attribute descriptor
  */
 export default class VOAttrDescriptor {
+
   /**
    * @param {string} name
-   * @param {string} type
+   * @param {'float32'|'int16'|'int32'|'int8'|'uint16'|'uint32'|'uint8'} type
    * @param {number} size
    * @param {number} [offset] - either `offset` or `byteOffset` must be specified
    * @param {number} [byteOffset] - either `offset` or `byteOffset` must be specified
@@ -77,31 +88,39 @@ export default class VOAttrDescriptor {
    * @param {string[]} [scalars]
    */
   constructor(name, type, size, offset, byteOffset, uniform, scalars) {
+
+    /** @type {string} */
     this.name = name;
+
+    /** @type {'float32'|'int16'|'int32'|'int8'|'uint16'|'uint32'|'uint8'} */
     this.type = type;
+
+    /** @type {number} */
     this.size = size;
+
+    /** @type {boolean} */
     this.uniform = uniform;
+
+    /** @type {string[]} */
     this.scalars = scalars;
 
+    /** @type {number} */
     this.bytesPerElement = BYTES_PER_ELEMENT[this.type];
+
+    /** @type {number} */
     this.bytesPerVertex = this.bytesPerElement * size;
 
-    if (typeof byteOffset !== 'number') {
-      this.byteOffset = offset * this.bytesPerElement;
-    } else {
-      this.byteOffset = byteOffset;
-    }
+    /** @type {number} */
+    this.byteOffset = typeof byteOffset !== 'number' ? offset * this.bytesPerElement : byteOffset;
 
-    if (typeof offset !== 'number') {
-      this.offset = byteOffset / this.bytesPerElement;
-    } else {
-      this.offset = offset;
-    }
+    /** @type {number} */
+    this.offset = typeof offset !== 'number' ? byteOffset / this.bytesPerElement : offset;
+
   }
 
   /**
    * Number of attributes per vertex
-   * @type {number}
+   * @returns {number}
    */
   vertexAttrCount(descriptor) {
     return descriptor.bytesPerVertex / this.bytesPerElement;

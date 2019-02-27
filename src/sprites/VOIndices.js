@@ -36,6 +36,14 @@ export class VOIndices {
   }
 
   /**
+   * @param {number} count
+   * @returns {VOIndices}
+   */
+  static buildTriangles(count) {
+    return VOIndices.build(count, [0, 1, 2], 3);
+  }
+
+  /**
    * @param {number} objectCount
    * @param {number} itemCount
    */
