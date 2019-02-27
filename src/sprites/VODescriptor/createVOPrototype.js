@@ -5,8 +5,6 @@ import { toArray } from './toArray';
 
 /**
  * @private
- * @param {VODescriptor} descriptor
- * @param {Object} [methods]
  */
 export default (descriptor, methods = {}) => {
   const propertiesObject = {
