@@ -12,10 +12,13 @@ const globals = {
   three: 'THREE',
 };
 
+const external = [
+  'three',
+];
+
 export default ({
   root,
   filename,
-  external,
   name, // The variable name, representing your iife/umd bundle, by which other scripts on the same page can access it.
   outputAsModule,
 }) => {
