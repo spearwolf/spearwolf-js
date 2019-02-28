@@ -92,6 +92,7 @@ export default class VODescriptor {
    * @returns {VOArray}
    */
   createVOArray(size = 1, hints = undefined) {
+    // @ts-ignore
     return new VOArray(size, this.bytesPerVO, this.typeList, null, Object.assign({
       descriptor: this,
       usage: 'dynamic',
@@ -107,6 +108,7 @@ export default class VODescriptor {
    * @returns {Object} the initialized *vertex object*
    */
   createVO(voArray, voInit) {
+    // @ts-ignore
     const vo = createVO(Object.create(this.voPrototype), this, voArray);
 
     if (voInit) {
@@ -124,6 +126,7 @@ export default class VODescriptor {
    * @returns {boolean}
    */
   hasAttribute(name, size = 1) {
+    // @ts-ignore
     const attr = this.attr[name];
     return attr && attr.size === size;
   }

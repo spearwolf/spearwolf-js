@@ -3,45 +3,102 @@ import { readOption, maxOf, generateUuid } from '../../utils';
 
 import createVOs from './createVOs';
 
+/**
+ * @typedef {import("../VODescriptor").VODescriptor} VODescriptor
+ */
+
+/**
+ * @typedef {import("../VOArray").VOArray} VOArray
+ */
+
+/**
+ * @typedef VertexObject 
+ * @property {VOArray} voArray
+ */
+
+const DYNAMIC = 'dynamic';
+
 export default class VOPool {
+
   /**
    * @param {VODescriptor} descriptor - vertex object descriptor
    * @param {Object} [options] - Advanced options
    * @param {number} [options.capacity] - Maximum number of *vertex objects*
    * @param {VOArray} [options.voArray] - A predefind vertex object array, otherwise a new one will be created
-   * @param {VertexObject} [options.voZero] - *vertex object* initializer
-   * @param {VertexObject} [options.voNew] - *vertex object* initializer
+   * @param {VertexObject} [options.voZero] - *vertex object* blueprint
+   * @param {VertexObject} [options.voNew] - *vertex object* blueprint
    * @param {number} [options.maxAllocVOSize] - never allocate more than `maxAllocVOSize` *vertex objects* at once
-   * @param {string} [options.usage='dynamic'] - buffer `usage` hint, choose between `dynamic` or `static`
-   * @param {string} [options.doubleBuffer] - buffer `doubleBuffer` hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
-   * @param {string} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
+   * @param {"dynamic"|"static"} [options.usage='dynamic'] - buffer `usage` hint, choose between `dynamic` or `static`
+   * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
    */
 
   constructor(descriptor, options) {
+
+    /**
+     * @readonly
+     * @type {string}
+     */
     this.id = generateUuid();
+
+    /**
+     * @readonly
+     * @type {VODescriptor}
+     */
     this.descriptor = descriptor;
 
+    /**
+     * @readonly
+     * @type {number}
+     */
     this.capacity = readOption(options, 'capacity', this.descriptor.maxIndexedVOPoolSize);
+
+    /**
+     * @type {number}
+     */
     this.maxAllocVOSize = readOption(options, 'maxAllocVOSize', 0);
+
+    /**
+     * @type {VertexObject}
+     */
     this.voZero = readOption(options, 'voZero', () => descriptor.createVO());
+
+    /**
+     * @type {VertexObject}
+     */
     this.voNew = readOption(options, 'voNew', () => descriptor.createVO());
+
+    /**
+     * @readonly
+     * @type {"dynamic" | "static"}
+     */
     this.usage = readOption(options, 'usage', 'dynamic');
 
+    /**
+     * @type {VOArray}
+     */
     this.voArray = readOption(options, 'voArray', () => descriptor.createVOArray(this.capacity, {
       usage: this.usage,
-      autotouch: readOption(options, 'autotouch', this.usage === 'dynamic'),
-      doubleBuffer: readOption(options, 'doubleBuffer', this.usage === 'dynamic'),
-      // TODO tripleBuffer / read and write to different buffers for dynamic...
+      autotouch: readOption(options, 'autotouch', this.usage === DYNAMIC),
     }));
 
+    /**
+     * @readonly
+     * @type {VertexObject[]}
+     */
     this.availableVOs = [];
+
+    /**
+     * @readonly
+     * @type {VertexObject[]}
+     */
     this.usedVOs = [];
 
     createVOs(this, this.maxAllocVOSize);
+
   }
 
   /**
-   * Number of in use *vertex objects*.
+   * Number of in-use *vertex objects*.
    * @type {number}
    */
 
@@ -50,7 +107,7 @@ export default class VOPool {
   }
 
   /**
-   * Number of free and unused *vertex objects*.
+   * Number of free-and-unused *vertex objects*.
    * @type {number}
    */
 
@@ -91,7 +148,7 @@ export default class VOPool {
   }
 
   /**
-   * Allocate multiple *vertex objects*
+   * Allocate multiple *vertex objects* at once
    * @return {VertexObject[]}
    */
 

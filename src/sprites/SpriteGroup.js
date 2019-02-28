@@ -19,6 +19,7 @@ const pickVOPoolOpts = pick(['autotouch', 'capacity', 'doubleBuffer', 'maxAllocV
 const createSpriteSizeHook = (setSize = 'size') => {
   switch (typeof setSize) {
     case 'string':
+      // @ts-ignore
       return (sprite, w, h, descriptor) => descriptor.attr[setSize].setValue(sprite, [w, h]);
     case 'function':
       return setSize;
@@ -58,7 +59,6 @@ export class SpriteGroup {
    * @param {string|SpriteSizeSetter} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
    * @param {number} [options.maxAllocVOSize] - Never allocate more than `maxAllocVOSize` *sprites* at once
    * @param {string} [options.usage='dynamic'] - Buffer usage hint, choose between `dynamic` or `static`
-   * @param {boolean} [options.doubleBuffer] - buffer `doubleBuffer` hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`
    * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
    * @param {SpriteGroup|Object} [options.base] - The *base sprite group instance* or the *base sprite group options*
    */

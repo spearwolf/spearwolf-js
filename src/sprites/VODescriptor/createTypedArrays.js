@@ -1,6 +1,9 @@
 /* eslint no-param-reassign: 0 */
+// @ts-nocheck
 
-/** @private */
+/**
+ * @private
+ */
 export default (descriptor) => {
   descriptor.typedArrays = {
     float32: false,
