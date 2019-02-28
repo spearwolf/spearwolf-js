@@ -8,7 +8,13 @@ import { VOPool } from './VOPool';
 const pickVOPoolOpts = pick(['autotouch', 'capacity', 'doubleBuffer', 'maxAllocVOSize', 'usage', 'voArray']);
 
 /**
+ * @typedef {(sprite: Object, w: number, h: number, descriptor: VODescriptor) => void} SpriteSizeSetter
+ */
+
+/**
  * @private
+ * @param {string|SpriteSizeSetter} setSize
+ * @returns {SpriteSizeSetter}
  */
 const createSpriteSizeHook = (setSize = 'size') => {
   switch (typeof setSize) {
@@ -28,22 +34,34 @@ const createSpriteSizeHook = (setSize = 'size') => {
 };
 
 /**
- * @param {VODescriptor} descriptor - The `VODescriptor` (*vertex object description*)
- * @param {Object} options - Options
- * @param {number} [options.capacity] - Maximum number of *sprites*
- * @param {VOArray} [options.voArray] - A predefined *vertex object array*, otherwise a new one will be created
- * @param {VOIndices|Function} [options.voIndices] - *vertex object indices* array or factory function
- * @param {Object|function} [options.voZero] - *vertex object* initializer
- * @param {Object|function} [options.voNew] - *vertex object* initializer
- * @param {function|string} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
- * @param {number} [options.maxAllocVOSize] - Never allocate more than `maxAllocVOSize` *sprites* at once
- * @param {string} [options.usage='dynamic'] - Buffer usage hint, choose between `dynamic` or `static`
- * @param {boolean} [options.doubleBuffer] - buffer `doubleBuffer` hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`
- * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
- * @param {SpriteGroup|Object} [options.base] - The *base sprite group instance* or the *base sprite group options*
+ * @typedef {import("./VODescriptor").VODescriptor} VODescriptor
  */
+
+/**
+ * @typedef {import("./VOArray").VOArray} VOArray
+ */
+
+/**
+ * @typedef {import("./VOIndices").VOIndices} VOIndices
+ */
+
 export class SpriteGroup {
 
+  /**
+   * @param {VODescriptor} descriptor - The `VODescriptor` (*vertex object description*)
+   * @param {Object} options - Options
+   * @param {number} [options.capacity] - Maximum number of *sprites*
+   * @param {VOArray} [options.voArray] - A predefined *vertex object array*, otherwise a new one will be created
+   * @param {VOIndices|Function} [options.voIndices] - *vertex object indices* array or factory function
+   * @param {Object|Function} [options.voZero] - *vertex object* initializer
+   * @param {Object|Function} [options.voNew] - *vertex object* initializer
+   * @param {string|SpriteSizeSetter} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
+   * @param {number} [options.maxAllocVOSize] - Never allocate more than `maxAllocVOSize` *sprites* at once
+   * @param {string} [options.usage='dynamic'] - Buffer usage hint, choose between `dynamic` or `static`
+   * @param {boolean} [options.doubleBuffer] - buffer `doubleBuffer` hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`
+   * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
+   * @param {SpriteGroup|Object} [options.base] - The *base sprite group instance* or the *base sprite group options*
+   */
   constructor(descriptor, options = {}) {
     this.descriptor = descriptor;
 
@@ -53,10 +71,16 @@ export class SpriteGroup {
     //   this.base = new SpriteGroup(descriptor.base, options.base);
     // }
 
+    /**
+     * @type {SpriteSizeSetter}
+     */
     this.setSpriteSize = createSpriteSizeHook(options.setSize);
 
     const { voNew, voZero } = options;
 
+    /**
+     * @type {VOPool}
+     */
     this.voPool = new VOPool(descriptor, Object.assign({
       maxAllocVOSize: 1000,
     }, pickVOPoolOpts(options), {
@@ -65,17 +89,23 @@ export class SpriteGroup {
     }));
 
     const { voIndices } = options;
+    /**
+     * @type {VOIndices}
+     */
     this.indices = typeof voIndices === 'function' ? voIndices(this.capacity) : voIndices;
   }
 
+  /** @type {number} */
   get capacity() {
     return this.voPool.capacity;
   }
 
+  /** @type {number} */
   get usedCount() {
     return this.voPool.usedCount;
   }
 
+  /** @type {number} */
   get availableCount() {
     return this.voPool.availableCount;
   }
@@ -113,7 +143,7 @@ export class SpriteGroup {
   }
 
   /**
-   * inform the internally used vertex buffers that content has changed
+   * Inform the internally used vertex buffers that content has changed
    * and should be uploaded to gpu before next usage.
    * you don't need to call this if you choosed `dynamic` as *usage* option.
    */
