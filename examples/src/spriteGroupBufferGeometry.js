@@ -1,12 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-env browser */
 import * as THREE from 'three';
-import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroup, SpriteGroupBufferGeometry, SpriteGroupMesh } from '../../src';
 
-const debug = (name, obj) => {
-  console.log(name, obj);
-  window[name] = obj;
-};
+import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroup, SpriteGroupBufferGeometry, SpriteGroupMesh } from '../../src';
+import { debug } from './utils/debug';
 
 const threeCanvas = new ThreeCanvas(document.getElementById('container'), {
   alpha: false,

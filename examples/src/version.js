@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { VERSION } from '../../src';
 
-import { appendTo } from './appendTo.js';
+import { appendTo } from './utils/appendTo.js';
 
 const println = appendTo('#output', '\n');
 
