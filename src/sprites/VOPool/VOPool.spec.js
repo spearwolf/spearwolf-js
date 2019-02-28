@@ -55,8 +55,8 @@ describe('VOPool', () => {
       assert.ok(pool.id.length > 0, 'id should not be blank');
     });
 
-    it('default usage should be :dynamic', () => {
-      assert.strictEqual(pool.voArray.ref.hints.usage, 'dynamic');
+    it('default buffer usage should be :dynamic', () => {
+      assert.strictEqual(pool.voArray.ref.hints.dynamic, true);
     });
 
     it('pool.voArray hints should include descriptor', () => {

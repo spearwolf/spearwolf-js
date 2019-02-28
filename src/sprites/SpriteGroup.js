@@ -5,7 +5,7 @@ import { VOPool } from './VOPool';
 /**
  * @private
  */
-const pickVOPoolOpts = pick(['autotouch', 'capacity', 'doubleBuffer', 'maxAllocVOSize', 'usage', 'voArray']);
+const pickVOPoolOpts = pick(['autotouch', 'capacity', 'doubleBuffer', 'maxAllocVOSize', 'dynamic', 'voArray']);
 
 /**
  * @typedef {(sprite: Object, w: number, h: number, descriptor: VODescriptor) => void} SpriteSizeSetter
@@ -58,8 +58,8 @@ export class SpriteGroup {
    * @param {Object|Function} [options.voNew] - *vertex object* initializer
    * @param {string|SpriteSizeSetter} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
    * @param {number} [options.maxAllocVOSize] - Never allocate more than `maxAllocVOSize` *sprites* at once
-   * @param {string} [options.usage='dynamic'] - Buffer usage hint, choose between `dynamic` or `static`
-   * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
+   * @param {boolean} [options.dynamic=true] - Buffer usage hint
+   * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if buffer usagee is dynamic) or `false`.
    * @param {SpriteGroup|Object} [options.base] - The *base sprite group instance* or the *base sprite group options*
    */
   constructor(descriptor, options = {}) {
@@ -145,7 +145,7 @@ export class SpriteGroup {
   /**
    * Inform the internally used vertex buffers that content has changed
    * and should be uploaded to gpu before next usage.
-   * you don't need to call this if you choosed `dynamic` as *usage* option.
+   * you don't need to call this if you choosed `dynamic` as buffer usage hint.
    */
   touchVertexBuffers() {
     this.voPool.voArray.ref.touch();

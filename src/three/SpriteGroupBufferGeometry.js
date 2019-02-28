@@ -31,7 +31,7 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
      */
     this._bufMap = new Map();
 
-    const isDynamic = spriteGroup.voPool.voArray.ref.hasHint('usage', 'dynamic');
+    const isDynamic = spriteGroup.voPool.voArray.ref.hasHint('dynamic', true);
 
     Object.keys(descriptor.attr).forEach(attrName => {
 

@@ -38,7 +38,8 @@ const spriteGroup = new SpriteGroup(triangleDescriptor, {
 
   voIndices: VOIndices.buildTriangles,
 
-  autotouch: false,
+  dynamic: true,
+  autotouch: true,
 
 });
 

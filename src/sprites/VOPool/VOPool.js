@@ -16,8 +16,6 @@ import createVOs from './createVOs';
  * @property {VOArray} voArray
  */
 
-const DYNAMIC = 'dynamic';
-
 export default class VOPool {
 
   /**
@@ -28,8 +26,8 @@ export default class VOPool {
    * @param {VertexObject} [options.voZero] - *vertex object* blueprint
    * @param {VertexObject} [options.voNew] - *vertex object* blueprint
    * @param {number} [options.maxAllocVOSize] - never allocate more than `maxAllocVOSize` *vertex objects* at once
-   * @param {"dynamic"|"static"} [options.usage='dynamic'] - buffer `usage` hint, choose between `dynamic` or `static`
-   * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if `usage` equals to `dynamic`) or `false`.
+   * @param {boolean} [options.dynamic=true] - buffer usage hint, choose between `dynamic` (true) or `static` (false)
+   * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if buffer usage hint is `dynamic`) or `false`.
    */
 
   constructor(descriptor, options) {
@@ -69,16 +67,16 @@ export default class VOPool {
 
     /**
      * @readonly
-     * @type {"dynamic" | "static"}
+     * @type {boolean}
      */
-    this.usage = readOption(options, 'usage', 'dynamic');
+    this.dynamic = readOption(options, 'dynamic', true);
 
     /**
      * @type {VOArray}
      */
     this.voArray = readOption(options, 'voArray', () => descriptor.createVOArray(this.capacity, {
-      usage: this.usage,
-      autotouch: readOption(options, 'autotouch', this.usage === DYNAMIC),
+      dynamic: this.dynamic,
+      autotouch: readOption(options, 'autotouch', this.dynamic),
     }));
 
     /**

@@ -20,9 +20,9 @@ describe('VOArray', () => {
   });
 
   it('should have a reference', () => {
-    const voa = new VOArray(4, 16, ['float32'], null, { usage: 'static' });
+    const voa = new VOArray(4, 16, ['float32'], null, { dynamic: false });
 
-    assert.strictEqual(voa.ref.hints.usage, 'static');
+    assert.strictEqual(voa.ref.hints.dynamic, false);
   });
 
   it('create instance should clone arrayTypes (no copy)', () => {

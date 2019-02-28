@@ -95,8 +95,8 @@ export default class VODescriptor {
     // @ts-ignore
     return new VOArray(size, this.bytesPerVO, this.typeList, null, Object.assign({
       descriptor: this,
-      usage: 'dynamic',
-      doubleBuffer: true,
+      dynamic: true,
+      autotouch: true,
     }, hints));
   }
 
