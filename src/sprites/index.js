@@ -1,5 +1,5 @@
 export * from './VOArray';
 export * from './VODescriptor';
 export * from './VOPool';
-export * from './SpriteGroup';
+export { SpriteGroup } from './SpriteGroup';
 export * from './VOIndices';

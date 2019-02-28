@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 /**
- * @typedef {import("./SpriteGroupBufferGeometry").SpriteGroupBufferGeometry} SpriteGroupBufferGeometry 
+ * @typedef {import("./SpriteGroupBufferGeometry").SpriteGroupBufferGeometry} SpriteGroupBufferGeometry
  */
 
 /**
@@ -11,8 +11,8 @@ import * as THREE from 'three';
 export class SpriteGroupMesh extends THREE.Mesh {
 
   /**
-   * @param {SpriteGroupBufferGeometry} spriteGroupGeometry 
-   * @param {THREE.Material} material 
+   * @param {SpriteGroupBufferGeometry} spriteGroupGeometry
+   * @param {THREE.Material} material
    */
   constructor(spriteGroupGeometry, material) {
     super(
@@ -37,13 +37,13 @@ export class SpriteGroupMesh extends THREE.Mesh {
         }
 
         const { bufferVersion } = geometry;
-        if (ref.serial > bufferVersion) {
+        if (ref.serial !== bufferVersion) {
           geometry.updateBuffers();
           ref.serial = geometry.bufferVersion;
         }
 
-        const { usedCount, indices: { itemCount } } = spriteGroup;
-        geometry.setDrawRange(0, usedCount * itemCount);
+        const { usedCount, indices } = spriteGroup;
+        geometry.setDrawRange(0, usedCount * indices.itemCount);
 
       };
   }
