@@ -1,6 +1,6 @@
 
 /**
- * Element indices array and description
+ * Element indices array for triangular polygons with data description
  */
 export class VOIndices {
 
@@ -10,6 +10,7 @@ export class VOIndices {
    * @param {number} stride
    * @param {number} [objectOffset=0]
    * @return {VOIndices}
+   * 
    * @example
    * // Create indices for 10x quads where each quad made up of 2x triangles (4x vertices and 6x indices)
    * const quadIndices = VOIndices.build(10, [0, 1, 2, 0, 2, 3], 4)

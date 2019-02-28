@@ -1,9 +1,17 @@
 import * as THREE from 'three';
 
+/**
+ * @typedef {import("./SpriteGroupBufferGeometry").SpriteGroupBufferGeometry} SpriteGroupBufferGeometry 
+ */
+
+/**
+ * @typedef {import("../sprites").SpriteGroup} SpriteGroup
+ */
+
 export class SpriteGroupMesh extends THREE.Mesh {
 
   /**
-   * @param {import("./SpriteGroupBufferGeometry").SpriteGroupBufferGeometry} spriteGroupGeometry 
+   * @param {SpriteGroupBufferGeometry} spriteGroupGeometry 
    * @param {THREE.Material} material 
    */
   constructor(spriteGroupGeometry, material) {
@@ -12,27 +20,32 @@ export class SpriteGroupMesh extends THREE.Mesh {
       material,
     );
 
-    const { spriteGroup } = spriteGroupGeometry.parameters;
+    const { /** @type {SpriteGroup} */spriteGroup } = spriteGroupGeometry.parameters;
 
-    this.onBeforeRender = (renderer, scene, camera, geometry/*, material, group */) => {
+    this.onBeforeRender = /**
+     * @param {THREE.WebGLRenderer} renderer
+     * @param {THREE.Scene} scene
+     * @param {THREE.Camera} camera
+     * @param {SpriteGroupBufferGeometry} geometry
+     */
+      (renderer, scene, camera, geometry/*, material, group */) => {
 
-      const { ref } = spriteGroup.voPool.voArray;
+        const { ref } = spriteGroup.voPool.voArray;
 
-      if (ref.hasHint('autotouch', true)) {
-        // TODO hint: doubleBuffer
-        spriteGroup.touchVertexBuffers();
-      }
+        if (ref.hasHint('autotouch', true)) {
+          spriteGroup.touchVertexBuffers();
+        }
 
-      const { bufferVersion } = geometry;
-      if (ref.serial > bufferVersion) {
-        geometry.updateBuffers();
-        ref.serial = geometry.bufferVersion;
-      }
+        const { bufferVersion } = geometry;
+        if (ref.serial > bufferVersion) {
+          geometry.updateBuffers();
+          ref.serial = geometry.bufferVersion;
+        }
 
-      const { usedCount, indices: { itemCount } } = spriteGroup;
-      geometry.setDrawRange(0, usedCount * itemCount);
+        const { usedCount, indices: { itemCount } } = spriteGroup;
+        geometry.setDrawRange(0, usedCount * itemCount);
 
-    };
+      };
   }
 
 }

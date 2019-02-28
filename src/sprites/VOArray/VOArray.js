@@ -4,11 +4,20 @@ import createBufferView from './createBufferView';
 import createLinkedTypedArrays from './createLinkedTypedArrays';
 
 /**
+ * @typedef {Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Uint8ClampedArray|Float32Array|Float64Array} TypedArray
+ */
+
+/**
+ * @typedef {"float32"|"int32"|"int16"|"int8"|"uint32"|"uint16"|"uint8"} arrayType
+ */
+
+/**
  * A wrapper for an ArrayBuffer which additional holds multiple references to typed arrays.
  */
 export class VOArray {
+
   /**
-   * Create a VOArray
+   * Represents an array for vertex objects
    *
    * For each *array type* a property is created:
    *
@@ -20,32 +29,47 @@ export class VOArray {
    *
    * @param {number} capacity - Number of `vertex objects`
    * @param {number} bytesPerVO - Size of a single `vertex object` in *bytes*. **Must be divisible by 4**.
-   * @param {Array<string>} arrayTypes - List of allowed *typed array types*. Should have at least one type included.
+   * @param {arrayType[]} arrayTypes - List of allowed *typed array types*. Should have at least one type included.
    * @param {ArrayBuffer|DataView|TypedArray} [data] - Create a *view* into the buffer from `data`
    * @param {Object} [hints] - Optional *hints* for the *reference*
    */
   constructor(capacity, bytesPerVO, arrayTypes, data, hints) {
+
     if (bytesPerVO % 4 !== 0) {
       throw new TypeError(`new VOArray: bytesPerVO must be divisible by 4 (but is not!) bytesPerVO=${bytesPerVO}`);
     }
 
+    /** @type {number} */
     this.capacity = capacity;
+
+    /** @type {number} */
     this.bytesPerVO = bytesPerVO;
+
+    /** @type {arrayType[]} */
     this.arrayTypes = arrayTypes.slice(0);
 
-    if (data) {
-      const buffer = createBufferView(capacity, bytesPerVO, data);
+    let buffer, bufferByteOffset, bufferByteLength;
 
-      /** @type {ArrayBuffer} */
-      this.buffer = buffer.buffer;
-      this.bufferByteOffset = buffer.byteOffset;
-      this.bufferByteLength = buffer.byteLength;
+    if (data) {
+      const bufferView = createBufferView(capacity, bytesPerVO, data);
+
+      buffer = bufferView.buffer;
+      bufferByteOffset = bufferView.byteOffset;
+      bufferByteLength = bufferView.byteLength;
     } else {
-      /** @type {ArrayBuffer} */
-      this.buffer = new ArrayBuffer(capacity * bytesPerVO);
-      this.bufferByteOffset = 0;
-      this.bufferByteLength = this.buffer.byteLength;
+      buffer = new ArrayBuffer(capacity * bytesPerVO);
+      bufferByteOffset = 0;
+      bufferByteLength = buffer.byteLength;
     }
+
+    /** @type {ArrayBuffer} */
+    this.buffer = buffer;
+
+    /** @type {number} */
+    this.bufferByteOffset = bufferByteOffset;
+
+    /** @type {number} */
+    this.bufferByteLength = bufferByteLength;
 
     Object.assign(this, {
       float32Array: null,
