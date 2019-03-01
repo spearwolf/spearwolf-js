@@ -1,5 +1,5 @@
 
-export default names => (obj) => {
+export const pick = names => obj => {
   const newObj = {};
   if (obj) {
     names.forEach((key) => {

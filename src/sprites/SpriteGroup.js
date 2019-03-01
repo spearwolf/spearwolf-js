@@ -8,10 +8,6 @@ import { VOPool } from './VOPool';
 const pickVOPoolOpts = pick(['autotouch', 'capacity', 'doubleBuffer', 'maxAllocVOSize', 'dynamic', 'voArray']);
 
 /**
- * @typedef {(sprite: Object, w: number, h: number, descriptor: VODescriptor) => void} SpriteSizeSetter
- */
-
-/**
  * @private
  * @param {string|SpriteSizeSetter} setSize
  * @returns {SpriteSizeSetter}
