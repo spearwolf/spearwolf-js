@@ -2,8 +2,10 @@
 /* eslint-env browser */
 import * as THREE from 'three';
 
-import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroup, SpriteGroupBufferGeometry, SpriteGroupMesh } from '../../src';
+import { makeWireframe } from './utils/makeWireframe';
 import { debug } from './utils/debug';
+
+import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroup, SpriteGroupBufferGeometry, SpriteGroupMesh } from '../../src';
 
 const threeCanvas = new ThreeCanvas(document.getElementById('container'), {
   alpha: false,
@@ -16,11 +18,6 @@ camera.position.y = 10;
 camera.lookAt(0, 0, 0);
 
 const scene = new THREE.Scene();
-
-const makeWireframe = (geometry, color = 0xffffff) => new THREE.LineSegments(
-  new THREE.WireframeGeometry(geometry),
-  new THREE.LineBasicMaterial({ color }),
-);
 
 const triangleDescriptor = new VODescriptor({
 

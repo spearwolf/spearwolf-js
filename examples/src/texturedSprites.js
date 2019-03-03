@@ -2,8 +2,10 @@
 /* eslint-env browser */
 import * as THREE from 'three';
 
-import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
+import { makeWireframe } from './utils/makeWireframe';
 import { debug } from './utils/debug';
+
+import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
 
 const threeCanvas = new ThreeCanvas(document.getElementById('container'), {
   alpha: true,
@@ -15,11 +17,6 @@ camera.position.y = 100;
 camera.lookAt(0, 0, 0);
 
 const scene = new THREE.Scene();
-
-const makeWireframe = (geometry, color = 0xffffff) => new THREE.LineSegments(
-  new THREE.EdgesGeometry(geometry),
-  new THREE.LineBasicMaterial({ color }),
-);
 
 const triangleDescriptor = new VODescriptor({
 
@@ -104,8 +101,7 @@ TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
   debug('mesh', mesh);
 });
 
-const cube = makeWireframe(new THREE.BoxBufferGeometry(100, 100, 100), 0xffffff);
-scene.add(cube);
+scene.add(makeWireframe(new THREE.BoxBufferGeometry(100, 100, 100), 0xffffff));
 
 const yAxis = new THREE.Vector3(0, 1, 0);
 
@@ -123,6 +119,5 @@ threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) =
 threeCanvas.start();
 
 debug('threeCanvas', threeCanvas);
-debug('cube', cube);
 debug('triangleDescriptor', triangleDescriptor);
 debug('spriteGroup', spriteGroup);
