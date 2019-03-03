@@ -14,7 +14,7 @@ export default class VODescriptor {
    *
    * @param {Object} options
    * @param {number|string} [options.vertexCount=1] - number of vertices
-   * @param {Object[]} options.attributes - vertex attribute descriptions
+   * @param {Object[]|Object} options.attributes - vertex attribute descriptions
    * @param {Object} [options.aliases] - attribute aliases
    * @param {Object} [options.methods]
    * @param {VODescriptor} [options.instanceOf]

@@ -5,6 +5,7 @@ module.exports = {
     'version.bundle': ['@babel/polyfill', './examples/src/version.js'],
     'hello-three-canvas.bundle': ['@babel/polyfill', './examples/src/helloThreeCanvas.js'],
     'sprite-group-buffer-geometry.bundle': ['@babel/polyfill', './examples/src/spriteGroupBufferGeometry.js'],
+    'textured-sprites.bundle': ['@babel/polyfill', './examples/src/texturedSprites.js'],
   },
   devServer: {
     port: 3000,
