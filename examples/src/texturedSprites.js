@@ -43,12 +43,7 @@ const triangleDescriptor = new VODescriptor({
       this.y3 += y;
     },
 
-    setTexCoordsByTexture({
-      minS,
-      minT,
-      maxS,
-      maxT,
-    }) {
+    setTexCoordsByTexture({ minS, minT, maxS, maxT }) {
       this.setUv(minS, minT, maxS, minT, maxS, maxT, minS, maxT);
     },
 
@@ -87,7 +82,6 @@ TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
   let x = -0.5 * COUNT * STEP_X;
   for (let i = 0; i < COUNT; i++) {
     spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
-    // spriteGroup.createSprite(32, 32).translate(x, 0);
     x += STEP_X;
   }
 
