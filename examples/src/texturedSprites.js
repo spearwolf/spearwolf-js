@@ -72,6 +72,8 @@ const spriteGroup = new SpriteGroupTextured(quads, {
 
 });
 
+let material;
+
 TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
   const STEP_X = 60;
   const COUNT = 40;
@@ -82,30 +84,72 @@ TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
     x += STEP_X;
   }
 
+  const vertexShader = `
+    uniform float time;
+
+    varying vec2 vTexCoords;
+
+    void main(void)
+    {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0))), position.z, 1.0);
+      vTexCoords = uv;
+    }
+  `;
+
+  const fragmentShader = `
+    uniform sampler2D tex;
+
+    varying vec2 vTexCoords;
+
+    void main(void) {
+      gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
+    }
+  `;
+
   const texture = new THREE.Texture(atlas.baseTexture.imgEl);
   texture.flipY = false;
   texture.magFilter = THREE.NearestFilter;
   texture.needsUpdate = true;
 
-  const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
+  material = new THREE.ShaderMaterial( {
 
-  const mesh = new SpriteGroupMesh(spriteGroupGeometry, new THREE.MeshBasicMaterial({
-    map: texture,
+	  vertexShader,
+    fragmentShader,
+
+    uniforms: {
+      time: { value: 1.0 },
+      tex: { value: texture },
+    },
+
     side: THREE.DoubleSide,
     transparent: true,
-  }));
+
+  });
+
+  const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
+
+  const mesh = new SpriteGroupMesh(spriteGroupGeometry, material);
+
+  // const mesh = new SpriteGroupMesh(spriteGroupGeometry, new THREE.MeshBasicMaterial({
+  //   map: texture,
+  //   side: THREE.DoubleSide,
+  //   transparent: true,
+  // }));
 
   scene.add(mesh);
 
-  debug('spriteGroupGeometry', spriteGroupGeometry);
-  debug('mesh', mesh);
+  debug('material', material);
 });
 
 scene.add(makeWireframe(new THREE.BoxBufferGeometry(100, 100, 100), 0xffffff));
 
 const yAxis = new THREE.Vector3(0, 1, 0);
 
-threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
+threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime, now }) => {
+
+  if (material != null) {
+    material.uniforms.time.value = 0.5 * now % Math.PI * 2;
+  }
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
@@ -119,5 +163,4 @@ threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) =
 threeCanvas.start();
 
 debug('threeCanvas', threeCanvas);
-debug('triangleDescriptor', quads);
 debug('spriteGroup', spriteGroup);
