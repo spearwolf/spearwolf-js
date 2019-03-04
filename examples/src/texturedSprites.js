@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 
 import { makeWireframe } from './utils/makeWireframe';
+import { makeTexture } from './utils/makeTexture';
 import { debug } from './utils/debug';
 
 import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
@@ -106,11 +107,6 @@ TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
     }
   `;
 
-  const texture = new THREE.Texture(atlas.baseTexture.imgEl);
-  texture.flipY = false;
-  texture.magFilter = THREE.NearestFilter;
-  texture.needsUpdate = true;
-
   material = new THREE.ShaderMaterial( {
 
 	  vertexShader,
@@ -118,7 +114,7 @@ TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
 
     uniforms: {
       time: { value: 1.0 },
-      tex: { value: texture },
+      tex: { value: makeTexture(atlas.baseTexture.imgEl) },
     },
 
     side: THREE.DoubleSide,
