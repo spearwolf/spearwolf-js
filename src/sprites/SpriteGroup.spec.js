@@ -32,7 +32,7 @@ describe('SpriteGroup', () => {
   });
 
   it('should call indices factory function', () => {
-    const sg = new SpriteGroup(voDescriptor, { voIndices: VOIndices.buildQuads });
+    const sg = new SpriteGroup(voDescriptor, { capacity: 100, indices: VOIndices.buildQuads });
     assert.ok(sg.indices, 'indices should exists');
     assert.ok(sg.indices instanceof VOIndices, 'indices should be a VOIndices instance');
   });

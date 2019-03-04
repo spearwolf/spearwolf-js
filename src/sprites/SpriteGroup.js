@@ -49,7 +49,7 @@ export class SpriteGroup {
    * @param {Object} options - Options
    * @param {number} [options.capacity] - Maximum number of *sprites*
    * @param {VOArray} [options.voArray] - A predefined *vertex object array*, otherwise a new one will be created
-   * @param {VOIndices|Function} [options.voIndices] - *vertex object indices* array or factory function
+   * @param {VOIndices|Function} [options.indices] - *vertex object indices* array or factory function
    * @param {Object|Function} [options.voZero] - *vertex object* initializer
    * @param {Object|Function} [options.voNew] - *vertex object* initializer
    * @param {string|SpriteSizeSetter} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
@@ -84,11 +84,11 @@ export class SpriteGroup {
       voZero: voZero && descriptor.createVO(null, voZero),
     }));
 
-    const { voIndices } = options;
+    const { indices } = options;
     /**
      * @type {VOIndices}
      */
-    this.indices = typeof voIndices === 'function' ? voIndices(this.capacity) : voIndices;
+    this.indices = typeof indices === 'function' ? indices(this.capacity) : indices;
   }
 
   /** @type {number} */

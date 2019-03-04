@@ -33,7 +33,7 @@ const spriteGroup = new SpriteGroup(triangleDescriptor, {
 
   capacity: 10,
 
-  voIndices: VOIndices.buildTriangles,
+  indices: VOIndices.buildTriangles,
 
   dynamic: true,
   autotouch: true,

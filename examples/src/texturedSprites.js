@@ -63,7 +63,7 @@ const spriteGroup = new SpriteGroupTextured(triangleDescriptor, {
 
   capacity: 100,
 
-  voIndices: VOIndices.buildQuads,
+  indices: VOIndices.buildQuads,
 
   dynamic: false,
 

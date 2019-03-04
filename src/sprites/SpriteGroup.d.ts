@@ -1,2 +1,2 @@
 
-type SpriteSizeSetter = (sprite: Object, w: number, h: number, descriptor: VODescriptor) => void;
+export type SpriteSizeSetter = (sprite: Object, w: number, h: number, descriptor: VODescriptor) => void;
