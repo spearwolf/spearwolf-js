@@ -18,7 +18,7 @@ camera.lookAt(0, 0, 0);
 
 const scene = new THREE.Scene();
 
-const triangleDescriptor = new VODescriptor({
+const quads = new VODescriptor({
 
   vertexCount: 4,
 
@@ -59,7 +59,7 @@ const triangleDescriptor = new VODescriptor({
   },
 });
 
-const spriteGroup = new SpriteGroupTextured(triangleDescriptor, {
+const spriteGroup = new SpriteGroupTextured(quads, {
 
   capacity: 100,
 
@@ -119,5 +119,5 @@ threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) =
 threeCanvas.start();
 
 debug('threeCanvas', threeCanvas);
-debug('triangleDescriptor', triangleDescriptor);
+debug('triangleDescriptor', quads);
 debug('spriteGroup', spriteGroup);
