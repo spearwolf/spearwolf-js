@@ -73,7 +73,7 @@ const spriteGroup = new SpriteGroupTextured(quads, {
 
 });
 
-let material;
+const timeUniform = { value: 0.0 };
 
 TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
   const STEP_X = 60;
@@ -107,13 +107,13 @@ TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
     }
   `;
 
-  material = new THREE.ShaderMaterial( {
+  const material = new THREE.ShaderMaterial( {
 
 	  vertexShader,
     fragmentShader,
 
     uniforms: {
-      time: { value: 1.0 },
+      time: timeUniform,
       tex: { value: makeTexture(atlas.baseTexture.imgEl) },
     },
 
@@ -143,9 +143,7 @@ const yAxis = new THREE.Vector3(0, 1, 0);
 
 threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime, now }) => {
 
-  if (material != null) {
-    material.uniforms.time.value = 0.5 * now % Math.PI * 2;
-  }
+  timeUniform.value = 0.5 * now % Math.PI * 2;
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
