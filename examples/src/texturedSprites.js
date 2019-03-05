@@ -2,159 +2,144 @@
 /* eslint-env browser */
 import * as THREE from 'three';
 
-import { makeWireframe } from './utils/makeWireframe';
+import { makeAppShell } from './utils/makeAppShell';
 import { makeTexture } from './utils/makeTexture';
 import { debug } from './utils/debug';
 
-import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
+import { VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
 
-const threeCanvas = new ThreeCanvas(document.getElementById('container'), {
-  alpha: true,
-});
+function init ({ canvas, scene }) {
 
-const camera = new THREE.PerspectiveCamera(75, threeCanvas.width / threeCanvas.height, 0.1, 10000);
-camera.position.z = 500;
-camera.position.y = 100;
-camera.lookAt(0, 0, 0);
+  const quads = new VODescriptor({
 
-const scene = new THREE.Scene();
+    vertexCount: 4,
 
-const quads = new VODescriptor({
+    attributes: {
 
-  vertexCount: 4,
-
-  attributes: {
-    position: ['x', 'y', 'z'],
-    uv: ['s', 't'],
-  },
-
-  methods: {
-
-    translate(x, y) {
-      this.x0 += x;
-      this.x1 += x;
-      this.x2 += x;
-      this.x3 += x;
-      this.y0 += y;
-      this.y1 += y;
-      this.y2 += y;
-      this.y3 += y;
+      position: ['x', 'y', 'z'],
+      uv: ['s', 't'],
     },
 
-    setTexCoordsByTexture({ minS, minT, maxS, maxT }) {
-      this.setUv(minS, minT, maxS, minT, maxS, maxT, minS, maxT);
+    methods: {
+
+      translate(x, y) {
+        this.x0 += x;
+        this.x1 += x;
+        this.x2 += x;
+        this.x3 += x;
+        this.y0 += y;
+        this.y1 += y;
+        this.y2 += y;
+        this.y3 += y;
+      },
+
+      setTexCoordsByTexture({ minS, minT, maxS, maxT }) {
+        this.setUv(minS, minT, maxS, minT, maxS, maxT, minS, maxT);
+      },
+
+      setSize(w, h) {
+        const w2 = w / 2;
+        const h2 = h / 2;
+
+        this.setPosition(
+          -w2, h2, 0,
+          w2, h2, 0,
+          w2, -h2, 0,
+          -w2, -h2, 0,
+        );
+      },
+
     },
+  });
 
-    setSize(w, h) {
-      const w2 = w / 2;
-      const h2 = h / 2;
+  const spriteGroup = new SpriteGroupTextured(quads, {
 
-      this.setPosition(
-        -w2, h2, 0,
-        w2, h2, 0,
-        w2, -h2, 0,
-        -w2, -h2, 0,
-      );
-    },
+    capacity: 100,
 
-  },
-});
+    indices: VOIndices.buildQuads,
 
-const spriteGroup = new SpriteGroupTextured(quads, {
+    dynamic: false,
 
-  capacity: 100,
-
-  indices: VOIndices.buildQuads,
-
-  dynamic: false,
-
-  setSize: (sprite, w, h) => sprite.setSize(w, h),
-  setTexCoordsByTexture: (sprite, texture) => sprite.setTexCoordsByTexture(texture),
-
-});
-
-const timeUniform = { value: 0.0 };
-
-TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
-  const STEP_X = 60;
-  const COUNT = 40;
-
-  let x = -0.5 * COUNT * STEP_X;
-  for (let i = 0; i < COUNT; i++) {
-    spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
-    x += STEP_X;
-  }
-
-  const vertexShader = `
-    uniform float time;
-
-    varying vec2 vTexCoords;
-
-    void main(void)
-    {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0))), position.z, 1.0);
-      vTexCoords = uv;
-    }
-  `;
-
-  const fragmentShader = `
-    uniform sampler2D tex;
-
-    varying vec2 vTexCoords;
-
-    void main(void) {
-      gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
-    }
-  `;
-
-  const material = new THREE.ShaderMaterial( {
-
-	  vertexShader,
-    fragmentShader,
-
-    uniforms: {
-      time: timeUniform,
-      tex: { value: makeTexture(atlas.baseTexture.imgEl) },
-    },
-
-    side: THREE.DoubleSide,
-    transparent: true,
+    setSize: (sprite, w, h) => sprite.setSize(w, h),
+    setTexCoordsByTexture: (sprite, texture) => sprite.setTexCoordsByTexture(texture),
 
   });
 
-  const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
+  const timeUniform = { value: 0.0 };
 
-  const mesh = new SpriteGroupMesh(spriteGroupGeometry, material);
+  TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
 
-  // const mesh = new SpriteGroupMesh(spriteGroupGeometry, new THREE.MeshBasicMaterial({
-  //   map: texture,
-  //   side: THREE.DoubleSide,
-  //   transparent: true,
-  // }));
+    const STEP_X = 60;
+    const COUNT = 40;
 
-  scene.add(mesh);
+    let x = -0.5 * COUNT * STEP_X;
 
-  debug('material', material);
-});
+    for (let i = 0; i < COUNT; i++) {
+      spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
+      x += STEP_X;
+    }
 
-scene.add(makeWireframe(new THREE.BoxBufferGeometry(100, 100, 100), 0xffffff));
+    const material = new THREE.ShaderMaterial( {
 
-const yAxis = new THREE.Vector3(0, 1, 0);
+      vertexShader: `
+        uniform float time;
 
-threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime, now }) => {
+        varying vec2 vTexCoords;
 
-  timeUniform.value = 0.5 * now % Math.PI * 2;
+        void main(void)
+        {
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0))), position.z, 1.0);
+          vTexCoords = uv;
+        }
+      `,
 
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
+      fragmentShader: `
+        uniform sampler2D tex;
 
-  scene.rotateOnAxis(yAxis, deltaTime * 0.5);
+        varying vec2 vTexCoords;
 
-  renderer.render(scene, camera);
+        void main(void) {
+          gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
+        }
+      `,
 
-});
+      uniforms: {
+        time: timeUniform,
+        tex: { value: makeTexture(atlas.baseTexture.imgEl) },
+      },
 
-threeCanvas.start();
+      side: THREE.DoubleSide,
+      transparent: true,
 
-debug('threeCanvas', threeCanvas);
-debug('spriteGroup', spriteGroup);
+    });
+
+    const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
+
+    const mesh = new SpriteGroupMesh(spriteGroupGeometry, material);
+
+    // const mesh = new SpriteGroupMesh(spriteGroupGeometry, new THREE.MeshBasicMaterial({
+    //   map: texture,
+    //   side: THREE.DoubleSide,
+    //   transparent: true,
+    // }));
+
+    scene.add(mesh);
+
+    debug('material', material);
+  });
+
+  canvas.addEventListener('frame', ({ now }) => {
+
+    timeUniform.value = 0.5 * now % Math.PI * 2;
+
+  });
+
+}
+
+makeAppShell(
+  document.getElementById('container'),
+  {
+    alpha: true,
+  },
+  init,
+);
