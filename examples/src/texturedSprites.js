@@ -10,6 +10,12 @@ import { VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry
 
 function init ({ canvas, scene }) {
 
+  // ----------------------------------------------------------------------------------
+  //
+  // create vertex object descriptor
+  //
+  // ----------------------------------------------------------------------------------
+
   const quads = new VODescriptor({
 
     vertexCount: 4,
@@ -52,6 +58,12 @@ function init ({ canvas, scene }) {
     },
   });
 
+  // ----------------------------------------------------------------------------------
+  //
+  // create sprite group
+  //
+  // ----------------------------------------------------------------------------------
+
   const spriteGroup = new SpriteGroupTextured(quads, {
 
     capacity: 100,
@@ -65,9 +77,33 @@ function init ({ canvas, scene }) {
 
   });
 
+  // ----------------------------------------------------------------------------------
+  //
+  // create some custom uniforms
+  //
+  // ----------------------------------------------------------------------------------
+
   const timeUniform = { value: 0.0 };
 
+  canvas.addEventListener('frame', ({ now }) => {
+
+    timeUniform.value = 0.5 * now % Math.PI * 2;
+
+  });
+
+  // ----------------------------------------------------------------------------------
+  //
+  // load texture atlas
+  //
+  // ----------------------------------------------------------------------------------
+
   TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
+
+    // ----------------------------------------------------------------------------------
+    //
+    // create some sprites
+    //
+    // ----------------------------------------------------------------------------------
 
     const STEP_X = 60;
     const COUNT = 40;
@@ -78,6 +114,12 @@ function init ({ canvas, scene }) {
       spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
       x += STEP_X;
     }
+
+    // ----------------------------------------------------------------------------------
+    //
+    // create custom shader material
+    //
+    // ----------------------------------------------------------------------------------
 
     const material = new THREE.ShaderMaterial( {
 
@@ -113,28 +155,27 @@ function init ({ canvas, scene }) {
 
     });
 
+    // ----------------------------------------------------------------------------------
+    //
+    // add sprites to scene
+    //
+    // ----------------------------------------------------------------------------------
+
     const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
-
     const mesh = new SpriteGroupMesh(spriteGroupGeometry, material);
-
-    // const mesh = new SpriteGroupMesh(spriteGroupGeometry, new THREE.MeshBasicMaterial({
-    //   map: texture,
-    //   side: THREE.DoubleSide,
-    //   transparent: true,
-    // }));
 
     scene.add(mesh);
 
     debug('material', material);
   });
 
-  canvas.addEventListener('frame', ({ now }) => {
-
-    timeUniform.value = 0.5 * now % Math.PI * 2;
-
-  });
-
 }
+
+// ----------------------------------------------------------------------------------
+//
+// start
+//
+// ----------------------------------------------------------------------------------
 
 makeAppShell(
   document.getElementById('container'),
