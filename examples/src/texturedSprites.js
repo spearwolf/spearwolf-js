@@ -8,7 +8,7 @@ import { debug } from './utils/debug';
 
 import { VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
 
-function init ({ canvas, scene }) {
+const init = async ({ canvas, scene }) => {
 
   // ----------------------------------------------------------------------------------
   //
@@ -97,83 +97,82 @@ function init ({ canvas, scene }) {
   //
   // ----------------------------------------------------------------------------------
 
-  TextureAtlas.load('nobinger.json', '/assets/').then((atlas) => {
+  const atlas = await TextureAtlas.load('nobinger.json', '/assets/');
 
-    // ----------------------------------------------------------------------------------
-    //
-    // create some sprites
-    //
-    // ----------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------
+  //
+  // create some sprites
+  //
+  // ----------------------------------------------------------------------------------
 
-    const STEP_X = 60;
-    const COUNT = 40;
+  const STEP_X = 60;
+  const COUNT = 40;
 
-    let x = -0.5 * COUNT * STEP_X;
+  let x = -0.5 * COUNT * STEP_X;
 
-    for (let i = 0; i < COUNT; i++) {
-      spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
-      x += STEP_X;
-    }
+  for (let i = 0; i < COUNT; i++) {
+    spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
+    x += STEP_X;
+  }
 
-    // ----------------------------------------------------------------------------------
-    //
-    // create custom shader material
-    //
-    // ----------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------
+  //
+  // create custom shader material
+  //
+  // ----------------------------------------------------------------------------------
 
-    const material = new THREE.ShaderMaterial( {
+  const material = new THREE.ShaderMaterial( {
 
-      vertexShader: `
-        uniform float time;
+    vertexShader: `
+      uniform float time;
 
-        varying vec2 vTexCoords;
+      varying vec2 vTexCoords;
 
-        void main(void)
-        {
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0))), position.z, 1.0);
-          vTexCoords = uv;
-        }
-      `,
+      void main(void)
+      {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0))), position.z, 1.0);
+        vTexCoords = uv;
+      }
+    `,
 
-      fragmentShader: `
-        uniform sampler2D tex;
+    fragmentShader: `
+      uniform sampler2D tex;
 
-        varying vec2 vTexCoords;
+      varying vec2 vTexCoords;
 
-        void main(void) {
-          gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
-        }
-      `,
+      void main(void) {
+        gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
+      }
+    `,
 
-      uniforms: {
-        time: timeUniform,
-        tex: { value: makeTexture(atlas.baseTexture.imgEl) },
-      },
+    uniforms: {
+      time: timeUniform,
+      tex: { value: makeTexture(atlas.baseTexture.imgEl) },
+    },
 
-      side: THREE.DoubleSide,
-      transparent: true,
+    side: THREE.DoubleSide,
+    transparent: true,
 
-    });
-
-    // ----------------------------------------------------------------------------------
-    //
-    // add sprites to scene
-    //
-    // ----------------------------------------------------------------------------------
-
-    const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
-    const mesh = new SpriteGroupMesh(spriteGroupGeometry, material);
-
-    scene.add(mesh);
-
-    debug('material', material);
   });
 
-}
+  // ----------------------------------------------------------------------------------
+  //
+  // add sprites to scene
+  //
+  // ----------------------------------------------------------------------------------
+
+  const spriteGroupGeometry = new SpriteGroupBufferGeometry(spriteGroup);
+  const mesh = new SpriteGroupMesh(spriteGroupGeometry, material);
+
+  scene.add(mesh);
+
+  debug('material', material);
+
+};
 
 // ----------------------------------------------------------------------------------
 //
-// start
+// startup
 //
 // ----------------------------------------------------------------------------------
 
