@@ -150,7 +150,7 @@ const init = async ({ canvas, scene }) => {
       void main(void) {
         gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
 
-        if (gl_FragColor.a < 0.0001) {
+        if (gl_FragColor.a == 0.0) {
           discard;
         }
       }
