@@ -15,7 +15,7 @@ export const makeAppShell = async (el, options, initializer) => {
 
   const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 10000);
   camera.position.z = 500;
-  camera.position.y = 100;
+  camera.position.y = 300;
   camera.lookAt(0, 0, 0);
 
   const scene = new THREE.Scene();

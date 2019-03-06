@@ -28,7 +28,7 @@ const init = async ({ canvas, scene }) => {
 
     methods: {
 
-      translate(x, y) {
+      translate(x, y, z) {
         this.x0 += x;
         this.x1 += x;
         this.x2 += x;
@@ -37,6 +37,10 @@ const init = async ({ canvas, scene }) => {
         this.y1 += y;
         this.y2 += y;
         this.y3 += y;
+        this.z0 += z;
+        this.z1 += z;
+        this.z2 += z;
+        this.z3 += z;
       },
 
       setTexCoordsByTexture({ minS, minT, maxS, maxT }) {
@@ -66,7 +70,7 @@ const init = async ({ canvas, scene }) => {
 
   const spriteGroup = new SpriteGroupTextured(quads, {
 
-    capacity: 100,
+    capacity: 1000,
 
     indices: VOIndices.buildQuads,
 
@@ -107,11 +111,15 @@ const init = async ({ canvas, scene }) => {
 
   const COUNT = 40;
   const STEP_X = 60;
+  const LAYERS = 11;
+  const STEP_Z = 100;
 
-  for (let x = -0.5 * COUNT * STEP_X, i = 0; i < COUNT; i++, x+= STEP_X) {
+  for (let z = -0.5 * LAYERS * STEP_Z, j = 0; j < LAYERS; j++, z+= STEP_Z) {
+    for (let x = -0.5 * COUNT * STEP_X, i = 0; i < COUNT; i++, x+= STEP_X) {
 
-    spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0);
+      spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0, z);
 
+    }
   }
 
   // ----------------------------------------------------------------------------------
@@ -129,7 +137,7 @@ const init = async ({ canvas, scene }) => {
 
       void main(void)
       {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0))), position.z, 1.0);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0) + (position.z / 200.0))), position.z, 1.0);
         vTexCoords = uv;
       }
     `,
@@ -141,6 +149,10 @@ const init = async ({ canvas, scene }) => {
 
       void main(void) {
         gl_FragColor = texture2D(tex, vec2(vTexCoords.s, vTexCoords.t));
+
+        if (gl_FragColor.a < 0.0001) {
+          discard;
+        }
       }
     `,
 
@@ -151,6 +163,8 @@ const init = async ({ canvas, scene }) => {
 
     side: THREE.DoubleSide,
     transparent: true,
+
+    depthWrite: true,
 
   });
 
@@ -165,6 +179,7 @@ const init = async ({ canvas, scene }) => {
 
   scene.add(mesh);
 
+  debug('spriteGroup', spriteGroup);
   debug('material', material);
 
 };
