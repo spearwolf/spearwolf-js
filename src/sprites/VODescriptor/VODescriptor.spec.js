@@ -108,10 +108,6 @@ describe('VODescriptor', () => {
     assert.equal(descriptor.vertexAttrCount, 10);
   });
 
-  it('isInstanced', () => {
-    assert.equal(descriptor.isInstanced, false);
-  });
-
   it('byte sizes', () => {
     assert.equal(descriptor.bytesPerVertex, 40);
     assert.equal(descriptor.rightPadBytesPerVertex, 0);
@@ -557,37 +553,5 @@ describe('VODescriptor with mixed element types (using the attribute object nota
     assert.equal(descriptor.attr.color.byteOffset, 12, 'color.byteOffset');
     assert.equal(descriptor.attr.translate.type, 'uint16', 'translate.type');
     assert.equal(descriptor.attr.translate.byteOffset, 16, 'translate.byteOffset');
-  });
-});
-
-describe('VODescriptor with an instance base', () => {
-  const vodBase = new VODescriptor({
-    attributes: {
-      position: ['x', 'y', 'z'],
-    },
-  });
-
-  const vodInstanced = new VODescriptor({
-    instanceOf: vodBase,
-    vertexCount: 4,
-    attributes: {
-      color: {
-        scalars: ['r', 'g', 'b', 'a'],
-        type: 'uint8',
-      },
-      translate: ['tx', 'ty'],
-    },
-  });
-
-  it('default vertexCount is 1', () => {
-    assert.equal(vodBase.vertexCount, 1);
-  });
-
-  it('isInstanced should be true', () => {
-    assert.equal(vodInstanced.isInstanced, true);
-  });
-
-  it('base should be set', () => {
-    assert.equal(vodInstanced.base, vodBase);
   });
 });

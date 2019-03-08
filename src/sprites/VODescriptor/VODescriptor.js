@@ -17,7 +17,6 @@ export default class VODescriptor {
    * @param {Object[]|Object} options.attributes - vertex attribute descriptions
    * @param {Object} [options.aliases] - attribute aliases
    * @param {Object} [options.methods]
-   * @param {VODescriptor} [options.instanceOf]
    *
    * @example
    * const descriptor = new VODescriptor({
@@ -62,22 +61,13 @@ export default class VODescriptor {
    *
    */
 
-  constructor({ vertexCount, instanceOf, attributes, aliases, methods }) {
+  constructor({ vertexCount, attributes, aliases, methods }) {
 
     /**
      * Number of vertices per vertex object
      * @type {number}
      */
     this.vertexCount = typeof vertexCount === 'number' ? vertexCount : parseInt(vertexCount, 10) || 1;
-
-    /**
-     * Returns `true` if this vertex object is *instanced*
-     * @type {boolean}
-     */
-    this.isInstanced = instanceOf != null;
-
-    /** @type {VODescriptor} */
-    this.base = instanceOf;
 
     createAttributes(this, attributes);
     createAliases(this, aliases);
