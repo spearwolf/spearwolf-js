@@ -40,7 +40,7 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
       let buffer = this._bufMap.get(attr.type);
 
       if (!buffer) {
-        const typedArray = voArray[`${attr.type}Array`];
+        const typedArray = voArray.getTypedArray(attr.type);
         const stride = descriptor.bytesPerVertex / typedArray.BYTES_PER_ELEMENT;
 
         buffer = new THREE.InterleavedBuffer(typedArray, stride);

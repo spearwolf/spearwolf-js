@@ -92,6 +92,10 @@ export class VOArray {
     }, hints));
   }
 
+  getTypedArray(type) {
+    return this[`${type}Array`];
+  }
+
   /**
    * Copy all `vertex objects` from *source* to the internal *buffer* (destination).
    * Both *arrays* should have the same `bytesPerVO` value.
