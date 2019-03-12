@@ -71,6 +71,8 @@ const init = async ({ canvas, scene }) => {
     capacity: 1000,
     maxAllocVOSize: 100,
 
+    dynamic: false,
+
   });
 
   // ----------------------------------------------------------------------------------
@@ -133,7 +135,7 @@ const init = async ({ canvas, scene }) => {
       attribute vec4 rgba;
 
       uniform float time;
-      
+
       varying vec4 vColor;
 
       ${ShaderTool.rotate('rot', 0.0, 1.0, 0.0)}

@@ -61,6 +61,8 @@ export class SpriteGroup {
   constructor(descriptor, options = {}) {
     this.descriptor = descriptor;
 
+    this.isSpriteGroup = true;
+
     /**
      * @type {import('./SpriteGroup').SpriteSizeSetter}
      */

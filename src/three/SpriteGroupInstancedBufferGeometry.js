@@ -7,28 +7,36 @@ import { createAttributes } from './createAttributes';
 export class SpriteGroupInstancedBufferGeometry extends THREE.InstancedBufferGeometry {
 
   /**
-   * @param {SpriteGroup} baseSpriteGroup
+   * @param {SpriteGroup|THREE.BufferGeometry} base
    * @param {SpriteGroup} spriteGroup
    */
-  constructor(baseSpriteGroup, spriteGroup) {
+  constructor(base, spriteGroup) {
     super();
 
     this.type = 'spearwolf.SpriteGroupInstancedBufferGeometry';
 
-    this.parameters = {
-      baseSpriteGroup,
-      spriteGroup,
-    };
+    if (base.isSpriteGroup) {
 
-    this.setIndex(baseSpriteGroup.indices.indices);
+      this.parameters = {
+        baseSpriteGroup: base,
+        spriteGroup,
+      };
 
-    /**
-     * @private
-     * @type {THREE.InterleavedBuffer[]}
-     */
-    this._buffers = createAttributes(baseSpriteGroup, this, (typedArray, stride) => new THREE.InterleavedBuffer(typedArray, stride));
+      this.setIndex(base.indices.indices);
 
-    baseSpriteGroup.voPool.voArray.ref.serial = this.bufferVersion;
+      /**
+       * @private
+       * @type {THREE.InterleavedBuffer[]}
+       */
+      this._buffers = createAttributes(base, this, (typedArray, stride) => new THREE.InterleavedBuffer(typedArray, stride));
+
+      base.voPool.voArray.ref.serial = this.bufferVersion;
+
+    } else if (base.isBufferGeometry) {
+
+      this.copy(base);
+
+    }
 
     /**
      * @private
@@ -36,7 +44,15 @@ export class SpriteGroupInstancedBufferGeometry extends THREE.InstancedBufferGeo
      */
     this._instancedBuffers = createAttributes(spriteGroup, this, (typedArray, stride) => new THREE.InstancedInterleavedBuffer(typedArray, stride, 1));
 
-    spriteGroup.voPool.voArray.ref.serial = this.instanceBufferVersion;
+    spriteGroup.voPool.voArray.ref.serial = this.instancedBufferVersion;
+  }
+
+  get maxInstancedCount() {
+    return this.parameters.spriteGroup.usedCount;
+  }
+
+  set maxInstancedCount(x) {
+    // ignore
   }
 
   updateBuffers() {
@@ -45,7 +61,7 @@ export class SpriteGroupInstancedBufferGeometry extends THREE.InstancedBufferGeo
     });
   }
 
-  updateInstanceBuffers() {
+  updateInstancedBuffers() {
     this._instancedBuffers.forEach((buf) => {
       buf.needsUpdate = true;
     });
@@ -58,7 +74,7 @@ export class SpriteGroupInstancedBufferGeometry extends THREE.InstancedBufferGeo
     return this._buffers[0].version;
   }
 
-  get instanceBufferVersion() {
+  get instancedBufferVersion() {
     return this._instancedBuffers[0].version;
   }
 

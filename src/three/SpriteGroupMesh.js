@@ -12,14 +12,13 @@ import * as THREE from 'three';
  * @typedef {import("../sprites").SpriteGroup} SpriteGroup
  */
 
-const updateBuffers = (spriteGroup, geometryUpdateBuffers, geometryBufferVersion) => {
+const updateBuffers = (spriteGroup, bufferVersion, geometryUpdateBuffers) => {
   const { ref } = spriteGroup.voPool.voArray;
 
   if (ref.hasHint('autotouch', true)) {
     spriteGroup.touchVertexBuffers();
   }
 
-  const { bufferVersion } = geometryBufferVersion();
   if (ref.serial !== bufferVersion) {
     geometryUpdateBuffers();
     ref.serial = bufferVersion;
@@ -56,16 +55,6 @@ export class SpriteGroupMesh extends THREE.Mesh {
             () => geometry.bufferVersion,
           );
 
-          // if (ref.hasHint('autotouch', true)) {
-          //   spriteGroup.touchVertexBuffers();
-          // }
-
-          // const { bufferVersion } = geometry;
-          // if (ref.serial !== bufferVersion) {
-          //   geometry.updateBuffers();
-          //   ref.serial = geometry.bufferVersion;
-          // }
-
           const { usedCount, indices } = spriteGroup;
           geometry.setDrawRange(0, usedCount * indices.itemCount);
 
@@ -86,22 +75,26 @@ export class SpriteGroupMesh extends THREE.Mesh {
       */
         (renderer, scene, camera, geometry/*, material, group */) => {
 
-          updateBuffers(
-            baseSpriteGroup,
-            () => geometry.updateBuffers(),
-            () => geometry.bufferVersion,
-          );
+          if (baseSpriteGroup) {
+
+            updateBuffers(
+              baseSpriteGroup,
+              geometry.bufferVersion,
+              () => geometry.updateBuffers(),
+            );
+
+            const { usedCount, indices } = baseSpriteGroup;
+            geometry.setDrawRange(0, usedCount * indices.itemCount);
+
+          }
 
           updateBuffers(
             spriteGroup,
-            () => geometry.updateInstanceBuffers(),
-            () => geometry.instanceBufferVersion,
+            geometry.instancedBufferVersion,
+            () => geometry.updateInstancedBuffers(),
           );
 
-          const { usedCount, indices } = baseSpriteGroup;
-          geometry.setDrawRange(0, usedCount * indices.itemCount);
-
-          geometry.maxInstancedCount = spriteGroup.usedCount;
+          // geometry.maxInstancedCount = spriteGroup.usedCount;
 
         };
 
