@@ -24,9 +24,30 @@ const cube = new THREE.LineSegments(
 );
 scene.add(cube);
 
+const timeUniform = { value: 50 };
+
+// @ts-ignore
+cube.material.onBeforeCompile = (shader) => {
+
+  shader.uniforms.time = timeUniform;
+
+  shader.vertexShader = `
+    uniform float time;
+    ${shader.vertexShader}
+  `;
+
+  shader.vertexShader = shader.vertexShader.replace(
+    '#include <begin_vertex>',
+    'vec3 transformed = vec3( position.x + (sin( time + position.y ) * 5.0) / 2.0, position.y, position.z );'
+  );
+
+};
+
 const yAxis = new THREE.Vector3(0, 1, 0);
 
-tc.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
+tc.addEventListener('frame', ({ renderer, now, width, height, deltaTime }) => {
+
+  timeUniform.value = 0.5 * now % Math.PI * 2;
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
@@ -40,4 +61,5 @@ tc.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
 tc.start();
 
 console.log('threeCanvas', tc);
-window.tc = tc;
+// @ts-ignore
+window.threeCanvas = tc;
