@@ -9,8 +9,8 @@ const pickVOPoolOpts = pick(['autotouch', 'capacity', 'doubleBuffer', 'maxAllocV
 
 /**
  * @private
- * @param {string|SpriteSizeSetter} setSize
- * @returns {SpriteSizeSetter}
+ * @param {string|import('./SpriteGroup').SpriteSizeSetter} setSize
+ * @returns {import('./SpriteGroup').SpriteSizeSetter}
  */
 const createSpriteSizeHook = (setSize = 'size') => {
   switch (typeof setSize) {
@@ -52,7 +52,7 @@ export class SpriteGroup {
    * @param {VOIndices|Function} [options.indices] - *vertex object indices* array or factory function
    * @param {Object|Function} [options.voZero] - *vertex object* initializer
    * @param {Object|Function} [options.voNew] - *vertex object* initializer
-   * @param {string|SpriteSizeSetter} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
+   * @param {string|import('./SpriteGroup').SpriteSizeSetter} [options.setSize='size'] - A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`). Or you can specify the *name* of the size attribute (should be a 2d vector unform).
    * @param {number} [options.maxAllocVOSize] - Never allocate more than `maxAllocVOSize` *sprites* at once
    * @param {boolean} [options.dynamic=true] - Buffer usage hint
    * @param {boolean} [options.autotouch] - auto touch vertex buffers hint, set to `true` (which is the default if buffer usagee is dynamic) or `false`.
@@ -61,14 +61,8 @@ export class SpriteGroup {
   constructor(descriptor, options = {}) {
     this.descriptor = descriptor;
 
-    // if (options.base instanceof SpriteGroup) {
-    //   this.base = options.base;
-    // } else if (typeof options.base === 'object') {
-    //   this.base = new SpriteGroup(descriptor.base, options.base);
-    // }
-
     /**
-     * @type {SpriteSizeSetter}
+     * @type {import('./SpriteGroup').SpriteSizeSetter}
      */
     this.setSpriteSize = createSpriteSizeHook(options.setSize);
 

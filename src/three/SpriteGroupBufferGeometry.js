@@ -1,9 +1,11 @@
 import * as THREE from 'three';
 
+import { createAttributes } from './createAttributes';
+
 export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
 
   /**
-   * @param {import('../sprites').SpriteGroup} spriteGroup
+   * @param {import("../sprites").SpriteGroup} spriteGroup
    */
   constructor(spriteGroup) {
     super();
@@ -16,45 +18,11 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
 
     this.setIndex(spriteGroup.indices.indices);
 
-    const { descriptor } = spriteGroup;
-    const { voArray } = spriteGroup.voPool;
-
     /**
      * @private
      * @type {THREE.InterleavedBuffer[]}
      */
-    this._buffers = [];
-
-    /**
-     * @private
-     * @type {Map<THREE.InterleavedBuffer>}
-     */
-    this._bufMap = new Map();
-
-    const isDynamic = spriteGroup.voPool.voArray.ref.hasHint('dynamic', true);
-
-    Object.keys(descriptor.attr).forEach(attrName => {
-
-      const attr = descriptor.attr[attrName];
-
-      let buffer = this._bufMap.get(attr.type);
-
-      if (!buffer) {
-        const typedArray = voArray.getTypedArray(attr.type);
-        const stride = descriptor.bytesPerVertex / typedArray.BYTES_PER_ELEMENT;
-
-        buffer = new THREE.InterleavedBuffer(typedArray, stride);
-        buffer.setDynamic(isDynamic);
-
-        this._buffers.push(buffer);
-        this._bufMap.set(attr.type, buffer);
-      }
-
-      const bufferAttr = new THREE.InterleavedBufferAttribute(buffer, attr.size, attr.offset);
-
-      this.addAttribute(attrName, bufferAttr);
-
-    });
+    this._buffers = createAttributes(spriteGroup, this, (typedArray, stride) => new THREE.InterleavedBuffer(typedArray, stride));
 
     spriteGroup.voPool.voArray.ref.serial = this.bufferVersion;
   }
@@ -65,6 +33,9 @@ export class SpriteGroupBufferGeometry extends THREE.BufferGeometry {
     });
   }
 
+  /**
+   * @type {number}
+   */
   get bufferVersion() {
     return this._buffers[0].version;
   }

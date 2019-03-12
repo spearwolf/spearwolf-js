@@ -128,7 +128,7 @@ const init = async ({ canvas, scene }) => {
   //
   // ----------------------------------------------------------------------------------
 
-  const material = new THREE.ShaderMaterial( {
+  const material = new THREE.ShaderMaterial({
 
     vertexShader: `
       uniform float time;

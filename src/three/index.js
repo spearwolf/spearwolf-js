@@ -1,4 +1,5 @@
 
 export * from './ThreeCanvas';
 export * from './SpriteGroupBufferGeometry';
-export * from './SpriteGroupMesh';
+export * from './SpriteGroupInstancedBufferGeometry';
+export { SpriteGroupMesh } from './SpriteGroupMesh';
