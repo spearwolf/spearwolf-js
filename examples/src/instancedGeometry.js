@@ -23,14 +23,14 @@ const init = async ({ canvas, scene }) => {
   //
   // ----------------------------------------------------------------------------------
 
-  const ambientLight = new THREE.AmbientLight(0xf0f0c0);
+  const ambientLight = new THREE.AmbientLight(0xffffa0);
   scene.add(ambientLight);
 
-  const hemisphereLight = new THREE.HemisphereLight(0xf0f0f0, 0xffffff, 1);
+  const hemisphereLight = new THREE.HemisphereLight(0xf0f0f0, 0xff0066, 1);
   scene.add(hemisphereLight);
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight.position.set(0, 0, 10);
+  directionalLight.position.set(0, 0, 1000);
   scene.add(directionalLight);
 
   // ----------------------------------------------------------------------------------
@@ -69,7 +69,6 @@ const init = async ({ canvas, scene }) => {
   const spriteGroup = new SpriteGroup(vod, {
 
     capacity: 1000,
-    maxAllocVOSize: 100,
 
     dynamic: false,
 
@@ -88,11 +87,17 @@ const init = async ({ canvas, scene }) => {
     'ffa1ac',
   ];
 
-  makeCircleCoords(100, 650, (x, y, z) => {
-    const sprite = spriteGroup.createSprite();
-    sprite.setMove(x, y, z);
-    sprite.setColor(sample(COLORS));
-  });
+  for (let i = 0; i < 10; i++) {
+
+    makeCircleCoords(100, 650 - (i * 50), (x, y, z) => {
+      const sprite = spriteGroup.createSprite();
+      sprite.setMove(x, y, (z + (i * 0.05)));
+      sprite.setColor(sample(COLORS));
+    });
+
+  }
+
+  console.log('Created', spriteGroup.usedCount, 'sprites');
 
   // ----------------------------------------------------------------------------------
   //
@@ -114,7 +119,7 @@ const init = async ({ canvas, scene }) => {
   //
   // ----------------------------------------------------------------------------------
 
-  const baseGeometry = new THREE.SphereBufferGeometry(13, 10, 10);
+  const baseGeometry = new THREE.SphereBufferGeometry(12, 10, 10);
 
   const material = new THREE.MeshLambertMaterial();
 
@@ -167,6 +172,12 @@ const init = async ({ canvas, scene }) => {
   const mesh = new SpriteGroupMesh(geometry, material);
 
   scene.add(mesh);
+
+  canvas.addEventListener('frame', ({ deltaTime }) => {
+
+    mesh.rotateOnAxis(new THREE.Vector3(0, 0, 1), deltaTime);
+
+  });
 
   debug('spriteGroup', spriteGroup);
   debug('material', material);
