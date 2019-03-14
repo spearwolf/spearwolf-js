@@ -18,7 +18,7 @@ export default (descriptor, attributesOrObject) => {
   }
 
   if (!attributes) {
-    throw new Error('VODescriptor:createAttributes: attributes should be an array or an object!');
+    throw new Error('[VODescriptor] option "attributes" should be an array or an object!');
   }
 
   descriptor.attr = {};
@@ -36,11 +36,14 @@ export default (descriptor, attributesOrObject) => {
         attrSize = attr.scalars.length;
       } else {
         attrSize = 1;
-        // throw new Error('VODescriptor:createAttributes: attribute descriptor has no :size (or :scalars) property!');
       }
     }
 
     const type = attr.type || DEFAULT_ATTR_TYPE;
+
+    if (BYTES_PER_ELEMENT[type] === undefined) {
+      throw new Error(`[VODescriptor] attribute "${attr.name}" has unknown type: should be one of (${Object.keys(BYTES_PER_ELEMENT).join(', ')})`);
+    }
 
     if (attr.name !== undefined) {
       descriptor.scalars.push(attr.name);
