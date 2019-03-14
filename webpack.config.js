@@ -1,12 +1,14 @@
 /* eslint-env node */
 module.exports = {
   mode: 'development',
+  devtool: 'source-maps',
   entry: {
     'version.bundle': ['@babel/polyfill', './examples/src/version.js'],
     'hello-three-canvas.bundle': ['@babel/polyfill', './examples/src/helloThreeCanvas.js'],
     'sprite-group-buffer-geometry.bundle': ['@babel/polyfill', './examples/src/spriteGroupBufferGeometry.js'],
     'textured-sprites.bundle': ['@babel/polyfill', './examples/src/texturedSprites.js'],
     'instanced-sprites.bundle': ['@babel/polyfill', './examples/src/instancedSprites.js'],
+    'instanced-geometry.bundle': ['@babel/polyfill', './examples/src/instancedGeometry.js'],
   },
   devServer: {
     port: 3000,

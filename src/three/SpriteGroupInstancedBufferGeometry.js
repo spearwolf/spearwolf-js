@@ -15,12 +15,11 @@ export class SpriteGroupInstancedBufferGeometry extends THREE.InstancedBufferGeo
 
     this.type = 'spearwolf.SpriteGroupInstancedBufferGeometry';
 
+    this.parameters = { spriteGroup };
+
     if (base.isSpriteGroup) {
 
-      this.parameters = {
-        baseSpriteGroup: base,
-        spriteGroup,
-      };
+      this.parameters.baseSpriteGroup = base;
 
       this.setIndex(base.indices.indices);
 
