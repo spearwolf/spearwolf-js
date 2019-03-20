@@ -1,8 +1,5 @@
 import {
   ImageSource,
-} from '../textures';
-
-import {
   PowerOf2Image,
 } from 'spearwolf-js';
 

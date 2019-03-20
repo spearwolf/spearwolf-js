@@ -4,7 +4,7 @@
   "description": "various javascript helpers and classes for various three.js/webgl experiments!",
   "main": "dist/spearwolf.js",
   "module": "src/index.js",
-  "types": "types/index.d.ts",
+  "types": "src/index.d.ts",
   "sideEffects": false,
   "directories": {
     "example": "examples"
@@ -19,7 +19,7 @@
     "test:eslint": "eslint .",
     "test:karma": "cross-env NODE_ENV=test karma start --single-run",
     "test:watch": "cross-env NODE_ENV=test karma start",
-    "test:types": "tsc -p ./types/test/tsconfig.json",
+    "test:types": "tsc -p ./tests/types/tsconfig.json",
     "test": "npm-run-all --parallel test:eslint test:types --serial test:karma"
   },
   "repository": {

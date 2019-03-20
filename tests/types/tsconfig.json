@@ -11,16 +11,16 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "spearwolf-js": ["../index.d.ts"]
+      "spearwolf-js": ["../../src/index.d.ts"]
     }
   },
   "files": [
-    "../index.d.ts",
-    "../utils.d.ts",
-    "../core.d.ts",
     "utils-test.ts",
     "core-test.ts",
     "textures-test.ts",
+  ],
+  "include": [
+    "src/**/*.d.ts",
   ],
   "compileOnSave": false
 }

@@ -1,4 +1,8 @@
 
+/**
+ * Represents a 2D axis aligned boundary box.
+ * Uses a right-handed coordinate system.
+ */
 export class AABB2 {
   left: number;
   top: number;
@@ -15,8 +19,14 @@ export class AABB2 {
 
   clone(): AABB2;
 
+  /**
+   * @return {boolean} Return `true` if point is within
+   */
   isInside(x: number, y: number): boolean;
 
+  /**
+   * @return {boolean} Return `true` if both overlap
+   */
   isIntersecting(aabb: AABB2): boolean;
 
   isNorthWest(x: number, y: number): boolean;

@@ -1,8 +1,4 @@
 
-/**
- * Represents a 2D axis aligned boundary box.
- * Uses a right-handed coordinate system.
- */
 export class AABB2 {
 
   constructor(left, top, width, height) {
@@ -22,16 +18,10 @@ export class AABB2 {
   get centerX() { return this.left + (this.width / 2); }
   get centerY() { return this.top + (this.height / 2); }
 
-  /**
-   * @return Return `true` if point is within
-   */
   isInside(x, y) {
     return this.left <= x && x < this.right && this.top <= y && y < this.bottom;
   }
 
-  /**
-   * @return Return `true` if both overlap
-   */
   isIntersecting(aabb) {
     return !(
       aabb.right <= this.left ||

@@ -2,55 +2,20 @@ import { PowerOf2Image } from './PowerOf2Image';
 
 export class Texture {
 
-  /**
-   * @param {string} url 
-   * @returns {Promise<Texture>}
-   */
   static async load(url) {
     return new Texture(await new PowerOf2Image(url).loaded);
   }
 
-  /**
-   * @type {PowerOf2Image|Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement}
-   */
   image = null;
-
-  /**
-   * @type {Texture}
-   */
   parent = null;
 
-  /**
-   * @type {number}
-   */
   x = 0;
-
-  /**
-   * @type {number}
-   */
   y = 0;
 
-  /**
-   * @private
-   * @pyte {number}
-   */
   _width = 0;
-
-  /**
-   * @private
-   * @pyte {number}
-   */
   _height = 0;
 
-  /**
-   * Create a texture.
-   * @param {Texture|PowerOf2Image|Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} source
-   * @param {number} width
-   * @param {number} height
-   * @param {number} [x=0]
-   * @param {number} [y=0]
-   */
-  constructor(source, width, height, x = 0, y = 0) {
+  constructor(source, width = undefined, height = undefined, x = 0, y = 0) {
     let w = width;
     let h = height;
 
