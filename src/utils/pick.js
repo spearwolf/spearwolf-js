@@ -1,10 +1,13 @@
 
 export const pick = names => obj => {
-  const newObj = {};
+  let newObj = null;
   if (obj) {
     names.forEach((key) => {
       const val = obj[key];
       if (val !== undefined) {
+        if (newObj === null) {
+          newObj = {};
+        }
         newObj[key] = val;
       }
     });

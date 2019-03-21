@@ -12,3 +12,4 @@ export { default as sample } from './sample';
 export { default as toFloatColors } from './toFloatColors';
 
 export * from './pick';
+export * from './unpick';
