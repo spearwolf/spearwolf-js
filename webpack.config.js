@@ -1,4 +1,7 @@
 /* eslint-env node */
+const webpack = require('webpack');
+const packageJson = require('./package.json');
+
 module.exports = {
   mode: 'development',
   devtool: 'source-maps',
@@ -24,6 +27,11 @@ module.exports = {
     useLocalIp: true,
     disableHostCheck: true,
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      PACKAGE_VERSION: JSON.stringify(`${packageJson.version}-dev`),
+    }),
+  ],
   module: {
     rules: [
       {
