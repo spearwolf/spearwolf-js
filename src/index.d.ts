@@ -3,6 +3,7 @@
 // Definitions by: Wolfger Schramm https://www.spearwolf.de
 
 // export * from './core';
+export * from './colors';
 export * from './math';
 export * from './textures';
 export * from './utils';
