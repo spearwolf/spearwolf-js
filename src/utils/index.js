@@ -1,5 +1,4 @@
 
-export { default as findNextPowerOf2 } from './findNextPowerOf2';
 export { default as generateUuid } from './generateUuid';
 export { default as get } from './get';
 export { default as hexCol2rgb } from './hexCol2rgb';
@@ -11,5 +10,6 @@ export { default as readOption } from './readOption';
 export { default as sample } from './sample';
 export { default as toFloatColors } from './toFloatColors';
 
+export * from './findNextPowerOf2';
 export * from './pick';
 export * from './unpick';

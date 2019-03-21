@@ -41,10 +41,14 @@ module.exports = (config) => {
       mode: 'development',
       devtool: 'inline-source-map',
 
+      resolve: {
+        extensions: ['.js', '.ts', '.json']
+      },
+
       module: {
         rules: [
           {
-            test: /\.js$/,
+            test: /\.[jt]s$/,
             exclude: /node_modules/,
             use: {
               loader: 'babel-loader',

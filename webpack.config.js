@@ -32,10 +32,13 @@ module.exports = {
       PACKAGE_VERSION: JSON.stringify(`${packageJson.version}-dev`),
     }),
   ],
+  resolve: {
+    extensions: ['.js', '.ts', '.json']
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.[jt]s$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
