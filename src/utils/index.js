@@ -4,12 +4,12 @@ export { default as get } from './get';
 export { default as hexCol2rgb } from './hexCol2rgb';
 export { default as hexCol2rgba } from './hexCol2rgba';
 export { default as makeCircleCoords } from './makeCircleCoords';
-export { default as maxOf } from './maxOf';
 export { default as readOption } from './readOption';
 export { default as sample } from './sample';
 export { default as toFloatColors } from './toFloatColors';
 
 export * from './findNextPowerOf2';
 export * from './isPowerOf2';
+export * from './maxOf';
 export * from './pick';
 export * from './unpick';
