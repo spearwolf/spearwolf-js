@@ -15,17 +15,30 @@ export class TextureAtlas {
   }
 
   _frames = new Map();
+
   _allFrames = [];
   _allFrameNames = [];
 
+  _features = null;
+
   constructor(baseTexture, data) {
+
     this.baseTexture = baseTexture;
+
     Object.keys(data.frames).forEach((name) => {
       const frameData = data.frames[name];
       const { frame } = frameData;
       const features = filterFrameFeatures(frameData);
       this.addFrame(name, frame.w, frame.h, frame.x, frame.y, features);
     });
+
+    const { meta } = data;
+    if (meta !== undefined) {
+      Object.keys(meta).forEach((name) => {
+        this.setFeature(name, meta[name]);
+      });
+    }
+
   }
 
   addFrame(name, width, height, x, y, features = null) {
@@ -59,4 +72,16 @@ export class TextureAtlas {
   randomFrameName() {
     return sample(this._allFrameNames);
   }
+
+  getFeature(name) {
+    return this._features !== null ? this._features.get(name) : undefined;
+  }
+
+  setFeature(name, value) {
+    if (this._features === null) {
+      this._features = new Map();
+    }
+    this._features.set(name, value);
+  }
+
 }

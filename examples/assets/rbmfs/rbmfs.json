@@ -79,12 +79,7 @@
     "?": { "frame": { "x": 124, "y": 24, "w": 6, "h": 7 } }
   },
   "meta": {
-    "version": "0.1",
     "image": "rbmfs-colored.gif",
-    "format": "RGBA8888",
-    "size": {
-      "w": 205,
-      "h": 34
-    }
+    "lineHeight": 9
   }
 }

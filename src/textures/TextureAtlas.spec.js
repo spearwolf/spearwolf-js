@@ -48,6 +48,10 @@ describe('TextureAtlas', () => {
         'nobinger-gold.png',
       ].sort());
     });
+
+    it('atlas features', () => {
+      assert.equal(atlas.getFeature('image'), 'nobinger.png');
+    });
   });
 
   describe('attach frame features to Texture', () => {
