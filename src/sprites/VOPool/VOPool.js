@@ -1,5 +1,6 @@
 /* eslint no-param-reassign: 0 */
-import { readOption, maxOf, generateUuid } from '../../utils';
+import { readOption, generateUuid } from '../../utils';
+import { maxOf } from '../../math';
 
 import createVOs from './createVOs';
 

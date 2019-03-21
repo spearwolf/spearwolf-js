@@ -7,9 +7,5 @@ export { default as readOption } from './readOption';
 export { default as sample } from './sample';
 export { default as toFloatColors } from './toFloatColors';
 
-export * from './findNextPowerOf2';
-export * from './isPowerOf2';
-export * from './makeCircleCoords';
-export * from './maxOf';
 export * from './pick';
 export * from './unpick';

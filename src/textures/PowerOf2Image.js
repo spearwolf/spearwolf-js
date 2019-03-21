@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import { findNextPowerOf2, isPowerOf2 } from '../utils';
+import { findNextPowerOf2, isPowerOf2 } from '../math';
 
 const convertToPowerOf2 = (image) => {
   const w = findNextPowerOf2(image.width);

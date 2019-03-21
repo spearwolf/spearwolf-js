@@ -1,4 +1,5 @@
 export * from './core';
+export * from './math';
 export * from './sprites';
 export * from './utils';
 export * from './textures';
