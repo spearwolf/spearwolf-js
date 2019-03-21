@@ -27,7 +27,7 @@ let r: number, g: number, b: number, a: number;
 [r, g, b, a] = hexCol2rgba('ff0032');
 [r, g, b, a] = hexCol2rgba('ff0032', 128);
 
-let coords: Array<number>;
+let coords: Array<[number, number, number]>;
 
 coords = makeCircleCoords(100);
 coords = makeCircleCoords(100, 2);
