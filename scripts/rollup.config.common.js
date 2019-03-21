@@ -16,6 +16,11 @@ const external = [
   'three',
 ];
 
+const extensions = [
+  '.js',
+  '.ts',
+];
+
 export default ({
   root,
   filename,
@@ -46,6 +51,7 @@ export default ({
     plugins: [
       bannerPlugin(packageJson), // eslint-disable-line
       babel({
+        extensions,
         exclude: [/node_modules/],
         presets: [
           [
@@ -68,6 +74,7 @@ export default ({
       }),
       commonjs(),
       resolve({
+        extensions,
         customResolveOptions: {
           moduleDirectory: 'node_modules',
         },
