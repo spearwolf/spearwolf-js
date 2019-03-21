@@ -26,4 +26,8 @@ export class Texture {
   readonly minT: number;
   readonly maxS: number;
   readonly maxT: number;
+
+  setFeature(name: string, value: unknown): void;
+  getFeature<T>(name: string): T;
+
 }

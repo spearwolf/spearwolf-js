@@ -49,4 +49,24 @@ describe('TextureAtlas', () => {
       ].sort());
     });
   });
+
+  describe('attach frame features to Texture', () => {
+    let atlas;
+
+    before((done) => {
+      TextureAtlas.load('rbmfs.json', '/assets/').then((textureAtlas) => {
+        atlas = textureAtlas;
+        done();
+      });
+    });
+
+    it('"f" should have baselineOffset feature', () => {
+      const tex = atlas.frame('f');
+      assert.ok(tex);
+      assert.equal(tex.width, 5);
+      assert.equal(tex.height, 8);
+      assert.equal(tex.getFeature('baselineOffset'), -2);
+    });
+
+  });
 });

@@ -1,8 +1,10 @@
 /* eslint-env browser */
-import { sample } from '../utils';
+import { sample, unpick } from '../utils';
 
 import { PowerOf2Image } from './PowerOf2Image';
 import { Texture } from './Texture';
+
+const filterFrameFeatures = unpick(['frame']);
 
 export class TextureAtlas {
 
@@ -19,16 +21,23 @@ export class TextureAtlas {
   constructor(baseTexture, data) {
     this.baseTexture = baseTexture;
     Object.keys(data.frames).forEach((name) => {
-      const { frame } = data.frames[name];
-      this.addFrame(name, frame.w, frame.h, frame.x, frame.y);
+      const frameData = data.frames[name];
+      const { frame } = frameData;
+      const features = filterFrameFeatures(frameData);
+      this.addFrame(name, frame.w, frame.h, frame.x, frame.y, features);
     });
   }
 
-  addFrame(name, width, height, x, y) {
+  addFrame(name, width, height, x, y, features = null) {
     const tex = new Texture(this.baseTexture, width, height, x, y);
     this._allFrameNames.push(name);
     this._allFrames.push(tex);
     this._frames.set(name, tex);
+    if (features != null) {
+      Object.keys(features).forEach((name) => {
+        tex.setFeature(name, features[name]);
+      });
+    }
   }
 
   frame(name) {

@@ -1,3 +1,4 @@
+/* eslint-env browser */
 import { PowerOf2Image } from './PowerOf2Image';
 
 export class Texture {
@@ -12,8 +13,10 @@ export class Texture {
   x = 0;
   y = 0;
 
-  _width = 0;
+  _width = 0; 
   _height = 0;
+
+  _features = null;
 
   constructor(source, width = undefined, height = undefined, x = 0, y = 0) {
     let w = width;
@@ -38,6 +41,17 @@ export class Texture {
 
     this.x = x;
     this.y = y;
+  }
+
+  getFeature(name) {
+    return this._features !== null ? this._features.get(name) : undefined;
+  }
+
+  setFeature(name, value) {
+    if (this._features === null) {
+      this._features = new Map();
+    }
+    this._features.set(name, value);
   }
 
   get root() {

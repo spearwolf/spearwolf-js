@@ -7,6 +7,8 @@ export class TextureAtlas {
    */
   static load(path: string, basePath: string): Promise<TextureAtlas>;
 
+  baseTexture: Texture;
+
   constructor(baseTexture: Texture, data: Object);
 
   addFrame(name: string, width: number, height: number, x: number, y: number): void;
