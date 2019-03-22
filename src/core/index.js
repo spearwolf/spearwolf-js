@@ -1,2 +1,2 @@
 
-export { default as DataRef } from './DataRef';
+export * from './DataRef';

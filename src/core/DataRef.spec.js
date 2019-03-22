@@ -13,7 +13,7 @@ describe('DataRef', () => {
     assert.strictEqual(ref.type, dataType);
     assert.strictEqual(ref.serial, 1);
     assert.strictEqual(typeof ref.id, 'string');
-    assert.deepEqual(ref.hints, hints);
+    assert.strictEqual(ref.hint('foo'), hints.foo);
   });
 
   it('create instance with :serial hint', () => {
@@ -27,7 +27,7 @@ describe('DataRef', () => {
   });
 
   it('create instance with a not-a-string:id hint should convert the :id to a string value', () => {
-    const ref = new DataRef(666, {}, { id: 666 });
+    const ref = new DataRef(999, {}, { id: 666 });
     assert.strictEqual(ref.id, '666');
   });
 
@@ -43,7 +43,7 @@ describe('DataRef', () => {
 
   it('updating data should leaves serial untouched if the reference did not change', () => {
     const data = { v: 1 };
-    const ref = new DataRef(666, data);
+    const ref = new DataRef('666', data);
     assert.strictEqual(ref.data, data);
     assert.strictEqual(ref.serial, 1);
     ref.data = data;
@@ -52,7 +52,7 @@ describe('DataRef', () => {
   });
 
   it('touch() should increase serial', () => {
-    const ref = new DataRef(123, {});
+    const ref = new DataRef('123', {});
     assert.strictEqual(ref.serial, 1);
     ref.touch();
     assert.strictEqual(ref.serial, 2);
@@ -75,9 +75,10 @@ describe('DataRef', () => {
     assert.strictEqual(ref.hasHint('blank', null), true, 'blank is null');
     assert.strictEqual(ref.hasHint('blank', undefined), false, 'blank is not undefined');
     assert.strictEqual(ref.hasHint('blank'), true, 'blank exists');
-    assert.strictEqual(ref.hasHint('undef', undefined), true, 'undef is undefined');
-    assert.strictEqual(ref.hasHint('undef', null), false, 'undef is not null');
-    assert.strictEqual(ref.hasHint('undef'), true, 'undef exists');
+    // assert.strictEqual(ref.hasHint('undef', undefined), true, 'undef is undefined');
+    // assert.strictEqual(ref.hasHint('undef', null), false, 'undef is not null');
+    // assert.strictEqual(ref.hasHint('undef'), true, 'undef exists');
+    assert.strictEqual(ref.hasHint('undef'), false, 'undef should not exists');
     assert.strictEqual(ref.hasHint('foo', 'bar'), true, 'foo is bar');
     assert.strictEqual(ref.hasHint('foo', 'foo'), false, 'foo is not bar');
     assert.strictEqual(ref.hasHint('foo'), true, 'foo exists');
