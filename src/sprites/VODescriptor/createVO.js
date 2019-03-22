@@ -15,7 +15,7 @@ export default (obj, descriptor, voArray) => {
   obj.voArray = voArray || obj.descriptor.createVOArray();
 
   if (obj.descriptor.bytesPerVO !== obj.voArray.bytesPerVO &&
-    (obj.descriptor.typeList.join() !== obj.voArray.arrayTypes.join())) {
+    (obj.descriptor.typeList.join() !== obj.voArray.arrayDataTypes.join())) {
     throw new TypeError('VODescriptor:createVO: descriptor and voArray are not compatible with each other!');
   }
 

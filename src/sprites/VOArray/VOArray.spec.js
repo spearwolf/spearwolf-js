@@ -26,11 +26,11 @@ describe('VOArray', () => {
   });
 
   it('create instance should clone arrayTypes (no copy)', () => {
-    const arrayTypes = ['float32', 'int16', 'uint8'];
-    const voa = new VOArray(4, 16, arrayTypes);
+    const arrayDataTypes = ['float32', 'int16', 'uint8'];
+    const voa = new VOArray(4, 16, arrayDataTypes);
 
-    assert.notStrictEqual(voa.arrayTypes, arrayTypes);
-    assert.deepEqual(voa.arrayTypes, arrayTypes);
+    assert.notStrictEqual(voa.arrayDataTypes, arrayDataTypes);
+    assert.deepEqual(voa.arrayDataTypes, arrayDataTypes);
   });
 
   it('create from existing buffer should create a view into existing buffer', () => {
