@@ -115,8 +115,16 @@ export class VOArray {
 
   }
 
-  getTypedArray(type: ArrayDataType): TypedArray {
-    return this[`${type}Array`];
+  getTypedArray(type: ArrayDataType) {
+    switch (type) {
+      case 'float32': return this.float32Array;
+      case 'int16': return this.int16Array;
+      case 'int32': return this.int32Array;
+      case 'int8': return this.int8Array;
+      case 'uint16': return this.uint16Array;
+      case 'uint32': return this.uint32Array;
+      case 'uint8': return this.uint8Array;
+    }
   }
 
   /**

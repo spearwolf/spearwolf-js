@@ -1,7 +1,9 @@
 
 export type ArrayDataType = "float32" | "int32" | "int16" | "int8" | "uint32" | "uint16" | "uint8";
 
-const typedArrayProp = (type: ArrayDataType) => `${type}Array`;
+type TypedArrayAccessor =  "float32Array" | "int16Array" | "int32Array" | "int8Array" | "uint16Array" | "uint32Array" | "uint8Array";
+
+const typedArrayProp = (type: ArrayDataType) => `${type}Array` as TypedArrayAccessor;
 
 export interface TypedArrays {
   float32Array?: Float32Array;

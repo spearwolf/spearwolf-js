@@ -30,7 +30,7 @@ export class DataRef<T> {
   private _data: T;
   private _hints = new Map<string, any>();
 
-  constructor(type: number | string, data: T, hints: DataRefHints = null) {
+  constructor(type: number | string, data: T, hints?: DataRefHints) {
 
     this.type = type;
 
@@ -40,11 +40,13 @@ export class DataRef<T> {
 
     this.serial = hints != null && typeof hints.serial === 'number' ? hints.serial : 1;
 
-    const extraHints = filterHints(hints);
+    const extraHints = filterHints(hints) as DataRefHints;
     if (extraHints != null) {
+
       Object.keys(extraHints).forEach((key: string) => {
-        this._hints.set(key, hints[key]);
+        this._hints.set(key, extraHints[key]);
       });
+
     }
 
   }

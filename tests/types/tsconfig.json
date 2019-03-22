@@ -1,14 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "module": "commonjs",
-    "strict": true,
-    "noEmit": true,
+
+    "noUnusedLocals": false,
+
     "baseUrl": ".",
     "paths": {
       "spearwolf-js": ["../../src/index.d.ts"]
@@ -17,10 +12,6 @@
   "files": [
     "utils-test.ts",
     "core-test.ts",
-    "textures-test.ts",
-  ],
-  "include": [
-    "src/**/*.d.ts",
-  ],
-  "compileOnSave": false
+    "textures-test.ts"
+  ]
 }
