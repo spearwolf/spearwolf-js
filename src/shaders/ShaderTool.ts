@@ -1,7 +1,7 @@
 
-const isNumber = x => typeof x === 'number';
+const isNumber = (x: string | number): x is number => typeof x === 'number';
 
-export const add = (a, b) => {
+export function add(a: string | number, b: string | number): string | number {
   if (isNumber(a) && isNumber(b)) {
     return a + b;
   } else if (isNumber(a)) {
@@ -21,9 +21,9 @@ export const add = (a, b) => {
   } else {
     return `${a} + ${b}`;
   }
-};
+}
 
-export const sub = (a, b) => {
+export function sub(a: string | number, b: string | number): string | number {
   if (isNumber(a) && isNumber(b)) {
     return a - b;
   } else if (isNumber(a)) {
@@ -43,9 +43,9 @@ export const sub = (a, b) => {
   } else {
     return `${a} - ${b}`;
   }
-};
+}
 
-export const mul = (a, b) => {
+export function mul(a: string | number, b: string | number): string | number {
   if (isNumber(b) && isNumber(a)) {
     return a * b;
   } else if (isNumber(a)) {
@@ -69,22 +69,40 @@ export const mul = (a, b) => {
   } else {
     return `${a} * ${b}`;
   }
-};
+}
 
-export const asFloat = (number) => {
+export function asFloat(number: string | number): string {
   const str = `${number}`.trim();
   if (str.match(/^[0-9]+$/)) {
     return `${str}.0`;
   }
   return str;
-};
+}
 
-export const ret = res => `return ${res};`;
+export const ret = (res: string) => `return ${res};`;
 
-export const mat4 = (m00 = 0, m01 = 0, m02 = 0, m03 = 0, m10 = 0, m11 = 0, m12 = 0, m13 = 0, m20 = 0, m21 = 0, m22 = 0, m23 = 0, m30 = 0, m31 = 0, m32 = 0, m33 = 1, as = asFloat) => {
+export function mat4(
+  m00: string | number = 0,
+  m01: string | number = 0,
+  m02: string | number = 0,
+  m03: string | number = 0,
+  m10: string | number = 0,
+  m11: string | number = 0,
+  m12: string | number = 0,
+  m13: string | number = 0,
+  m20: string | number = 0,
+  m21: string | number = 0,
+  m22: string | number = 0,
+  m23: string | number = 0,
+  m30: string | number = 0,
+  m31: string | number = 0,
+  m32: string | number = 0,
+  m33: string | number = 1,
+  as = asFloat,
+) {
   const toStr = as || (x => `${x}`);
   return `mat4(${toStr(m00)}, ${toStr(m01)}, ${toStr(m02)}, ${toStr(m03)}, ${toStr(m10)}, ${toStr(m11)}, ${toStr(m12)}, ${toStr(m13)}, ${toStr(m20)}, ${toStr(m21)}, ${toStr(m22)}, ${toStr(m23)}, ${toStr(m30)}, ${toStr(m31)}, ${toStr(m32)}, ${toStr(m33)})`;
-};
+}
 
 export const rotate = (funcName = 'rotate', x = 0.0, y = 0.0, z = 1.0) => `
 mat4 ${funcName}(float angle) {
