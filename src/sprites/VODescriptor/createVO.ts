@@ -1,7 +1,5 @@
-/* eslint no-param-reassign: 0 */
 
-/** @private */
-export default (obj, descriptor, voArray) => {
+export function createVO(obj: any, descriptor: any, voArray: any) {
   // set VODescriptor
   //
   obj.descriptor = descriptor; // || (voArray ? voArray.descriptor : null);
@@ -20,4 +18,4 @@ export default (obj, descriptor, voArray) => {
   }
 
   return obj;
-};
+}

@@ -1,5 +1,5 @@
 
-export default (vertexObject, initializer) => {
+export function initializeVO(vertexObject: any, initializer: any) {
 
   switch (typeof initializer) { // eslint-disable-line
     case 'function':

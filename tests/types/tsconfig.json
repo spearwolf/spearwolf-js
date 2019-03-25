@@ -12,6 +12,7 @@
   "files": [
     "colors-test.ts",
     "math-test.ts",
+    "sprites-test.ts",
     "textures-test.ts",
     "utils-test.ts"
   ]

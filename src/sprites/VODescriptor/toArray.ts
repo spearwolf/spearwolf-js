@@ -1,5 +1,5 @@
-/** @private */
-export const toArray = descriptor => function (scalars) {
+
+export const toArray = (descriptor: any) => function (scalars: string[]) {
   const arr = [];
   const attrList = Array.isArray(scalars)
     ? scalars.map(name => descriptor.attr[name])
@@ -10,6 +10,7 @@ export const toArray = descriptor => function (scalars) {
     for (let j = 0; j < len; ++j) {
       const attr = attrList[j];
       for (let k = 0; k < attr.size; ++k) {
+        // @ts-ignore
         arr.push(attr.getValue(this, i, k));
       }
     }

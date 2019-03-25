@@ -1,10 +1,7 @@
-/* eslint no-param-reassign: 0 */
-// @ts-nocheck
+import { VODescriptor } from "./VODescriptor";
 
-/**
- * @private
- */
-export default (descriptor) => {
+export function createTypedArrays(descriptor: VODescriptor) {
+
   descriptor.typedArrays = {
     float32: false,
     int16: false,
@@ -19,5 +16,7 @@ export default (descriptor) => {
     descriptor.typedArrays[descriptor.attr[name].type] = true;
   });
 
+  // @ts-ignore
   descriptor.typeList = Object.keys(descriptor.typedArrays).filter(type => descriptor.typedArrays[type]).sort();
-};
+
+}

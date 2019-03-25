@@ -1,26 +1,8 @@
-/* eslint no-param-reassign: 0 */
-/* eslint func-names: 0 */
-/* eslint prefer-rest-params: 0 */
-import {
-  BYTES_PER_ELEMENT,
-  TYPED_ARRAY_GETTER,
-} from './typedArrayHelpers';
+import { BYTES_PER_ELEMENT, TYPED_ARRAY_GETTER } from './typedArrayHelpers';
 
-/**
- * @private
- * @param {string} name
- * @returns {string}
- */
-const camelize = name => name[0].toUpperCase() + name.substr(1);
+const camelize = (name: string) => name[0].toUpperCase() + name.substr(1);
 
-/**
- * @private
- * @param {VOAttrDescriptor} attrDesc
- * @param {string} name
- * @param {number} index
- * @returns {string}
- */
-const attrPostfix = (attrDesc, name, index) => {
+const attrPostfix = (attrDesc: VOAttrDescriptor, name: string, index: number): string => {
   if (attrDesc.scalars) {
     const postfix = attrDesc.scalars[index];
 
@@ -32,13 +14,13 @@ const attrPostfix = (attrDesc, name, index) => {
   return `${name}_${index}`;
 };
 
-/** @private */
-const getVNu = (getArray, offset) => function (attrIndex) {
+const getVNu = (getArray: any, offset: number) => function (attrIndex: number): number {
+  // @ts-ignore
   return getArray(this.voArray)[offset + attrIndex];
 };
 
-/** @private */
-const setVNu = (getArray, vectorLength, vertexCount, vertexAttrCount, offset) => function () {
+const setVNu = (getArray: any, vectorLength: number, vertexCount: number, vertexAttrCount: number, offset: number) => function () {
+  // @ts-ignore
   const arr = getArray(this.voArray);
 
   for (let i = 0; i < vertexCount; ++i) {
@@ -48,13 +30,13 @@ const setVNu = (getArray, vectorLength, vertexCount, vertexAttrCount, offset) =>
   }
 };
 
-/** @private */
-const getV1u = (getArray, offset) => function () {
+const getV1u = (getArray: any, offset: number) => function (): number {
+  // @ts-ignore
   return getArray(this.voArray)[offset];
 };
 
-/** @private */
-const setVNv = (getArray, vectorLength, vertexCount, vertexAttrCount, offset) => function () {
+const setVNv = (getArray: any, vectorLength: number, vertexCount: number, vertexAttrCount: number, offset: number) => function () {
+  // @ts-ignore
   const arr = getArray(this.voArray);
 
   for (let i = 0; i < vertexCount; ++i) {
@@ -64,8 +46,8 @@ const setVNv = (getArray, vectorLength, vertexCount, vertexAttrCount, offset) =>
   }
 };
 
-/** @private */
-const setV1u = (getArray, vertexCount, vertexAttrCount, offset) => function (value) {
+const setV1u = (getArray: any, vertexCount: number, vertexAttrCount: number, offset: number) => function (value: number) {
+  // @ts-ignore
   const arr = getArray(this.voArray);
 
   for (let i = 0; i < vertexCount; ++i) {
@@ -73,65 +55,64 @@ const setV1u = (getArray, vertexCount, vertexAttrCount, offset) => function (val
   }
 };
 
+export type VOArrayValueType = 'float32' | 'int16' | 'int32' | 'int8' | 'uint16' | 'uint32' | 'uint8';
+
 /**
  * Vertex object attribute descriptor
  */
-export default class VOAttrDescriptor {
+export class VOAttrDescriptor {
+
+  name: string;
+
+  type: VOArrayValueType;
+
+  size: number;
+
+  uniform: boolean;
+
+  scalars: string[];
+
+  bytesPerElement: number;
+  bytesPerVertex: number;
+  byteOffset: number;
+  offset: number;
 
   /**
-   * @param {string} name
-   * @param {'float32'|'int16'|'int32'|'int8'|'uint16'|'uint32'|'uint8'} type
-   * @param {number} size
-   * @param {number} [offset] - either `offset` or `byteOffset` must be specified
-   * @param {number} [byteOffset] - either `offset` or `byteOffset` must be specified
-   * @param {boolean} uniform
-   * @param {string[]} [scalars]
+   * @param offset - either `offset` or `byteOffset` must be specified
+   * @param byteOffset - either `offset` or `byteOffset` must be specified
    */
-  constructor(name, type, size, offset, byteOffset, uniform, scalars) {
+  constructor(name: string, type: VOArrayValueType, size: number, offset: number | undefined, byteOffset: number | undefined, uniform: boolean, scalars?: string[]) {
 
-    /** @type {string} */
     this.name = name;
 
-    /** @type {'float32'|'int16'|'int32'|'int8'|'uint16'|'uint32'|'uint8'} */
     this.type = type;
 
-    /** @type {number} */
     this.size = size;
 
-    /** @type {boolean} */
     this.uniform = uniform;
 
-    /** @type {string[]} */
     this.scalars = scalars;
 
-    /** @type {number} */
     this.bytesPerElement = BYTES_PER_ELEMENT[this.type];
 
-    /** @type {number} */
     this.bytesPerVertex = this.bytesPerElement * size;
 
-    /** @type {number} */
     this.byteOffset = typeof byteOffset !== 'number' ? offset * this.bytesPerElement : byteOffset;
 
-    /** @type {number} */
     this.offset = typeof offset !== 'number' ? byteOffset / this.bytesPerElement : offset;
 
   }
 
   /**
    * Number of attributes per vertex
-   * @returns {number}
    */
-  vertexAttrCount(descriptor) {
+  vertexAttrCount(descriptor: { bytesPerVertex: number }) {
     return descriptor.bytesPerVertex / this.bytesPerElement;
   }
 
-  /**
-   * @private
-   */
-  static defineProperties(attrDesc, propertiesObject, descriptor) {
+  static defineProperties(attrDesc: any, propertiesObject: any, descriptor: any) {
     const { name } = attrDesc;
-    const getArray = TYPED_ARRAY_GETTER[attrDesc.type];
+    const getArray = (TYPED_ARRAY_GETTER as any)[attrDesc.type];
     const { vertexCount } = descriptor;
     const vertexAttrCount = attrDesc.vertexAttrCount(descriptor);
     const offset = attrDesc.byteOffset / attrDesc.bytesPerElement;
@@ -141,8 +122,8 @@ export default class VOAttrDescriptor {
         const valueGetter = getV1u(getArray, offset);
         const valueSetter = setV1u(getArray, vertexCount, vertexAttrCount, offset);
 
-        attrDesc.getValue = vo => valueGetter.call(vo);
-        attrDesc.setValue = (vo, arg) => valueSetter.call(vo, arg);
+        attrDesc.getValue = (vo: any) => valueGetter.call(vo);
+        attrDesc.setValue = (vo: any, arg: any) => valueSetter.call(vo, arg);
 
         propertiesObject[name] = {
           get: valueGetter,
@@ -152,14 +133,14 @@ export default class VOAttrDescriptor {
       } else {
         const valueSetter = setVNv(getArray, 1, vertexCount, vertexAttrCount, offset);
 
-        attrDesc.setValue = (vo, args) => valueSetter.apply(vo, args);
+        attrDesc.setValue = (vo: any, args: any) => valueSetter.apply(vo, args);
 
         propertiesObject[`set${camelize(name)}`] = {
           value: valueSetter,
           enumerable: true,
         };
 
-        const valueGetters = [];
+        const valueGetters: any = [];
 
         for (let i = 0; i < descriptor.vertexCount; ++i) {
           const curValueGetter = getV1u(getArray, offset + (i * vertexAttrCount));
@@ -173,15 +154,15 @@ export default class VOAttrDescriptor {
           };
         }
 
-        attrDesc.getValue = (vo, vi) => valueGetters[vi].call(vo);
+        attrDesc.getValue = (vo: any, vi: any) => valueGetters[vi].call(vo);
       }
     } else if (attrDesc.size >= 2) {
       if (attrDesc.uniform) {
         const valueGetter = getVNu(getArray, offset);
         const valueSetter = setVNu(getArray, attrDesc.size, vertexCount, vertexAttrCount, offset);
 
-        attrDesc.getValue = (vo, vi, idx) => valueGetter.call(vo, idx);
-        attrDesc.setValue = (vo, args) => valueSetter.apply(vo, args);
+        attrDesc.getValue = (vo: any, _vi: number, idx: number) => valueGetter.call(vo, idx);
+        attrDesc.setValue = (vo: any, args: any) => valueSetter.apply(vo, args);
 
         propertiesObject[`get${camelize(name)}`] = {
           value: valueGetter,
@@ -205,14 +186,14 @@ export default class VOAttrDescriptor {
       } else {
         const valueSetter = setVNv(getArray, attrDesc.size, vertexCount, vertexAttrCount, offset);
 
-        attrDesc.setValue = (vo, args) => valueSetter.apply(vo, args);
+        attrDesc.setValue = (vo: any, args: any) => valueSetter.apply(vo, args);
 
         propertiesObject[`set${camelize(name)}`] = {
           value: valueSetter,
           enumerable: true,
         };
 
-        const valueGetters = [];
+        const valueGetters: any = [];
 
         for (let i = 0; i < descriptor.vertexCount; ++i) {
           const curVertexValueGetters = [];
@@ -233,7 +214,7 @@ export default class VOAttrDescriptor {
           valueGetters.push(curVertexValueGetters);
         }
 
-        attrDesc.getValue = (vo, vi, idx) => valueGetters[vi][idx].call(vo);
+        attrDesc.getValue = (vo: any, vi: number, idx: number) => valueGetters[vi][idx].call(vo);
       }
     }
   }

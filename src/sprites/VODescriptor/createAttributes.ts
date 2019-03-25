@@ -1,12 +1,11 @@
-/* eslint no-param-reassign: 0 */
 import { BYTES_PER_ELEMENT } from './typedArrayHelpers';
-import VOAttrDescriptor from './VOAttrDescriptor';
+import { VOAttrDescriptor } from './VOAttrDescriptor';
+import { VODescriptor, VOAttrDescription, VOAttributesDescription } from './VODescriptor';
 
 const DEFAULT_ATTR_TYPE = 'float32';
 
-/** @private */
-export default (descriptor, attributesOrObject) => {
-  let attributes;
+export const createAttributes = (descriptor: VODescriptor, attributesOrObject: VOAttributesDescription) => {
+  let attributes: VOAttrDescription[];
 
   if (Array.isArray(attributesOrObject)) {
     attributes = attributesOrObject;

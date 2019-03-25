@@ -1,9 +1,23 @@
 import { DataRef } from '../../core';
 
+import { VODescriptor } from '../VODescriptor';
+
 import { createBufferView } from './createBufferView';
 import { createLinkedTypedArrays, ArrayDataType } from './createLinkedTypedArrays';
 
 type TypedArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array;
+
+export interface VOArrayHints {
+
+  dynamic?: boolean;
+  autotouch?: boolean;
+
+  serial?: number;
+
+  descriptor?: VODescriptor;
+  typedArray?: Uint32Array;
+
+}
 
 /**
  * A wrapper for an ArrayBuffer which additional holds multiple references to typed arrays.
@@ -52,7 +66,7 @@ export class VOArray {
     bytesPerVO: number,
     arrayDataTypes: ArrayDataType[],
     data?: ArrayBuffer | DataView | TypedArray,
-    hints?: Object,
+    hints?: VOArrayHints,
   ) {
 
     if (bytesPerVO % 4 !== 0) {

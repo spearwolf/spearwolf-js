@@ -1,12 +1,7 @@
-/* eslint func-names: 0 */
-/* eslint no-param-reassign: 0 */
-import VOAttrDescriptor from './VOAttrDescriptor';
+import { VOAttrDescriptor } from './VOAttrDescriptor';
 import { toArray } from './toArray';
 
-/**
- * @private
- */
-export default (descriptor, methods = {}) => {
+export function createVOPrototype(descriptor: any, methods = {}) {
   const propertiesObject = {
     toArray: {
       value: toArray(descriptor),
