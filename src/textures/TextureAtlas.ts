@@ -107,8 +107,8 @@ export class TextureAtlas {
     return sample(this._allFrames);
   }
 
-  frameNames(match: string | RegExp) {
-    if (match) {
+  frameNames(match?: string | RegExp) {
+    if (match != null) {
       const regex = typeof match === 'string' ? new RegExp(match) : match;
       return this._allFrameNames.filter((name) => regex.test(name));
     }
