@@ -1,24 +1,26 @@
-/* eslint-env browser */
-import { PowerOf2Image } from './PowerOf2Image';
+import { ImageSource, PowerOf2Image } from './PowerOf2Image';
+
+export type TextureImage = PowerOf2Image | ImageSource;
+export type TextureSource = Texture | TextureImage;
 
 export class Texture {
 
-  static async load(url) {
+  static async load(url: string) {
     return new Texture(await new PowerOf2Image(url).loaded);
   }
 
-  image = null;
-  parent = null;
+  image: TextureImage = null;
+  parent: Texture = null;
 
   x = 0;
   y = 0;
 
-  _width = 0; 
-  _height = 0;
+  private _width = 0;
+  private _height = 0;
 
-  _features = null;
+  private _features: Map<string, unknown> = null;
 
-  constructor(source, width = undefined, height = undefined, x = 0, y = 0) {
+  constructor(source: TextureSource, width? :number, height?: number, x = 0, y = 0) {
     let w = width;
     let h = height;
 
@@ -43,18 +45,18 @@ export class Texture {
     this.y = y;
   }
 
-  getFeature(name) {
+  getFeature(name: string) {
     return this._features !== null ? this._features.get(name) : undefined;
   }
 
-  setFeature(name, value) {
+  setFeature(name: string, value: unknown) {
     if (this._features === null) {
       this._features = new Map();
     }
     this._features.set(name, value);
   }
 
-  get root() {
+  get root(): Texture {
     return (this.parent && this.parent.root) || this;
   }
 
@@ -66,7 +68,7 @@ export class Texture {
     return root.image;
   }
 
-  get width() {
+  get width(): number {
     return (typeof this._width === 'number'
       ? this._width
       : (this.image
@@ -83,7 +85,7 @@ export class Texture {
     this._width = w;
   }
 
-  get height() {
+  get height(): number {
     return (typeof this._height === 'number'
       ? this._height
       : (this.image
@@ -102,7 +104,7 @@ export class Texture {
 
   get minS() {
     let { x } = this;
-    let texture = this;
+    let texture: Texture = this;
 
     while ((texture = texture.parent) != null) {
       x += texture.x;
@@ -113,7 +115,7 @@ export class Texture {
 
   get minT() {
     let { y } = this;
-    let texture = this;
+    let texture: Texture = this;
 
     while ((texture = texture.parent) != null) {
       y += texture.y;
@@ -124,7 +126,7 @@ export class Texture {
 
   get maxS() {
     let x = this.x + this.width;
-    let texture = this;
+    let texture: Texture = this;
 
     while ((texture = texture.parent) != null) {
       x += texture.x;
@@ -135,7 +137,7 @@ export class Texture {
 
   get maxT() {
     let y = this.y + this.height;
-    let texture = this;
+    let texture: Texture = this;
 
     while ((texture = texture.parent) != null) {
       y += texture.y;

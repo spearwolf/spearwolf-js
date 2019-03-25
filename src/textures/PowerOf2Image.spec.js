@@ -21,11 +21,11 @@ describe('PowerOf2Image', () => {
     it('origWidth', () => assert.equal(p2img.origWidth, 128));
     it('origHeight', () => assert.equal(p2img.origHeight, 256));
     it('isLoaded', () => assert.equal(p2img.isLoaded, true));
-    it('imgEl', () => assert(p2img.imgEl instanceof window.HTMLImageElement));
+    it('imgEl', () => assert(p2img.imgEl instanceof HTMLImageElement));
   });
 
   describe('should load image from HTMLImageElement', () => {
-    const img = new window.Image();
+    const img = new Image();
     img.src = '/assets/nobinger.png';
     let origWidth;
     let origHeight;
@@ -43,7 +43,7 @@ describe('PowerOf2Image', () => {
     it('width', () => assert.equal(p2img.width, 128));
     it('height', () => assert.equal(p2img.height, 256));
     it('isLoaded', () => assert.equal(p2img.isLoaded, true));
-    it('imgEl', () => assert(p2img.imgEl instanceof window.HTMLImageElement));
+    it('imgEl', () => assert(p2img.imgEl instanceof HTMLImageElement));
   });
 
   describe('should convert non-power-of-2 image', () => {
@@ -57,7 +57,7 @@ describe('PowerOf2Image', () => {
     it('height', () => assert.equal(p2img.height, 512));
     it('origWidth', () => assert.equal(p2img.origWidth, 640));
     it('origHeight', () => assert.equal(p2img.origHeight, 480));
-    it('imgEl', () => assert(p2img.imgEl instanceof window.HTMLCanvasElement));
+    it('imgEl', () => assert(p2img.imgEl instanceof HTMLCanvasElement));
   });
 });
 
