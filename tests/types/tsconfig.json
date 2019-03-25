@@ -10,8 +10,9 @@
     }
   },
   "files": [
-    "utils-test.ts",
-    "core-test.ts",
-    "textures-test.ts"
+    "colors-test.ts",
+    "math-test.ts",
+    "textures-test.ts",
+    "utils-test.ts"
   ]
 }

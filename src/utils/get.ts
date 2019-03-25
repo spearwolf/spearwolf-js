@@ -1,9 +1,7 @@
 
-/** @private */
 const arrayAccessor = new RegExp(/(.+)\[(\d+)\]$/);
 
-/** @private */
-const getProp = (obj, prop) => {
+const getProp = (obj: any, prop: string) => {
   const aa = arrayAccessor.exec(prop);
   if (aa) {
     const val = obj[aa[1]];
@@ -17,13 +15,12 @@ const getProp = (obj, prop) => {
 
 /**
  * A rough and unpolished version of lodash's `get()`
- * @param {Object} obj
- * @param {string} path - The property path. Supports `.` (dots) and `[1]` (array access) syntax.
+ * @param path - The property path. Supports `.` (dots) and `[1]` (array access) syntax.
  */
-const get = (obj, path) => {
+export const get = (obj: Object, path: string): unknown => {
   if (obj != null) {
     if (path in obj) {
-      return obj[path];
+      return (obj as any)[path];
     }
     const items = path.split(/[.]/);
     const val = getProp(obj, items.shift());
@@ -33,5 +30,3 @@ const get = (obj, path) => {
     return val;
   }
 };
-
-export default get;

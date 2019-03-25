@@ -1,8 +1,7 @@
 
-export { default as generateUuid } from './generateUuid';
-export { default as get } from './get';
-export { default as readOption } from './readOption';
-export { default as sample } from './sample';
-
+export * from './generateUuid';
+export * from './get';
 export * from './pick';
+export * from './readOption';
+export * from './sample';
 export * from './unpick';
