@@ -38,7 +38,7 @@ function createSpriteSizeHook (setSize: string | SpriteSizeSetter = 'size'): Spr
 
 type VOIndicesFactoryFn = (capacity: number) => VOIndices;
 
-export interface SpriteGroupOptions<T, K = Object> {
+export interface SpriteGroupOptions<T> {
 
   /**
    * Maximum number of vertex objects
@@ -87,14 +87,9 @@ export interface SpriteGroupOptions<T, K = Object> {
    */
   autotouch?: boolean;
 
-  /**
-   * Create an *instanced* sprite group. Set this as the *base* instance.
-   */
-  base?: SpriteGroupOptions<K> | SpriteGroup<K>;
-
 }
 
-export class SpriteGroup<T, K = Object> {
+export class SpriteGroup<T> {
 
   readonly descriptor: VODescriptor<T>;
 
@@ -105,7 +100,7 @@ export class SpriteGroup<T, K = Object> {
   readonly voPool: VOPool<T>;
   readonly indices: VOIndices;
 
-  constructor(descriptor: VODescriptor<T>, options: SpriteGroupOptions<T, K> = {}) {
+  constructor(descriptor: VODescriptor<T>, options: SpriteGroupOptions<T> = {}) {
 
     this.descriptor = descriptor;
 
