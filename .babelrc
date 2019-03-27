@@ -4,5 +4,18 @@
     ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": false }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     ["@babel/plugin-proposal-object-rest-spread", { "loose": true, "useBuiltIns": true }]
-  ]
+  ],
+  "env": {
+    "production": {
+      "presets": [
+        [ "@babel/preset-env", {
+          "targets": {
+            "esmodules": true
+          },
+          "ignoreBrowserslistConfig": true,
+          "modules": false
+        }]
+      ]
+    }
+  }
 }

@@ -1,11 +1,11 @@
-export * from './core';
 export * from './colors';
+export * from './core';
 export * from './math';
+export * from './shaders';
 export * from './sprites';
-export * from './utils';
 export * from './textures';
 export * from './three';
-export * from './shaders';
+export * from './utils';
 
-// eslint-disable-next-line no-undef
+// @ts-ignore
 export const VERSION = typeof PACKAGE_VERSION !== 'undefined' ? PACKAGE_VERSION : 'dev';

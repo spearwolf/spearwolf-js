@@ -3,8 +3,8 @@
   "version": "0.0.6",
   "description": "various javascript helpers and classes for various three.js/webgl experiments!",
   "main": "dist/spearwolf.js",
-  "module": "src/index.js",
-  "types": "src/index.d.ts",
+  "module": "build/index.js",
+  "types": "src/index.ts",
   "sideEffects": false,
   "directories": {
     "example": "examples"
@@ -12,6 +12,8 @@
   "scripts": {
     "build:umd": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.umd.js",
     "build:esm-bundle": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.esm.js",
+    "build:esm": "cross-env BABEL_ENV=production babel src/ --extensions \".ts\" --out-dir ./build/ --source-maps",
+    "watch:esm": "cross-env BABEL_ENV=production babel src/ --extensions \".ts\" --out-dir ./build/ --source-maps --watch",
     "build": "run-p build:*",
     "prepublishOnly": "run-p build:*",
     "clean": "rimraf build coverage dist",

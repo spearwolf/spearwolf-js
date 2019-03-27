@@ -5,9 +5,11 @@
     "noUnusedLocals": false,
 
     "baseUrl": ".",
+
     "paths": {
-      "spearwolf-js": ["../../src/index.d.ts"]
+      "spearwolf-js": ["../../src/index.ts"]
     }
+
   },
   "files": [
     "colors-test.ts",
