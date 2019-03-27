@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { VOIndices } from '.';
+import { VOIndices } from '..';
 
 describe('VOIndices', () => {
   it('build(10x quad indices)', () => {

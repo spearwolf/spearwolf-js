@@ -2,9 +2,9 @@
 /* eslint no-param-reassign: 0 */
 import assert from 'assert';
 
-import { SpriteGroup } from './SpriteGroup';
-import { VODescriptor } from './VODescriptor';
-import { VOIndices } from './VOIndices';
+import { SpriteGroup } from '../SpriteGroup';
+import { VODescriptor } from '../VODescriptor';
+import { VOIndices } from '../VOIndices';
 
 describe('SpriteGroup', () => {
   const voDescriptor = new VODescriptor({
