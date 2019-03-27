@@ -32,7 +32,7 @@ interface VOAttrsMap {
 
 export type VOAttributesDescription = VOAttrsMap | Array<VOAttrDescription>;
 
-interface VODescription<T> {
+export interface VODescription<T> {
 
   vertexCount?: number;
 
@@ -54,12 +54,17 @@ interface VertexObjectMethods<T> {
 
   toArray: toArrayFn;
 
+  /**
+   * Free the vertex object
+   */
+  free: () => void;
+
 }
 
-type VertexObject<T> = T & VertexObjectMethods<T>;
+export type VertexObject<T> = T & VertexObjectMethods<T>;
 
-type VOInitializerFn<T> = (vo: VertexObject<T>) => void;
-type VOInitializer<T> = Object | VOInitializerFn<T>;
+export type VOInitializerFn<T> = (vo: VertexObject<T>) => void;
+export type VOInitializer<T> = Object | VOInitializerFn<T>;
 
 /**
  * Vertex object descriptor

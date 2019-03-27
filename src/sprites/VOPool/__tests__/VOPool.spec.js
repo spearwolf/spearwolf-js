@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import assert from 'assert';
 
-import { VODescriptor, VOPool } from '..';
+import { VODescriptor, VOPool } from '../..';
 
 describe('VOPool', () => {
   const descriptor = new VODescriptor({
@@ -44,6 +44,7 @@ describe('VOPool', () => {
 
   describe('new VOPool()', () => {
     const zero = descriptor.createVO();
+    // @ts-ignore
     zero.setPosition(666, 667, 668, 669, 670, 671, 672, 673, 674);
 
     const pool = new VOPool(descriptor, { capacity: 8, voZero: zero });
