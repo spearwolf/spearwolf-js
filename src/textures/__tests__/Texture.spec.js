@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { Texture, PowerOf2Image } from '.';
+import { Texture, PowerOf2Image } from '..';
 
 describe('Texture', () => {
   describe('new Texture(<img>)', () => {
