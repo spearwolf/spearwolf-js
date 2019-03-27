@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { DataRef } from '.';
+import { DataRef } from '..';
 
 describe('DataRef', () => {
   it('create instance', () => {

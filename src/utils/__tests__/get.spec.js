@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { get } from '.';
+import { get } from '..';
 
 describe('get', () => {
   it('undefined', () => {

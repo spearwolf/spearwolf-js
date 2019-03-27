@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { PowerOf2Image } from '.';
+import { PowerOf2Image } from '..';
 
 describe('PowerOf2Image', () => {
   describe('should load image from given url', () => {

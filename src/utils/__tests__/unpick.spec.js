@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { unpick } from './unpick';
+import { unpick } from '../unpick';
 
 describe('unpick', () => {
   it('should work', () => {

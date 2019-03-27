@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import assert from 'assert';
 
-import { TextureAtlas } from '.';
+import { TextureAtlas } from '..';
 
 describe('TextureAtlas', () => {
   describe('TextureAtlas.load', () => {
