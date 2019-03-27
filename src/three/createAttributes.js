@@ -5,9 +5,9 @@ import * as THREE from 'three';
 
 /**
  * @private
- * @param {SpriteGroup} spriteGroup 
- * @param {THREE.BufferGeometry} bufferGeometry 
- * @param {(TypedArray, number) => THREE.InterleavedBuffer} createBuffer 
+ * @param {SpriteGroup} spriteGroup
+ * @param {THREE.BufferGeometry} bufferGeometry
+ * @param {(TypedArray, number) => THREE.InterleavedBuffer} createBuffer
  */
 export const createAttributes = (spriteGroup, bufferGeometry, createBuffer) => {
 

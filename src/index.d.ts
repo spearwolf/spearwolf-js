@@ -8,6 +8,7 @@ export * from './math';
 export * from './shaders';
 export * from './sprites';
 export * from './textures';
+export * from './three';
 export * from './utils';
 
 export as namespace spearwolf;

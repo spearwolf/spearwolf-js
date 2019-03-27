@@ -1,11 +1,7 @@
-/* eslint-env browser */
 import * as THREE from 'three';
 
 import { readOption, pick } from '../utils';
 
-/**
- * @private
- */
 const filterThreeParameters = pick([
   'precision',
   'alpha',
@@ -18,96 +14,115 @@ const filterThreeParameters = pick([
   'logarithmicDepthBuffer',
 ]);
 
-export class ThreeCanvas extends THREE.EventDispatcher {
+export type ThreeCanvasResizeStrategy = 'canvas'| 'container';
+
+export interface ThreeCanvasOptions {
+
+  resizeStrategy?: ThreeCanvasResizeStrategy;
+
+  pixelRatio?: number;
+
+  clearColor?: string | THREE.Color;
 
   /**
-   * @readonly
-   * @type {THREE.WebGLRenderer}
+   * Default is `mediump`.
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
    */
-  renderer = null;
+  precision?: 'highp' | 'mediump' | 'lowp';
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  alpha?: boolean;
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  premultipliedAlpha?: boolean;
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  antialias?: boolean;
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  stencil?: boolean;
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  preserveDrawingBuffer?: boolean;
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  powerPreference?: 'high-performance' | 'low-power' | 'default';
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  depth?: boolean;
+
+  /**
+   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
+   */
+  logarithmicDepthBuffer?: boolean;
+
+}
+
+export class ThreeCanvas extends THREE.EventDispatcher {
+
+  readonly renderer: THREE.WebGLRenderer;
+
+  readonly canvas: HTMLCanvasElement;
+
+  resizeStrategy: ThreeCanvasResizeStrategy;
 
   /**
    * _css_ pixels
-   * @readonly
-   * @type {number}
    */
   width = 0;
 
   /**
    * _css_ pixels
-   * @readonly
-   * @type {number}
    */
   height = 0;
 
   /**
    * Time in *seconds*.
-   * @readonly
-   * @type {number}
    */
   now = 0;
 
   /**
    * The time in *seconds* as it was at the last call of `frame()`.
-   * @readonly
-   * @type {number}
    */
   lastNow = 0;
 
   /**
    * Seconds passed since the last render / previous call to `frame()`.
-   * @readonly
-   * @type {number}
    */
   deltaTime = 0;
 
   /**
    * Current frame number. Initially set to 0.
-   * @readonly
-   * @type {number}
    */
   frameNo = 0;
 
-  /**
-   * @type {boolean}
-   */
   pause = false;
 
-  /**
-   * @private
-   * @type {number}
-   */
-  _pixelRatio = 0;
+  private _pixelRatio = 0;
 
-  /**
-   * @private
-   * @type {number}
-   */
-  _rafID = 0;
+  private _rafID = 0;
 
-  /**
-   * @param {HTMLElement} el
-   * @param {Object} [options]
-   * @param {'canvas'|'container'} [options.resizeStrategy]
-   * @param {number} [options.pixelRatio]
-   * @param {string|THREE.Color} [options.clearColor]
-   * @param {'highp'|'mediump'|'lowp'} [options.precision='mediump'] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.alpha] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.premultipliedAlpha] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.antialias] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.stencil] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.preserveDrawingBuffer] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {'high-performance'|'low-power'|'default'} [options.powerPreference] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.depth] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   * @param {boolean} [options.logarithmicDepthBuffer] - see [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  constructor(el, options) {
+  constructor(el: HTMLElement, options?: ThreeCanvasOptions) {
     super();
 
     let defaultResizeStrategy = 'canvas';
 
     if (el && el.tagName === 'CANVAS') {
-      this.canvas = el;
+      this.canvas = el as HTMLCanvasElement;
     } else {
       this.canvas = document.createElement('canvas');
       if (el) {
@@ -116,9 +131,9 @@ export class ThreeCanvas extends THREE.EventDispatcher {
       }
     }
 
-    this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy);
+    this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy) as ThreeCanvasResizeStrategy;
 
-    this._pixelRatio = readOption(options, 'pixelRatio', 0);
+    this._pixelRatio = readOption(options, 'pixelRatio', 0) as number;
 
     const threeParams = Object.assign({
       precision: 'mediump',
@@ -128,7 +143,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
     this.renderer = new THREE.WebGLRenderer(threeParams);
 
-    const clearColor = readOption(options, 'clearColor', new THREE.Color());
+    const clearColor = readOption(options, 'clearColor', new THREE.Color()) as THREE.Color | string;
 
     this.renderer.setClearColor(
       clearColor instanceof THREE.Color ? clearColor : new THREE.Color(clearColor),
@@ -138,9 +153,6 @@ export class ThreeCanvas extends THREE.EventDispatcher {
     this.resize();
   }
 
-  /**
-   * @type {number}
-   */
   get pixelRatio() {
     return this._pixelRatio || window.devicePixelRatio || 1;
   }
@@ -151,7 +163,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
     const {
       clientWidth: wPx,
       clientHeight: hPx,
-    } = this.resizeStrategy === 'container' ? canvas.parentNode : canvas;
+    } = this.resizeStrategy === 'container' ? canvas.parentNode as HTMLElement : canvas;
 
     if (wPx !== this.width || hPx !== this.height) {
 
@@ -168,17 +180,20 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
   dispatchResizeEvent() {
     this.dispatchEvent({
+
       width: this.width,
       height: this.height,
 
       threeCanvas: this,
 
       type: 'resize',
+
     });
   }
 
-  dispatchFrameEvent(type) {
+  dispatchFrameEvent(type: string) {
     this.dispatchEvent({
+
       type,
 
       threeCanvas: this,
@@ -190,6 +205,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
       width: this.width,
       height: this.height,
+
     });
   }
 
@@ -213,10 +229,11 @@ export class ThreeCanvas extends THREE.EventDispatcher {
     this.dispatchFrameEvent('frame');
 
     this.frameNo++;
+
   }
 
   start() {
-    const renderFrame = (now) => {
+    const renderFrame = (now: number) => {
       if (!this.pause) {
         this.frame(now);
       }
