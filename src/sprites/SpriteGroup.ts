@@ -67,6 +67,7 @@ export interface SpriteGroupOptions<T> {
    * As an alternative you can specify the *name* of the *size* attribute for the vertex objects (should be a 2d vector uniform).
    * Default is `setSize`.
    * This function is called every time a new sprite is created.
+   * See [[SpriteGroup#createSprite]]
    */
   setSize?: string | SpriteSizeSetter;
 

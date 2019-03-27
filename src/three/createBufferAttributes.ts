@@ -1,21 +1,20 @@
 import * as THREE from 'three';
 
-/** @typedef {import('../sprites').SpriteGroup} SpriteGroup */
-/** @typedef {import('../sprites/VOArray').TypedArray} TypedArray */
+import { SpriteGroup } from '../sprites';
 
-/**
- * @private
- * @param {SpriteGroup} spriteGroup
- * @param {THREE.BufferGeometry} bufferGeometry
- * @param {(TypedArray, number) => THREE.InterleavedBuffer} createBuffer
- */
-export const createAttributes = (spriteGroup, bufferGeometry, createBuffer) => {
+type CreateBufferFn<K> = (typedArray: any, stride: number) => K;
+
+export function createBufferAttributes<T, K = THREE.InterleavedBuffer> (
+  spriteGroup: SpriteGroup<T>,
+  bufferGeometry: THREE.BufferGeometry,
+  createBuffer: CreateBufferFn<K>,
+) {
 
   const { descriptor } = spriteGroup;
   const { voArray } = spriteGroup.voPool;
 
-  const bufCollection = [];
-  const bufMap = new Map();
+  const bufCollection: K[] = [];
+  const bufMap: Map<string, K> = new Map();
 
   const isDynamic = spriteGroup.voPool.voArray.ref.hasHint('dynamic', true);
 
@@ -32,14 +31,14 @@ export const createAttributes = (spriteGroup, bufferGeometry, createBuffer) => {
 
       // buffer = new THREE.InterleavedBuffer(typedArray, stride);
       buffer = createBuffer(typedArray, stride);
-      buffer.setDynamic(isDynamic);
+      (buffer as any).setDynamic(isDynamic);
 
       bufCollection.push(buffer);
       bufMap.set(attr.type, buffer);
 
     }
 
-    const bufferAttr = new THREE.InterleavedBufferAttribute(buffer, attr.size, attr.offset);
+    const bufferAttr = new THREE.InterleavedBufferAttribute(buffer as any, attr.size, attr.offset);
     bufferGeometry.addAttribute(attrName, bufferAttr);
 
   });
