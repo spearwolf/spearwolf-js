@@ -2,7 +2,7 @@
 import assert from 'assert';
 import assertVOAttrDescriptor from './assertVOAttrDescriptor';
 
-import { VODescriptor, VOArray } from '..';
+import { VODescriptor, VOArray } from '../..';
 
 /** @private */
 const assertPropertyTypes = (vo, props) => {
