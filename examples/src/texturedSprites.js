@@ -128,6 +128,8 @@ const init = async ({ canvas, scene }) => {
   //
   // ----------------------------------------------------------------------------------
 
+  const anisotrophy = canvas.renderer.capabilities.getMaxAnisotropy();
+
   const material = new THREE.ShaderMaterial({
 
     vertexShader: `
@@ -158,7 +160,7 @@ const init = async ({ canvas, scene }) => {
 
     uniforms: {
       time: timeUniform,
-      tex: { value: makeTexture(atlas.baseTexture.imgEl) },
+      tex: { value: makeTexture(atlas.baseTexture.imgEl, anisotrophy) },
     },
 
     side: THREE.DoubleSide,
