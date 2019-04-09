@@ -47,6 +47,7 @@ module.exports = {
               ['@babel/preset-env', {
                 debug: true,
                 useBuiltIns: 'entry',
+                corejs: 2,
               }],
             ],
           },

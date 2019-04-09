@@ -60,6 +60,7 @@ export default ({
               ? {
                   debug: false,
                   useBuiltIns: 'usage',
+                  corejs: 2,
                   targets: {
                     esmodules: true,
                   },
@@ -68,6 +69,7 @@ export default ({
                   debug: false,
                   modules: false,
                   useBuiltIns: 'usage',
+                  corejs: 2,
                 },
           ],
         ],
