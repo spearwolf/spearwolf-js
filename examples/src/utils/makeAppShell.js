@@ -31,7 +31,7 @@ export const makeAppShell = async (el, options, initializer) => {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 
-    scene.rotateOnAxis(yAxis, deltaTime * 0.5);
+    scene.rotateOnAxis(yAxis, deltaTime * 0.125);
 
     renderer.render(scene, camera);
 

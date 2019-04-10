@@ -109,7 +109,7 @@ const init = async ({ canvas, scene }) => {
 
   canvas.addEventListener('frame', ({ now }) => {
 
-    timeUniform.value = now % Math.PI * 2;
+    timeUniform.value = (now * 0.5) % Math.PI * 2;
 
   });
 
@@ -119,7 +119,7 @@ const init = async ({ canvas, scene }) => {
   //
   // ----------------------------------------------------------------------------------
 
-  const baseGeometry = new THREE.SphereBufferGeometry(12, 10, 10);
+  const baseGeometry = new THREE.SphereBufferGeometry(12, 16, 16);
 
   const material = new THREE.MeshLambertMaterial();
 
