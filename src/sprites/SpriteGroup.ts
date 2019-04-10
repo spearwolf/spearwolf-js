@@ -5,7 +5,7 @@ import { VODescriptor, VertexObject } from './VODescriptor';
 import { VOArray } from './VOArray';
 import { VOIndices } from './VOIndices';
 
-export type SpriteSizeSetter = (sprite: Object, w: number, h: number, descriptor: any) => void;
+export type SpriteSizeSetter<T, U> = (sprite: VertexObject<T, U>, w: number, h: number, descriptor: VODescriptor<T, U>) => void;
 
 const pickVOPoolOpts = pick([
   'autotouch',
@@ -16,11 +16,11 @@ const pickVOPoolOpts = pick([
   'voArray',
 ]);
 
-function createSpriteSizeHook (setSize: string | SpriteSizeSetter = 'size'): SpriteSizeSetter {
+function createSpriteSizeHook<T, U> (setSize: string | SpriteSizeSetter<T, U> = 'size'): SpriteSizeSetter<T, U> {
   switch (typeof setSize) {
 
     case 'string':
-      return (sprite, w, h, descriptor) => descriptor.attr[setSize].setValue(sprite, [w, h]);
+      return (sprite, w, h, descriptor) => (descriptor.attr[setSize] as any).setValue(sprite, [w, h]);
 
     case 'function':
       return setSize;
@@ -69,7 +69,7 @@ export interface SpriteGroupOptions<T, U> {
    * This function is called every time a new sprite is created.
    * See [[SpriteGroup#createSprite]]
    */
-  setSize?: string | SpriteSizeSetter;
+  setSize?: string | SpriteSizeSetter<T, U>;
 
   /**
    * See [[VOArray]]
@@ -96,7 +96,7 @@ export class SpriteGroup<T, U> {
 
   readonly isSpriteGroup = true;
 
-  setSpriteSize: SpriteSizeSetter;
+  setSpriteSize: SpriteSizeSetter<T, U>;
 
   readonly voPool: VOPool<T, U>;
   readonly indices: VOIndices;

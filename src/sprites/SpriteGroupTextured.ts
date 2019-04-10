@@ -1,21 +1,21 @@
 import { Texture } from '../textures';
 
 import { SpriteGroup, SpriteGroupOptions } from './SpriteGroup';
-import { VODescriptor } from './VODescriptor';
+import { VODescriptor, VertexObject } from './VODescriptor';
 
-export type SpriteTexCoordsSetter = (sprite: Object, texture: Texture, descriptor: any) => void;
+export type SpriteTexCoordsSetter<T, U> = (sprite: VertexObject<T, U>, texture: Texture, descriptor: VODescriptor<T, U>) => void;
 
 const DEFAULT_TEX_COORDS_SETTER = (sprite: any, texture: any) => sprite.setTexCoordsByTexture(texture);
 
 export interface SpriteGroupTexturedOptions<T, U> extends SpriteGroupOptions<T, U> {
 
-  setTexCoordsByTexture?: SpriteTexCoordsSetter;
+  setTexCoordsByTexture?: SpriteTexCoordsSetter<T, U>;
 
 }
 
 export class SpriteGroupTextured<T, U> extends SpriteGroup<T, U> {
 
-  setTexCoordsByTexture: SpriteTexCoordsSetter;
+  setTexCoordsByTexture: SpriteTexCoordsSetter<T, U>;
 
   constructor(descriptor: VODescriptor<T, U>, options: SpriteGroupTexturedOptions<T, U> = {}) {
     super(descriptor, options);
