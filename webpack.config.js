@@ -2,16 +2,18 @@
 const webpack = require('webpack');
 const packageJson = require('./package.json');
 
+const corejs = ['core-js/stable', 'regenerator-runtime/runtime'];
+
 module.exports = {
   mode: 'development',
   devtool: 'source-maps',
   entry: {
-    'version.bundle': ['@babel/polyfill', './examples/src/version.js'],
-    'hello-three-canvas.bundle': ['@babel/polyfill', './examples/src/helloThreeCanvas.js'],
-    'sprite-group-buffer-geometry.bundle': ['@babel/polyfill', './examples/src/spriteGroupBufferGeometry.js'],
-    'textured-sprites.bundle': ['@babel/polyfill', './examples/src/texturedSprites.js'],
-    'instanced-sprites.bundle': ['@babel/polyfill', './examples/src/instancedSprites.js'],
-    'instanced-geometry.bundle': ['@babel/polyfill', './examples/src/instancedGeometry.js'],
+    'version.bundle': [...corejs, './examples/src/version.js'],
+    'hello-three-canvas.bundle': [...corejs, './examples/src/helloThreeCanvas.js'],
+    'sprite-group-buffer-geometry.bundle': [...corejs, './examples/src/spriteGroupBufferGeometry.js'],
+    'textured-sprites.bundle': [...corejs, './examples/src/texturedSprites.js'],
+    'instanced-sprites.bundle': [...corejs, './examples/src/instancedSprites.js'],
+    'instanced-geometry.bundle': [...corejs, './examples/src/instancedGeometry.js'],
   },
   devServer: {
     port: 3000,
@@ -47,7 +49,7 @@ module.exports = {
               ['@babel/preset-env', {
                 debug: true,
                 useBuiltIns: 'entry',
-                corejs: 2,
+                corejs: 3,
               }],
             ],
           },
