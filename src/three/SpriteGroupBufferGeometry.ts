@@ -4,18 +4,18 @@ import { SpriteGroup } from '../sprites';
 
 import { createBufferAttributes } from './createBufferAttributes';
 
-export class SpriteGroupBufferGeometry<T> extends THREE.BufferGeometry {
+export class SpriteGroupBufferGeometry<T, U> extends THREE.BufferGeometry {
 
   /**
    * Initial parameters at creation time
    */
   readonly parameters: {
-    spriteGroup: SpriteGroup<T>;
+    spriteGroup: SpriteGroup<T, U>;
   };
 
   private readonly _buffers: THREE.InterleavedBuffer[];
 
-  constructor(spriteGroup: SpriteGroup<T>) {
+  constructor(spriteGroup: SpriteGroup<T, U>) {
     super();
 
     this.type = 'spearwolf.SpriteGroupBufferGeometry';

@@ -4,8 +4,8 @@ import { SpriteGroup } from '../sprites';
 
 type CreateBufferFn<K> = (typedArray: any, stride: number) => K;
 
-export function createBufferAttributes<T, K = THREE.InterleavedBuffer> (
-  spriteGroup: SpriteGroup<T>,
+export function createBufferAttributes<T, U, K = THREE.InterleavedBuffer> (
+  spriteGroup: SpriteGroup<T, U>,
   bufferGeometry: THREE.BufferGeometry,
   createBuffer: CreateBufferFn<K>,
 ) {

@@ -6,7 +6,7 @@ import { VODescriptor, VertexObject } from '../VODescriptor';
 
 import { createVOs } from './createVOs';
 
-export interface VOPoolOptions<T> {
+export interface VOPoolOptions<T, U> {
 
   /**
    * Maximum number of vertex objects
@@ -21,12 +21,12 @@ export interface VOPoolOptions<T> {
    /**
     * Blueprint for unused vertex objects
     */
-   voZero?: VertexObject<T>;
+   voZero?: VertexObject<T, U>;
 
    /**
     * Blueprint for new vertex objects
     */
-   voNew?: VertexObject<T>;
+   voNew?: VertexObject<T, U>;
 
    /**
     * Never allocate more than `maxAllocVOSize` vertex objects at once.
@@ -51,11 +51,11 @@ export interface VOPoolOptions<T> {
 }
 
 
-export class VOPool<T = Object> {
+export class VOPool<T, U> {
 
   readonly id: string;
 
-  readonly descriptor: VODescriptor<T>;
+  readonly descriptor: VODescriptor<T, U>;
 
   readonly capacity: number;
 
@@ -63,16 +63,16 @@ export class VOPool<T = Object> {
 
   voArray: VOArray;
 
-  voZero: VertexObject<T>;
-  voNew: VertexObject<T>;
+  voZero: VertexObject<T, U>;
+  voNew: VertexObject<T, U>;
 
   dynamic: boolean;
 
-  readonly availableVOs: VertexObject<T>[] = [];
-  readonly usedVOs: VertexObject<T>[] = [];
+  readonly availableVOs: VertexObject<T, U>[] = [];
+  readonly usedVOs: VertexObject<T, U>[] = [];
 
 
-  constructor(descriptor: VODescriptor<T>, options: VOPoolOptions<T>) {
+  constructor(descriptor: VODescriptor<T, U>, options: VOPoolOptions<T, U>) {
 
     this.id = generateUuid();
 
@@ -82,8 +82,8 @@ export class VOPool<T = Object> {
 
     this.maxAllocVOSize = readOption(options, 'maxAllocVOSize', 0) as number;
 
-    this.voZero = readOption(options, 'voZero', () => descriptor.createVO()) as VertexObject<T>;
-    this.voNew = readOption(options, 'voNew', () => descriptor.createVO()) as VertexObject<T>;
+    this.voZero = readOption(options, 'voZero', () => descriptor.createVO()) as VertexObject<T, U>;
+    this.voNew = readOption(options, 'voNew', () => descriptor.createVO()) as VertexObject<T, U>;
 
     this.dynamic = readOption(options, 'dynamic', true) as boolean;
 
@@ -141,7 +141,7 @@ export class VOPool<T = Object> {
   /**
    * Allocate multiple vertex objects at once
    */
-  multiAlloc(size: number, targetArray: VertexObject<T>[] = []) {
+  multiAlloc(size: number, targetArray: VertexObject<T, U>[] = []) {
 
     if ((this.allocatedCount - this.usedCount) < size) {
       createVOs(this, maxOf(this.maxAllocVOSize, size - this.allocatedCount - this.usedCount));
@@ -165,7 +165,7 @@ export class VOPool<T = Object> {
   /**
    * Free vertex objects
    */
-  free(vo: VertexObject<T> | VertexObject<T>[]) {
+  free(vo: VertexObject<T, U> | VertexObject<T, U>[]) {
 
     if (Array.isArray(vo)) {
       for (let i=0, len=vo.length; i < len; ++i) {

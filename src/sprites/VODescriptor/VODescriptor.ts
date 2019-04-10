@@ -26,7 +26,7 @@ export interface VOAttrDescription {
 
 interface VOAttrsMap {
 
-    [attrName: string]: VOAttrDescription;
+    [attrName: string]: VOAttrDescription | string[];
 
 };
 
@@ -46,9 +46,9 @@ export interface VODescription<T> {
 
 type toArrayFn = (attrList?: string[]) => number[];
 
-interface VertexObjectMethods<T> {
+interface VertexObjectMethods<T, U> {
 
-  descriptor: VODescriptor<T>;
+  descriptor: VODescriptor<T, U>;
 
   voArray: VOArray;
 
@@ -61,10 +61,10 @@ interface VertexObjectMethods<T> {
 
 }
 
-export type VertexObject<T> = T & VertexObjectMethods<T>;
+export type VertexObject<T, U> = T & U & VertexObjectMethods<T, U>;
 
-export type VOInitializerFn<T> = (vo: VertexObject<T>) => void;
-export type VOInitializer<T> = Object | VOInitializerFn<T>;
+export type VOInitializerFn<T, U> = (vo: VertexObject<T, U>) => void;
+export type VOInitializer<T, U> = Object | VOInitializerFn<T, U>;
 
 /**
  * Vertex object descriptor
@@ -112,7 +112,7 @@ export type VOInitializer<T> = Object | VOInitializerFn<T>;
  *
  */
 
-export class VODescriptor<T = Object> {
+export class VODescriptor<T = Object, U = Object> {
 
   /**
    * Number of vertices per vertex object
@@ -172,7 +172,7 @@ export class VODescriptor<T = Object> {
    *
    * @returns the initialized *vertex object* instance
    */
-  createVO(voArray?: VOArray, voInit?: VOInitializer<T>): VertexObject<T> {
+  createVO(voArray?: VOArray, voInit?: VOInitializer<T, U>): VertexObject<T, U> {
     // @ts-ignore
     const vo = createVO(Object.create(this.voPrototype), this, voArray);
 

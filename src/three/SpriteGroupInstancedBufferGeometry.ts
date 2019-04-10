@@ -4,29 +4,29 @@ import { SpriteGroup } from '../sprites';
 
 import { createBufferAttributes } from './createBufferAttributes';
 
-export class SpriteGroupInstancedBufferGeometry<T, K> extends THREE.InstancedBufferGeometry {
+export class SpriteGroupInstancedBufferGeometry<T, U, K, I> extends THREE.InstancedBufferGeometry {
 
   /**
    * Initial parameters at creation time
    */
   readonly parameters: {
-    spriteGroup: SpriteGroup<T>;
-    baseSpriteGroup?: SpriteGroup<K>;
+    spriteGroup: SpriteGroup<T, U>;
+    baseSpriteGroup?: SpriteGroup<K, I>;
   };
 
   private readonly _buffers: THREE.InterleavedBuffer[];
   private readonly _instancedBuffers: THREE.InstancedInterleavedBuffer[];
 
-  constructor(base: SpriteGroup<K> | THREE.BufferGeometry, spriteGroup: SpriteGroup<T>) {
+  constructor(base: SpriteGroup<K, I> | THREE.BufferGeometry, spriteGroup: SpriteGroup<T, U>) {
     super();
 
     this.type = 'spearwolf.SpriteGroupInstancedBufferGeometry';
 
     this.parameters = { spriteGroup };
 
-    if ((base as SpriteGroup<K>).isSpriteGroup) {
+    if ((base as SpriteGroup<K, I>).isSpriteGroup) {
 
-      const baseSpriteGroup = base as SpriteGroup<K>;
+      const baseSpriteGroup = base as SpriteGroup<K, I>;
 
       this.parameters.baseSpriteGroup = baseSpriteGroup;
 

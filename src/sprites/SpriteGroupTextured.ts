@@ -7,17 +7,17 @@ export type SpriteTexCoordsSetter = (sprite: Object, texture: Texture, descripto
 
 const DEFAULT_TEX_COORDS_SETTER = (sprite: any, texture: any) => sprite.setTexCoordsByTexture(texture);
 
-export interface SpriteGroupTexturedOptions<T> extends SpriteGroupOptions<T> {
+export interface SpriteGroupTexturedOptions<T, U> extends SpriteGroupOptions<T, U> {
 
   setTexCoordsByTexture?: SpriteTexCoordsSetter;
 
 }
 
-export class SpriteGroupTextured<T> extends SpriteGroup<T> {
+export class SpriteGroupTextured<T, U> extends SpriteGroup<T, U> {
 
   setTexCoordsByTexture: SpriteTexCoordsSetter;
 
-  constructor(descriptor: VODescriptor<T>, options: SpriteGroupTexturedOptions<T> = {}) {
+  constructor(descriptor: VODescriptor<T, U>, options: SpriteGroupTexturedOptions<T, U> = {}) {
     super(descriptor, options);
 
     this.setTexCoordsByTexture = (options.setTexCoordsByTexture || null) || DEFAULT_TEX_COORDS_SETTER;

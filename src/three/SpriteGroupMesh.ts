@@ -5,7 +5,7 @@ import { SpriteGroup } from '../sprites';
 import { SpriteGroupBufferGeometry } from './SpriteGroupBufferGeometry';
 import { SpriteGroupInstancedBufferGeometry } from './SpriteGroupInstancedBufferGeometry';
 
-function updateBuffers<T> (spriteGroup: SpriteGroup<T>, getBufferVersion: () => number, geometryUpdateBuffers: () => void) {
+function updateBuffers<T, U> (spriteGroup: SpriteGroup<T, U>, getBufferVersion: () => number, geometryUpdateBuffers: () => void) {
 
   const { ref } = spriteGroup.voPool.voArray;
 
@@ -22,10 +22,10 @@ function updateBuffers<T> (spriteGroup: SpriteGroup<T>, getBufferVersion: () => 
 
 }
 
-export class SpriteGroupMesh<T, K = Object> extends THREE.Mesh {
+export class SpriteGroupMesh<T, U, K, I> extends THREE.Mesh {
 
   constructor(
-    spriteGroupGeometry: SpriteGroupBufferGeometry<T> | SpriteGroupInstancedBufferGeometry<T, K>,
+    spriteGroupGeometry: SpriteGroupBufferGeometry<T, U> | SpriteGroupInstancedBufferGeometry<T, U, K, I>,
     material: THREE.Material,
   ) {
     super(
@@ -47,8 +47,8 @@ export class SpriteGroupMesh<T, K = Object> extends THREE.Mesh {
 
           updateBuffers(
             spriteGroup,
-            () => (geometry as SpriteGroupBufferGeometry<T>).bufferVersion,
-            () => (geometry as SpriteGroupBufferGeometry<T>).updateBuffers(),
+            () => (geometry as SpriteGroupBufferGeometry<T, U>).bufferVersion,
+            () => (geometry as SpriteGroupBufferGeometry<T, U>).updateBuffers(),
           );
 
           const { usedCount, indices } = spriteGroup;
@@ -61,7 +61,7 @@ export class SpriteGroupMesh<T, K = Object> extends THREE.Mesh {
       const {
         baseSpriteGroup,
         spriteGroup,
-      } = (spriteGroupGeometry as SpriteGroupInstancedBufferGeometry<T, K>).parameters;
+      } = (spriteGroupGeometry as SpriteGroupInstancedBufferGeometry<T, U, K, I>).parameters;
 
       this.onBeforeRender = /**
       * @param {THREE.WebGLRenderer} renderer
@@ -75,8 +75,8 @@ export class SpriteGroupMesh<T, K = Object> extends THREE.Mesh {
 
             updateBuffers(
               baseSpriteGroup,
-              () => (geometry as SpriteGroupBufferGeometry<T>).bufferVersion,
-              () => (geometry as SpriteGroupBufferGeometry<T>).updateBuffers(),
+              () => (geometry as SpriteGroupBufferGeometry<T, U>).bufferVersion,
+              () => (geometry as SpriteGroupBufferGeometry<T, U>).updateBuffers(),
             );
 
             const { usedCount, indices } = baseSpriteGroup;
@@ -86,8 +86,8 @@ export class SpriteGroupMesh<T, K = Object> extends THREE.Mesh {
 
           updateBuffers(
             spriteGroup,
-            () => (geometry as SpriteGroupInstancedBufferGeometry<T, K>).instancedBufferVersion,
-            () => (geometry as SpriteGroupInstancedBufferGeometry<T, K>).updateInstancedBuffers(),
+            () => (geometry as SpriteGroupInstancedBufferGeometry<T, U, K, I>).instancedBufferVersion,
+            () => (geometry as SpriteGroupInstancedBufferGeometry<T, U, K, I>).updateInstancedBuffers(),
           );
 
           // geometry.maxInstancedCount = spriteGroup.usedCount;

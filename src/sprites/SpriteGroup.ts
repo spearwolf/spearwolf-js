@@ -38,7 +38,7 @@ function createSpriteSizeHook (setSize: string | SpriteSizeSetter = 'size'): Spr
 
 type VOIndicesFactoryFn = (capacity: number) => VOIndices;
 
-export interface SpriteGroupOptions<T> {
+export interface SpriteGroupOptions<T, U> {
 
   /**
    * Maximum number of vertex objects
@@ -55,12 +55,12 @@ export interface SpriteGroupOptions<T> {
   /**
    * Blueprint for reserved (allocated but unused) vertex objects. See [[VOArray]].
    */
-  voZero?: VertexObject<T>;
+  voZero?: VertexObject<T, U>;
 
   /**
    * Blueprint for new vertex objects. See [[VOArray]].
    */
-  voNew?: VertexObject<T>;
+  voNew?: VertexObject<T, U>;
 
   /**
    * A callback function that takes three arguments (sprite, width, height) and sets the size of sprite (called by `.createSprite(w, h)`).
@@ -90,18 +90,18 @@ export interface SpriteGroupOptions<T> {
 
 }
 
-export class SpriteGroup<T> {
+export class SpriteGroup<T, U> {
 
-  readonly descriptor: VODescriptor<T>;
+  readonly descriptor: VODescriptor<T, U>;
 
   readonly isSpriteGroup = true;
 
   setSpriteSize: SpriteSizeSetter;
 
-  readonly voPool: VOPool<T>;
+  readonly voPool: VOPool<T, U>;
   readonly indices: VOIndices;
 
-  constructor(descriptor: VODescriptor<T>, options: SpriteGroupOptions<T> = {}) {
+  constructor(descriptor: VODescriptor<T, U>, options: SpriteGroupOptions<T, U> = {}) {
 
     this.descriptor = descriptor;
 
@@ -135,7 +135,7 @@ export class SpriteGroup<T> {
     return this.voPool.availableCount;
   }
 
-  createSprite(width?: number, height?: number) {
+  createSprite(width?: number, height?: number): VertexObject<T, U> {
     const sprite = this.voPool.alloc();
     const { setSpriteSize } = this;
     if (setSpriteSize && (width !== undefined || height !== undefined)) {

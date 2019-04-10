@@ -4,7 +4,7 @@ import { VOPool } from './VOPool';
  * Pre-allocate a bunch of vertex objects.
  * @returns Number of allocated vertex objects
  */
-export function createVOs<T> (voPool: VOPool<T>, maxAllocSize = 0) {
+export function createVOs<T, U> (voPool: VOPool<T, U>, maxAllocSize = 0) {
   const max = voPool.capacity - voPool.usedCount - voPool.allocatedCount;
   const count = (maxAllocSize > 0 && maxAllocSize < max ? maxAllocSize : max);
   const len = voPool.allocatedCount + count;
