@@ -19,6 +19,7 @@ const BitmapCharDescription = {
 };
 
 export type BitmapCharDescriptorType = VODescriptor<BitmapCharMethodsType, IBitmapChar>;
+export type BitmapCharVertexObject = VertexObject<BitmapCharMethodsType, IBitmapChar>;
 
 let g_bitmapCharDescriptor: BitmapCharDescriptorType = null;
 
@@ -28,5 +29,3 @@ export const getBitmapCharDescriptor = () => {
   }
   return g_bitmapCharDescriptor;
 };
-
-export type BitmapCharVertexObject = VertexObject<BitmapCharMethodsType, IBitmapChar>;
