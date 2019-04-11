@@ -22,7 +22,7 @@ function updateBuffers<T, U> (spriteGroup: SpriteGroup<T, U>, getBufferVersion: 
 
 }
 
-export class SpriteGroupMesh<T, U, K, I> extends THREE.Mesh {
+export class SpriteGroupMesh<T, U = {}, K = {}, I = {}> extends THREE.Mesh {
 
   constructor(
     spriteGroupGeometry: SpriteGroupBufferGeometry<T, U> | SpriteGroupInstancedBufferGeometry<T, U, K, I>,
