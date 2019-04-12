@@ -8,15 +8,14 @@ import {
   BitmapText2D,
 } from '../../src';
 
-const init = async ({ canvas, scene }) => {
+const init = async ({ canvas, scene, camera }) => {
 
-  const anisotrophy = canvas.renderer.capabilities.getMaxAnisotropy();
-
-  console.log('max anisotrophy =', anisotrophy);
+  camera.position.y = 0;
+  camera.position.z = 300;
+  camera.lookAt(0, 0, 0);
 
   const text2d = new BitmapText2D(
     await TextureAtlas.load('rbmfs.json', '/assets/rbmfs/'), {
-      anisotrophy,
       capacity: 1000,
     });
 
@@ -29,7 +28,7 @@ const init = async ({ canvas, scene }) => {
   const COUNT = 40;
   const STEP_X = 10;
   const LAYERS = 11;
-  const STEP_Z = 20;
+  const STEP_Z = 30;
 
   for (let z = -0.5 * LAYERS * STEP_Z, j = 0; j < LAYERS; j++, z+= STEP_Z) {
     for (let x = -0.5 * COUNT * STEP_X, i = 0; i < COUNT; i++, x+= STEP_X) {
@@ -41,7 +40,7 @@ const init = async ({ canvas, scene }) => {
 
   canvas.addEventListener('frame', ({ now }) => {
 
-    text2d.material.uniforms.time.value = 0.5 * now % Math.PI * 2;
+    text2d.material.uniforms.time.value = 0.125 * now % Math.PI * 2;
 
   });
 
@@ -67,6 +66,8 @@ makeAppShell(
   document.getElementById('container'),
   {
     alpha: true,
+    autoRotate: false,
+    showCube: false,
   },
   init,
 );

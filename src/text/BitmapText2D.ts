@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import { readOption } from '../utils';
 import { SpriteGroupMesh, SpriteGroupBufferGeometry } from '../three';
 import { TextureAtlas } from '../textures';
 
@@ -9,23 +8,20 @@ import { BitmapCharMethodsType } from './BitmapCharMethods';
 import { BitmapFontMaterial } from './BitmapFontMaterial';
 import { IBitmapChar } from './IBitmapChar';
 
-function makeTexture(htmlElement: HTMLImageElement, anisotropy: number = 0) {
+function makeTexture(htmlElement: HTMLImageElement) {
 
   const texture = new THREE.Texture(htmlElement);
 
   texture.flipY = false;
+  texture.minFilter = THREE.NearestFilter;
   texture.magFilter = THREE.NearestFilter;
   texture.needsUpdate = true;
-  texture.anisotropy = anisotropy;
 
   return texture;
 
 }
 
 export interface BitmapText2DOptions extends BitmapCharGroupOptions {
-
-  anisotrophy?: number;
-
 }
 
 export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, IBitmapChar> {
@@ -38,13 +34,7 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, IBitmap
 
     const bitmapCharGroup = new BitmapCharGroup(options);
     const geometry = new SpriteGroupBufferGeometry(bitmapCharGroup);
-
-    const material = new BitmapFontMaterial(
-      makeTexture(
-        fontAtlas.baseTexture.imgEl as HTMLImageElement,
-        readOption(options, 'anisotrophy', 0) as number,
-      )
-    );
+    const material = new BitmapFontMaterial(makeTexture(fontAtlas.baseTexture.imgEl as HTMLImageElement));
 
     super(geometry, material);
 

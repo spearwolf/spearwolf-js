@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { makeWireframe } from './makeWireframe';
 import { debug } from './debug';
 
-import { ThreeCanvas } from '../../../src';
+import { ThreeCanvas, readOption } from '../../../src';
 
 export const makeAppShell = async (el, options, initializer) => {
 
@@ -20,18 +20,28 @@ export const makeAppShell = async (el, options, initializer) => {
 
   const scene = new THREE.Scene();
 
-  scene.add(makeWireframe(new THREE.BoxBufferGeometry(100, 100, 100), 0xffffff));
+  if (readOption(options, 'showCube', true)) {
+
+    scene.add(makeWireframe(new THREE.BoxBufferGeometry(100, 100, 100), 0xffffff));
+
+  }
 
   await initializer({ canvas, camera, scene });
 
   const yAxis = new THREE.Vector3(0, 1, 0);
+
+  const autoRotate = readOption(options, 'autoRotate', true);
 
   canvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 
-    scene.rotateOnAxis(yAxis, deltaTime * 0.125);
+    if (autoRotate) {
+
+      scene.rotateOnAxis(yAxis, deltaTime * 0.125);
+
+    }
 
     renderer.render(scene, camera);
 

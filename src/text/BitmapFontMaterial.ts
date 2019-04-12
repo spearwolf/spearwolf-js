@@ -8,7 +8,7 @@ const vertexShader = `
 
   void main(void)
   {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (150.0 * sin((3.0 * time) + (position.x / 300.0) + (position.z / 200.0))), position.z, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y + (125.0 * sin((2.0 * time) + (position.x / 300.0) + (position.z / 100.0))), position.z, 1.0);
     vTexCoords = uv;
   }
 
