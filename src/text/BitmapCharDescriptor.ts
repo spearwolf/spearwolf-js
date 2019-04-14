@@ -5,14 +5,17 @@ import { IBitmapChar } from './IBitmapChar';
 
 const BitmapCharDescription = {
 
-  vertexCount: 4,
-
-  attributes: {
-
-    position: ['x', 'y', 'z'],
-    uv: ['s', 't'],
-
-  },
+  attributes: [{
+    name: 'zPos',
+  }, {
+    name: 'baselineOffset'
+  }, {
+    name: 'pos',
+    scalars: ['originX', 'originY', 'width', 'height'],
+  }, {
+    name: 'tex',
+    scalars: ['originS', 'originT', 'maxS', 'maxT'],
+  }],
 
   methods: BitmapCharMethods,
 

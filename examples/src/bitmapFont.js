@@ -19,32 +19,27 @@ const init = async ({ canvas, scene, camera }) => {
       capacity: 1000,
     });
 
+  const measure = text2d.measureText('Rokko!\nClaudia...\n(Wolfger)', 0);
+  debug('measureText', measure);
+
   // ----------------------------------------------------------------------------------
   //
   // create some sprites and animations
   //
   // ----------------------------------------------------------------------------------
 
-  const COUNT = 40;
-  const STEP_X = 10;
-  const LAYERS = 11;
+  const COUNT = 11;
   const STEP_Z = 30;
 
   let txt = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz .,-+@ 0123456789 _():!? ';
 
-  for (let z = -0.5 * LAYERS * STEP_Z, j = 0; j < LAYERS; j++, z+= STEP_Z) {
-    for (let x = -0.5 * COUNT * STEP_X, i = 0; i < COUNT; i++, x+= STEP_X) {
+  for (let z = -0.5 * COUNT * STEP_Z, j = 0; j < COUNT; j++, z+= STEP_Z) {
 
-      const c = txt[0];
-      txt = `${txt.substr(1)}${c}`;
+    text2d.drawText(txt, 0, 0, z, 0, 1);
 
-      if (c !== ' ') {
+    const c = txt.substr(0, 8);
+    txt = `${txt.substr(8)}${c}`;
 
-        text2d.bitmapChars.createSpriteByTexture(text2d.fontAtlas.frame(c)).translate(x, 0, z);
-
-      }
-
-    }
   }
 
   canvas.addEventListener('frame', ({ now }) => {

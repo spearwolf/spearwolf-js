@@ -20,7 +20,7 @@ export class BitmapCharGroup extends SpriteGroupTextured<BitmapCharMethodsType, 
 
       indices: VOIndices.buildQuads,
 
-      dynamic: false,
+      dynamic: true,
 
       setSize: (sprite: BitmapCharVertexObject, w: number, h: number) => sprite.setSize(w, h),
       setTexCoordsByTexture: (sprite: BitmapCharVertexObject, texture: Texture) => sprite.setTexCoordsByTexture(texture),

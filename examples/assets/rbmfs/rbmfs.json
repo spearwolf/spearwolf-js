@@ -42,7 +42,7 @@
     "m": { "frame": { "x": 76, "y": 15, "w": 7, "h": 4 } },
     "n": { "frame": { "x": 84, "y": 15, "w": 6, "h": 4 } },
     "o": { "frame": { "x": 91, "y": 14, "w": 6, "h": 5 } },
-    "p": { "frame": { "x": 98, "y": 14, "w": 6, "h": 7 } },
+    "p": { "frame": { "x": 98, "y": 14, "w": 6, "h": 7 }, "baselineOffset": -2 },
     "q": { "frame": { "x": 105, "y": 14, "w": 6, "h": 7 }, "baselineOffset": -2 },
     "r": { "frame": { "x": 112, "y": 14, "w": 5, "h": 5 } },
     "s": { "frame": { "x": 118, "y": 14, "w": 6, "h": 5 } },
@@ -80,6 +80,7 @@
   },
   "meta": {
     "image": "rbmfs-colored.gif",
-    "lineHeight": 9
+    "lineHeight": 9,
+    "whiteSpaceWidth": 7
   }
 }
