@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-env browser */
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import { makeWireframe } from './makeWireframe';
 import { debug } from './debug';
@@ -26,22 +27,25 @@ export const makeAppShell = async (el, options, initializer) => {
 
   }
 
-  await initializer({ canvas, camera, scene });
+  const orbit = new OrbitControls(camera, canvas.renderer.domElement);
 
-  const yAxis = new THREE.Vector3(0, 1, 0);
+  orbit.screenSpacePanning = true;
 
-  const autoRotate = readOption(options, 'autoRotate', true);
+  orbit.enableDamping = true;
+  orbit.dampingFactor = 0.25;
 
-  canvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
+  // @ts-ignore
+  orbit.autoRotate = readOption(options, 'autoRotate', true);
+  orbit.autoRotateSpeed = 0.25;
+
+  await initializer({ canvas, camera, scene, orbit });
+
+  canvas.addEventListener('frame', ({ renderer, width, height }) => {
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 
-    if (autoRotate) {
-
-      scene.rotateOnAxis(yAxis, deltaTime * 0.125);
-
-    }
+    orbit.update();
 
     renderer.render(scene, camera);
 
