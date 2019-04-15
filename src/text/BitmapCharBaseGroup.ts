@@ -1,8 +1,8 @@
 import { SpriteGroup, VOIndices } from '../sprites';
 
+import { BitmapCharBase } from './BitmapCharBase';
 import { BitmapCharBaseMethodsType } from './BitmapCharBaseMethods';
 import { getBitmapCharBaseDescriptor, BitmapCharBaseVertexObject } from './BitmapCharBaseDescriptor';
-import { IBitmapCharBase } from './IBitmapCharBase';
 
 export interface BitmapCharBaseGroupOptions {
 
@@ -12,7 +12,7 @@ export interface BitmapCharBaseGroupOptions {
 
 }
 
-export class BitmapCharBaseGroup extends SpriteGroup<BitmapCharBaseMethodsType, IBitmapCharBase> {
+export class BitmapCharBaseGroup extends SpriteGroup<BitmapCharBaseMethodsType, BitmapCharBase> {
 
   constructor(options?: BitmapCharBaseGroupOptions) {
     super(getBitmapCharBaseDescriptor(), Object.assign({

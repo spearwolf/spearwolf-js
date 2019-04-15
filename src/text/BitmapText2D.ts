@@ -1,15 +1,18 @@
 import * as THREE from 'three';
 
 import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../three';
-import { TextureAtlas, Texture } from '../textures';
+import { TextureAtlas } from '../textures';
 
+import { BitmapChar } from './BitmapChar';
+import { BitmapCharBase } from './BitmapCharBase';
+import { BitmapCharBaseGroup } from './BitmapCharBaseGroup';
+import { BitmapCharBaseMethodsType } from './BitmapCharBaseMethods';
 import { BitmapCharGroup, BitmapCharGroupOptions } from './BitmapCharGroup';
 import { BitmapCharMethodsType } from './BitmapCharMethods';
 import { BitmapFontMaterial } from './BitmapFontMaterial';
-import { IBitmapChar } from './IBitmapChar';
-import { BitmapCharBaseGroup } from './BitmapCharBaseGroup';
-import { BitmapCharBaseMethodsType } from './BitmapCharBaseMethods';
-import { IBitmapCharBase } from './IBitmapCharBase';
+import { BitmapText2DAlignment } from './BitmapText2DAlignment';
+import { BitmapText2DLine } from './BitmapText2DLine';
+import { BitmapText2DMeasurement } from './BitmapText2DMeasurement';
 
 function makeTexture(htmlElement: HTMLImageElement) {
 
@@ -27,45 +30,7 @@ function makeTexture(htmlElement: HTMLImageElement) {
 export interface BitmapText2DOptions extends BitmapCharGroupOptions {
 }
 
-interface ISpriteChar {
-
-  tex: Texture;
-
-  x: number;
-  y: number;
-
-  /**
-   * baseline offset
-   */
-  bo: number;
-
-}
-
-interface ITextLine {
-
-  lineWidth: number;
-
-  chars: ISpriteChar[];
-
-}
-
-export interface IBitmapText2DMeasurement {
-
-  height: number;
-  maxLineWidth: number;
-  charCount: number;
-
-  lines: ITextLine[];
-
-}
-
-export enum BitmapText2DAlignment {
-  Left = 0,
-  Center = 1,
-  Right = 2,
-}
-
-export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, IBitmapChar, BitmapCharBaseMethodsType, IBitmapCharBase> {
+export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapChar, BitmapCharBaseMethodsType, BitmapCharBase> {
 
   fontAtlas: TextureAtlas;
   baseChars: BitmapCharBaseGroup;
@@ -104,7 +69,7 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, IBitmap
     this.createText(this.measureText(text, maxWidth), x, y, z, align);
   }
 
-  createText(measure: IBitmapText2DMeasurement, x: number, y: number, z: number, align: BitmapText2DAlignment) {
+  createText(measure: BitmapText2DMeasurement, x: number, y: number, z: number, align: BitmapText2DAlignment) {
 
     for (let i = 0; i < measure.lines.length; i++) {
 
@@ -133,12 +98,12 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, IBitmap
 
   }
 
-  measureText(text: string, maxWidth = 0.0): IBitmapText2DMeasurement {
+  measureText(text: string, maxWidth = 0.0): BitmapText2DMeasurement {
 
     const len = text.length;
 
-    const lines: ITextLine[] = [{ lineWidth: 0, chars: [] }];
-    let chars: ITextLine = lines[0];
+    const lines: BitmapText2DLine[] = [{ lineWidth: 0, chars: [] }];
+    let chars: BitmapText2DLine = lines[0];
 
     let charCount = 0;
 

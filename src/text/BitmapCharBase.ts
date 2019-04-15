@@ -1,5 +1,5 @@
 
-export interface IBitmapCharBase {
+export interface BitmapCharBase {
 
   x0: number;
   x1: number;

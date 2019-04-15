@@ -1,5 +1,5 @@
 
-export interface IBitmapChar {
+export interface BitmapChar {
 
   zPos0: number;
 

@@ -1,8 +1,8 @@
-import { IBitmapCharBase } from './IBitmapCharBase';
+import { BitmapCharBase } from './BitmapCharBase';
 
 export const BitmapCharBaseMethods = {
 
-  setSize(this: IBitmapCharBase, w: number, h: number) {
+  setSize(this: BitmapCharBase, w: number, h: number) {
     this.setPosition(
       0, h,
       w, h,

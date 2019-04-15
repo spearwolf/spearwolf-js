@@ -1,9 +1,9 @@
 import { SpriteGroupTextured, VOIndices } from '../sprites';
 import { Texture } from '../textures';
 
-import { getBitmapCharDescriptor, BitmapCharVertexObject } from './BitmapCharDescriptor';
+import { BitmapChar } from './BitmapChar';
 import { BitmapCharMethodsType } from './BitmapCharMethods';
-import { IBitmapChar } from './IBitmapChar';
+import { getBitmapCharDescriptor, BitmapCharVertexObject } from './BitmapCharDescriptor';
 
 export interface BitmapCharGroupOptions {
 
@@ -13,7 +13,7 @@ export interface BitmapCharGroupOptions {
 
 }
 
-export class BitmapCharGroup extends SpriteGroupTextured<BitmapCharMethodsType, IBitmapChar> {
+export class BitmapCharGroup extends SpriteGroupTextured<BitmapCharMethodsType, BitmapChar> {
 
   constructor(options?: BitmapCharGroupOptions) {
     super(getBitmapCharDescriptor(), Object.assign({

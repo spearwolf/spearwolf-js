@@ -1,7 +1,7 @@
 import { VODescriptor, VertexObject } from '../sprites';
 
+import { BitmapCharBase } from './BitmapCharBase';
 import { BitmapCharBaseMethodsType, BitmapCharBaseMethods } from './BitmapCharBaseMethods';
-import { IBitmapCharBase } from './IBitmapCharBase';
 
 const BitmapCharBaseDescription = {
 
@@ -19,14 +19,14 @@ const BitmapCharBaseDescription = {
 
 };
 
-export type BitmapCharBaseDescriptorType = VODescriptor<BitmapCharBaseMethodsType, IBitmapCharBase>;
-export type BitmapCharBaseVertexObject = VertexObject<BitmapCharBaseMethodsType, IBitmapCharBase>;
+export type BitmapCharBaseDescriptorType = VODescriptor<BitmapCharBaseMethodsType, BitmapCharBase>;
+export type BitmapCharBaseVertexObject = VertexObject<BitmapCharBaseMethodsType, BitmapCharBase>;
 
 let g_bitmapCharBaseDescriptor: BitmapCharBaseDescriptorType = null;
 
 export const getBitmapCharBaseDescriptor = () => {
   if (g_bitmapCharBaseDescriptor == null) {
-    g_bitmapCharBaseDescriptor = new VODescriptor<BitmapCharBaseMethodsType, IBitmapCharBase>(BitmapCharBaseDescription);
+    g_bitmapCharBaseDescriptor = new VODescriptor<BitmapCharBaseMethodsType, BitmapCharBase>(BitmapCharBaseDescription);
   }
   return g_bitmapCharBaseDescriptor;
 };
