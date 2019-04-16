@@ -49,7 +49,7 @@ const init = async ({ canvas, scene, camera }) => {
 
     text2d.material.uniforms.time.value = 0.125 * now % Math.PI * 2;
 
-    timeDisplay.update(`time: ${Math.round(now)}`)
+    timeDisplay.update(`time}: ${Math.round(now)}`)
 
   });
 

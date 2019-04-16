@@ -173,19 +173,24 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
       } else {
 
         const tex = this.fontAtlas.frame(c);
-        const { width } = tex;
-        const baselineOffset = tex.getFeature('baselineOffset') as number || 0;
 
-        if (maxWidth > 0  && (cursor.x + width) >= maxWidth) {
-          makeNewLine();
+        if (tex !== undefined) {
+
+          const { width } = tex;
+          const baselineOffset = tex.getFeature('baselineOffset') as number || 0;
+
+          if (maxWidth > 0  && (cursor.x + width) >= maxWidth) {
+            makeNewLine();
+          }
+
+          chars.chars.push({ tex, x: cursor.x, y: cursor.y, bo: baselineOffset });
+          ++charCount;
+
+          lineWidth = cursor.x + width;
+
+          cursor.x += width + this.hSpacing;
+
         }
-
-        chars.chars.push({ tex, x: cursor.x, y: cursor.y, bo: baselineOffset });
-        ++charCount;
-
-        lineWidth = cursor.x + width;
-
-        cursor.x += width + this.hSpacing;
 
       }
 
