@@ -6,6 +6,7 @@ import { debug } from './utils/debug';
 import {
   TextureAtlas,
   BitmapText2D,
+  BitmapText2DBlock,
 } from '../../src';
 
 const init = async ({ canvas, scene, camera }) => {
@@ -42,9 +43,13 @@ const init = async ({ canvas, scene, camera }) => {
 
   }
 
+  const timeDisplay = new BitmapText2DBlock(text2d, 0, 0, 150, 0, 1);
+
   canvas.addEventListener('frame', ({ now }) => {
 
     text2d.material.uniforms.time.value = 0.125 * now % Math.PI * 2;
+
+    timeDisplay.update(`time: ${Math.round(now)}`)
 
   });
 

@@ -9,6 +9,7 @@ export * from './BitmapCharMethods';
 export * from './BitmapFontMaterial';
 export * from './BitmapText2D';
 export * from './BitmapText2DAlignment';
+export * from './BitmapText2DBlock';
 export * from './BitmapText2DChar';
 export * from './BitmapText2DLine';
 export * from './BitmapText2DMeasurement';
