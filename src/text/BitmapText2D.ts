@@ -13,6 +13,7 @@ import { BitmapFontMaterial } from './BitmapFontMaterial';
 import { BitmapText2DAlignment } from './BitmapText2DAlignment';
 import { BitmapText2DLine } from './BitmapText2DLine';
 import { BitmapText2DMeasurement } from './BitmapText2DMeasurement';
+import { BitmapCharVertexObject } from './BitmapCharDescriptor';
 
 function makeTexture(htmlElement: HTMLImageElement) {
 
@@ -65,11 +66,24 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
 
   }
 
-  drawText(text: string, x: number, y: number, z: number, maxWidth = 0.0, align: BitmapText2DAlignment = BitmapText2DAlignment.Left) {
-    this.createText(this.measureText(text, maxWidth), x, y, z, align);
+  drawText(text: string, x: number, y: number, z: number, maxWidth = 0.0, align: BitmapText2DAlignment = BitmapText2DAlignment.Left, spriteCache: BitmapCharVertexObject[] = null) {
+    this.createText(this.measureText(text, maxWidth), x, y, z, align, spriteCache);
   }
 
-  createText(measure: BitmapText2DMeasurement, x: number, y: number, z: number, align: BitmapText2DAlignment) {
+  createText(measure: BitmapText2DMeasurement, x: number, y: number, z: number, align: BitmapText2DAlignment, spriteCache: BitmapCharVertexObject[] = null) {
+
+    const textSprites: BitmapCharVertexObject[] = [];
+
+    const { bitmapChars } = this;
+    const { descriptor } = bitmapChars;
+
+    const spritePool = spriteCache || [];
+
+    if (measure.charCount > spritePool.length) {
+
+      bitmapChars.voPool.multiAlloc(measure.charCount - spritePool.length, spritePool);
+
+    }
 
     for (let i = 0; i < measure.lines.length; i++) {
 
@@ -87,14 +101,24 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
 
         const char = line.chars[j];
 
-        const sprite = this.bitmapChars.createSpriteByTexture(char.tex);
+        let sprite = spritePool.shift();
+
+        const { tex } = char;
+
+        bitmapChars.setSpriteSize(sprite, tex.width, tex.height, descriptor);
+        bitmapChars.setTexCoordsByTexture(sprite, tex, descriptor);
+
         sprite.baselineOffset0 = char.bo;
 
         sprite.translate(lineX + char.x, y + measure.height - char.y, z);
 
+        textSprites.push(sprite);
+
       }
 
     }
+
+    return textSprites;
 
   }
 
