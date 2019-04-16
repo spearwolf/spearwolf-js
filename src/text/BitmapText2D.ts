@@ -67,12 +67,12 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
   }
 
   drawText(text: string, x: number, y: number, z: number, maxWidth = 0.0, align: BitmapText2DAlignment = BitmapText2DAlignment.Left, spriteCache: BitmapCharVertexObject[] = null) {
-    this.createText(this.measureText(text, maxWidth), x, y, z, align, spriteCache);
+    return this.createText(this.measureText(text, maxWidth), x, y, z, align, spriteCache);
   }
 
-  createText(measure: BitmapText2DMeasurement, x: number, y: number, z: number, align: BitmapText2DAlignment, spriteCache: BitmapCharVertexObject[] = null) {
+  createText(measure: BitmapText2DMeasurement, x: number, y: number, z: number, align: BitmapText2DAlignment, spriteCache: BitmapCharVertexObject[] = null): BitmapCharVertexObject[] {
 
-    const textSprites: BitmapCharVertexObject[] = [];
+    const sprites: BitmapCharVertexObject[] = [];
 
     const { bitmapChars } = this;
     const { descriptor } = bitmapChars;
@@ -112,13 +112,13 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
 
         sprite.translate(lineX + char.x, y + measure.height - char.y, z);
 
-        textSprites.push(sprite);
+        sprites.push(sprite);
 
       }
 
     }
 
-    return textSprites;
+    return sprites;
 
   }
 
