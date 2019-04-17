@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { SpriteGroup } from '../sprites';
+import { SpriteGroup } from '../SpriteGroup';
 
 import { SpriteGroupBufferGeometry } from './SpriteGroupBufferGeometry';
 import { SpriteGroupInstancedBufferGeometry } from './SpriteGroupInstancedBufferGeometry';

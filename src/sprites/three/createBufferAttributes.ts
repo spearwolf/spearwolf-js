@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { SpriteGroup } from '../sprites';
+import { SpriteGroup } from '../SpriteGroup';
 
 type CreateBufferFn<K> = (typedArray: any, stride: number) => K;
 

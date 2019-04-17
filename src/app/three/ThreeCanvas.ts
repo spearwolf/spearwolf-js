@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { readOption, pick } from '../utils';
+import { readOption, pick } from '../../utils';
 
 const filterThreeParameters = pick([
   'precision',
