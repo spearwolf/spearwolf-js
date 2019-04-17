@@ -2,7 +2,7 @@
 /* eslint-env browser */
 import * as THREE from 'three';
 
-import { makeAppShell } from './utils/makeAppShell';
+import { makeExampleShell } from './utils/makeExampleShell';
 import { debug } from './utils/debug';
 
 import {
@@ -194,7 +194,7 @@ const init = async ({ canvas, scene }) => {
 //
 // ----------------------------------------------------------------------------------
 
-makeAppShell(
+makeExampleShell(
   document.getElementById('container'),
   {
     alpha: true,

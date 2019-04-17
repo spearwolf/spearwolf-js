@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-env browser */
-import { makeAppShell } from './utils/makeAppShell';
+import { makeExampleShell } from './utils/makeExampleShell';
 import { debug } from './utils/debug';
 
 import {
@@ -71,7 +71,7 @@ const init = async ({ canvas, scene, camera }) => {
 //
 // ----------------------------------------------------------------------------------
 
-makeAppShell(
+makeExampleShell(
   document.getElementById('container'),
   {
     alpha: true,

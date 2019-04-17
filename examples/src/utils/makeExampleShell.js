@@ -8,7 +8,7 @@ import { debug } from './debug';
 
 import { ThreeCanvas, readOption } from '../../../src';
 
-export const makeAppShell = async (el, options, initializer) => {
+export const makeExampleShell = async (el, options, initializer) => {
 
   const canvas = new ThreeCanvas(el, options);
 
