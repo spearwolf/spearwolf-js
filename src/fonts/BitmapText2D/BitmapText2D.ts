@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../three';
-import { TextureAtlas } from '../textures';
+import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../three';
+import { TextureAtlas } from '../../textures';
 
 import { BitmapChar } from './BitmapChar';
 import { BitmapCharBase } from './BitmapCharBase';
