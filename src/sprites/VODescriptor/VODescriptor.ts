@@ -1,4 +1,4 @@
-import { VOArray, VOArrayHints } from '../VOArray';
+import { VOArray, VOArrayUsageHints } from '../VOArray';
 
 import { createAliases } from './createAliases';
 import { createAttributes } from './createAttributes';
@@ -159,9 +159,8 @@ export class VODescriptor<T = Object, U = Object> {
 
   }
 
-  createVOArray(size = 1, hints?: VOArrayHints): VOArray {
+  createVOArray(size = 1, hints?: VOArrayUsageHints): VOArray {
     return new VOArray(size, this.bytesPerVO, this.typeList, null, Object.assign({
-      descriptor: this,
       dynamic: true,
       autotouch: true,
     }, hints));

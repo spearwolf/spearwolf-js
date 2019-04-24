@@ -7,7 +7,6 @@ describe('VOArray', () => {
   it('create instance', () => {
     const voa = new VOArray(4, 16, ['float32', 'int16', 'uint8']);
 
-    assert.ok(voa.ref);
     assert.strictEqual(voa.bufferByteLength, 64);
     assert.strictEqual(voa.buffer, voa.float32Array.buffer);
     assert.strictEqual(voa.buffer, voa.int16Array.buffer);
@@ -16,13 +15,13 @@ describe('VOArray', () => {
     assert.equal(voa.int8Array, undefined);
     // assert.equal(voa.uint32Array, undefined); <- may be created by .toUint32Array()
     assert.equal(voa.uint16Array, undefined);
-    assert.strictEqual(voa.ref.serial, 1, `ref.serial should be initialized with 1, but is ${voa.ref.serial}`);
+    assert.strictEqual(voa.serial, 1, `serial should be initialized with 1, but is ${voa.serial}`);
   });
 
-  it('should have a reference', () => {
+  it('should have hints', () => {
     const voa = new VOArray(4, 16, ['float32'], null, { dynamic: false });
 
-    assert.strictEqual(voa.ref.hint('dynamic'), false);
+    assert.strictEqual(voa.hints.dynamic, false);
   });
 
   it('create instance should clone arrayTypes (no copy)', () => {

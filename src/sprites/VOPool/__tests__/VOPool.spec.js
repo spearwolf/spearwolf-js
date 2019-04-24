@@ -57,11 +57,7 @@ describe('VOPool', () => {
     });
 
     it('default buffer usage should be :dynamic', () => {
-      assert.strictEqual(pool.voArray.ref.hint('dynamic'), true);
-    });
-
-    it('pool.voArray hints should include descriptor', () => {
-      assert.strictEqual(pool.voArray.ref.hint('descriptor'), descriptor);
+      assert.strictEqual(pool.voArray.hints.dynamic, true);
     });
 
     it('1. alloc()', () => {

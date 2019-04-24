@@ -7,17 +7,13 @@ import { SpriteGroupInstancedBufferGeometry } from './SpriteGroupInstancedBuffer
 
 function updateBuffers<T, U> (spriteGroup: SpriteGroup<T, U>, getBufferVersion: () => number, geometryUpdateBuffers: () => void) {
 
-  const { ref } = spriteGroup.voPool.voArray;
-
-  if (ref.hasHint('autotouch', true)) {
-    spriteGroup.touchVertexBuffers();
-  }
+  const { serial, hints } = spriteGroup.voPool.voArray;
 
   const bufferVersion = getBufferVersion();
 
-  if (ref.serial !== bufferVersion) {
+  if (hints.autotouch || serial !== bufferVersion) {
     geometryUpdateBuffers();
-    ref.serial = bufferVersion;
+    spriteGroup.voPool.voArray.serial = bufferVersion;
   }
 
 }

@@ -16,7 +16,7 @@ export function createBufferAttributes<T, U, K = THREE.InterleavedBuffer> (
   const bufCollection: K[] = [];
   const bufMap: Map<string, K> = new Map();
 
-  const isDynamic = spriteGroup.voPool.voArray.ref.hasHint('dynamic', true);
+  const { dynamic } = spriteGroup.voPool.voArray.hints;
 
   Object.keys(descriptor.attr).forEach(attrName => {
 
@@ -31,7 +31,7 @@ export function createBufferAttributes<T, U, K = THREE.InterleavedBuffer> (
 
       // buffer = new THREE.InterleavedBuffer(typedArray, stride);
       buffer = createBuffer(typedArray, stride);
-      (buffer as any).setDynamic(isDynamic);
+      (buffer as any).setDynamic(dynamic);
 
       bufCollection.push(buffer);
       bufMap.set(attr.type, buffer);

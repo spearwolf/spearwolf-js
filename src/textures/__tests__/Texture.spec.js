@@ -116,7 +116,6 @@ describe('Texture', () => {
     it('minT', () => assert.equal(tex.minT, 0));
     it('maxS', () => assert.equal(tex.maxS, 1));
     it('maxT', () => assert.equal(tex.maxT, 1));
-    // it('ref', () => assert.equal(tex.ref, parent.ref));
   });
 
   describe('new Texture(Texture(<img>, w, h, x, y), w, h, x, y)', () => {

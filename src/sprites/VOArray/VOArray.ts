@@ -1,21 +1,21 @@
-import { DataRef } from '../../core';
-
-import { VODescriptor } from '../VODescriptor';
-
 import { createBufferView } from './createBufferView';
 import { createLinkedTypedArrays, ArrayDataType } from './createLinkedTypedArrays';
 
 type TypedArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array;
 
-export interface VOArrayHints {
+export interface VOArrayUsageHints {
+
+  dynamic: boolean;
+
+  autotouch: boolean;
+
+}
+
+export interface VOArrayUsageOptions {
 
   dynamic?: boolean;
+
   autotouch?: boolean;
-
-  serial?: number;
-
-  descriptor?: VODescriptor;
-  typedArray?: Uint32Array;
 
 }
 
@@ -34,7 +34,9 @@ export class VOArray {
   bufferByteOffset: number;
   bufferByteLength: number;
 
-  ref: DataRef<VOArray>;
+  serial: number = 1;
+
+  hints: VOArrayUsageHints;
 
   float32Array: Float32Array = null;
   int16Array: Int16Array = null;
@@ -59,14 +61,14 @@ export class VOArray {
    * @param bytesPerVO - Size of a single `vertex object` in *bytes*. **Must be divisible by 4**.
    * @param arrayDataTypes - List of allowed *typed array types*. Should have at least one type included.
    * @param data - Create a *view* into the buffer from `data`
-   * @param hints - Optional *hints* for the *reference* `VOArray.ref`
+   * @param hints - Optional array buffer usage *hints*
    */
   constructor(
     capacity: number,
     bytesPerVO: number,
     arrayDataTypes: ArrayDataType[],
     data?: ArrayBuffer | DataView | TypedArray,
-    hints?: VOArrayHints,
+    hints?: VOArrayUsageOptions,
   ) {
 
     if (bytesPerVO % 4 !== 0) {
@@ -122,10 +124,10 @@ export class VOArray {
 
     ));
 
-    this.ref = new DataRef('VOArray', this, Object.assign({
-      typedArray: this.toUint32Array(),
-      serial: 1,
-    }, hints));
+    this.hints = Object.assign({
+      dynamic: false,
+      autotouch: false,
+    }, hints);
 
   }
 

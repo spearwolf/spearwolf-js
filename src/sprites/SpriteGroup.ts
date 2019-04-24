@@ -157,13 +157,4 @@ export class SpriteGroup<T, U> {
     return sprites;
   }
 
-  /**
-   * Inform the internally used vertex buffers that content has changed
-   * and should be uploaded to gpu before next usage.
-   * you don't need to call this if you choosed `dynamic` as buffer usage hint.
-   */
-  touchVertexBuffers() {
-    this.voPool.voArray.ref.touch();
-  }
-
 }

@@ -28,7 +28,7 @@ export class SpriteGroupBufferGeometry<T, U> extends THREE.BufferGeometry {
 
     this._buffers = createBufferAttributes(spriteGroup, this, (typedArray, stride) => new THREE.InterleavedBuffer(typedArray, stride));
 
-    spriteGroup.voPool.voArray.ref.serial = this.bufferVersion;
+    spriteGroup.voPool.voArray.serial = this.bufferVersion;
   }
 
   updateBuffers() {

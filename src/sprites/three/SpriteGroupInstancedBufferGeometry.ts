@@ -34,7 +34,7 @@ export class SpriteGroupInstancedBufferGeometry<T, U, K, I> extends THREE.Instan
 
       this._buffers = createBufferAttributes(baseSpriteGroup, this, (typedArray, stride) => new THREE.InterleavedBuffer(typedArray, stride));
 
-      baseSpriteGroup.voPool.voArray.ref.serial = this.bufferVersion;
+      baseSpriteGroup.voPool.voArray.serial = this.bufferVersion;
 
     } else if ((base as any).isBufferGeometry) {
 
@@ -44,7 +44,7 @@ export class SpriteGroupInstancedBufferGeometry<T, U, K, I> extends THREE.Instan
 
     this._instancedBuffers = createBufferAttributes(spriteGroup, this, (typedArray, stride) => new THREE.InstancedInterleavedBuffer(typedArray, stride, 1));
 
-    spriteGroup.voPool.voArray.ref.serial = this.instancedBufferVersion;
+    spriteGroup.voPool.voArray.serial = this.instancedBufferVersion;
   }
 
   get maxInstancedCount() {
