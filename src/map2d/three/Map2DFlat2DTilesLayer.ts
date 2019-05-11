@@ -8,7 +8,7 @@ import { IMap2DLayer } from './IMap2DLayer';
 import { Map2DTileBufferGeometry } from './Map2DTileBufferGeometry';
 
 /**
- * Represents one map2d layer.
+ * Represents a map2d layer.
  *
  * Each tile is rendered with the same material which is built by the layer
  * upon the *base image* from the given [[TextureLibrary]].
