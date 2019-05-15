@@ -9,35 +9,35 @@ export class Map2DViewFrame extends THREE.Object3D {
 
   color: number;
 
-  zOffset: number;
+  yOffset: number;
 
-  constructor(map2d: Map2D, color = 0xff0032, zOffset = 0.5) {
+  constructor(map2d: Map2D, color = 0xff0032, yOffset = 1) {
     super();
 
     this.map2d = map2d;
 
     this.color = color;
-    this.zOffset = zOffset;
+    this.yOffset = yOffset;
 
     const l = 0.5;
     const c = 0.02;
     const geometry = new THREE.Geometry();
 
     geometry.vertices.push(
-      new THREE.Vector3(-l, -l),
-      new THREE.Vector3(l, -l),
-      new THREE.Vector3(l, -l),
-      new THREE.Vector3(l, l),
-      new THREE.Vector3(l, l),
-      new THREE.Vector3(-l, l),
-      new THREE.Vector3(-l, l),
-      new THREE.Vector3(-l, -l),
+      new THREE.Vector3(-l, 0, -l),
+      new THREE.Vector3(l, 0, -l),
+      new THREE.Vector3(l, 0, -l),
+      new THREE.Vector3(l, 0, l),
+      new THREE.Vector3(l, 0, l),
+      new THREE.Vector3(-l, 0, l),
+      new THREE.Vector3(-l, 0, l),
+      new THREE.Vector3(-l, 0, -l),
 
-      new THREE.Vector3(-c, 0),
-      new THREE.Vector3(c, 0),
+      new THREE.Vector3(-c, 0, 0),
+      new THREE.Vector3(c, 0, 0),
 
-      new THREE.Vector3(0, -c),
-      new THREE.Vector3(0, c),
+      new THREE.Vector3(0, 0, -c),
+      new THREE.Vector3(0, 0, c),
     );
 
     const material = new THREE.LineBasicMaterial({ color: this.color });
@@ -50,9 +50,12 @@ export class Map2DViewFrame extends THREE.Object3D {
     });
   }
 
-  updateView(x: number, y: number, width: number, height: number) {
-    this.position.set(x, y, this.zOffset);
-    this.scale.set(width, height, 1);
+  /**
+   * @param height the size along the z axis
+   */
+  updateView(x: number, z: number, width: number, height: number) {
+    this.position.set(x, this.yOffset, z);
+    this.scale.set(width, 1, height);
     this.matrixWorldNeedsUpdate = true;
   }
 }

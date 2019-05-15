@@ -13,7 +13,8 @@ const $left = Symbol('left');
  *
  * The unit of measurement are *tiles* unless otherwise stated.
  *
- * Special care must be taken that a left-handed coordinating system is used internally by all map2d classes.
+ * Special care must be taken that the interally map2d coordinates are 2-dimensional
+ * where the origin (0, 0) is on the top left corner.
  */
 export class Map2DViewTile {
 

@@ -11,7 +11,11 @@ const $dispatchEvent = Symbol('dispatchEvent');
 /**
  * Represents a map2d scene.
  *
- * Since all map2d classes uses a left-handed coordinate system internally the scene y-axis is inverted as default.
+ * By default the map2d lies on the ground along the x and z axes.
+ *
+ * Since the map2d coordinate system is using (x, y) coordinates but webgl
+ * uses a right-handed coordinate system by default the 3d *z* coordinate is mapped
+ * to the internal 2d *y* map2d coordinate.
  */
 export class Map2D extends THREE.Object3D implements IMap2DRenderer {
 
@@ -19,11 +23,6 @@ export class Map2D extends THREE.Object3D implements IMap2DRenderer {
   static get EndRenderEvent() { return 'map2dendrender'; }
 
   private readonly [$map2dLayers] = new Set<IMap2DLayer>();
-
-  constructor() {
-    super();
-    this.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  }
 
   appendLayer(layer: IMap2DLayer) {
     const layers = this[$map2dLayers];

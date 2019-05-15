@@ -4,6 +4,12 @@ import { Map2DViewTile } from '../Map2DViewTile';
 
 import { IMap2DLayer } from './IMap2DLayer';
 
+// ===========================================================
+//
+//   !!! WORK IN PROGRESS !!!
+//
+// ===========================================================
+
 export class Map2DFlat2DTilesLayer implements IMap2DLayer {
 
   private readonly obj3d: THREE.Object3D = new THREE.Object3D();

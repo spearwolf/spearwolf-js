@@ -3,6 +3,8 @@ import { IMap2DLayerRenderer } from './IMap2DLayerRenderer';
 import { Map2DView } from './Map2DView';
 import { Map2DViewTile } from './Map2DViewTile';
 
+const $createTile = Symbol('createTile');
+
 const takeFrom = (tiles: Map2DViewTile[], left: number, top: number): Map2DViewTile => {
   const idx = tiles.findIndex((tile) => tile.isLayerTilePosition(left, top));
   if (idx !== -1) {
@@ -90,7 +92,7 @@ export class Map2DViewLayer {
       if (prevTile) {
         removeTiles.push(prevTile.id);
       }
-      return this.createTile(x, y, prevTile);
+      return this[$createTile](x, y, prevTile);
     });
 
     // III. render visible tiles
@@ -109,7 +111,7 @@ export class Map2DViewLayer {
     removeTiles.forEach((tile) => this.layerRenderer.removeViewTile(tile));
   }
 
-  private createTile(x: number, y: number, reuseTile?: Map2DViewTile) {
+  private [$createTile](x: number, y: number, reuseTile?: Map2DViewTile) {
     const tile = reuseTile || new Map2DViewTile(this.layerData, this.tileColumns, this.tileRows);
     tile.setLayerTilePosition(x, y);
     tile.setPosition(x * this.tileColumns, y * this.tileRows);

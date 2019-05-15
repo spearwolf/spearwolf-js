@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { TextureLibrary } from '../../textures';
 
 import { Map2DViewTile } from '../Map2DViewTile';
-import { Object3D } from 'three';
 
 export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
   readonly type: string = 'Map2DTileBufferGeometry';
@@ -27,7 +26,7 @@ export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
     const normals = [];
     const uvs = [];
 
-    const up = Object3D.DefaultUp;
+    const up = new THREE.Vector3(0, 1, 0);
 
     viewTile.fetchTileIds();
 
@@ -39,16 +38,18 @@ export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
 
       for (let col = 0; col < tileCols; ++col) {
 
-        const y0 = viewHeight - y;
-        const x1 = x + tileWidth;
-        const y1 = viewHeight - (y + tileHeight);
+        // the internal map2d (x,y) coordinates are mapped to the 3d coordinates (x, 0, y)
 
-        vertices.push(x, y0, 0);
-        vertices.push(x, y1, 0);
-        vertices.push(x1, y0, 0);
-        vertices.push(x, y1, 0);
-        vertices.push(x1, y1, 0);
-        vertices.push(x1, y0, 0);
+        const z = viewHeight - y;
+        const z1 = z + tileHeight;
+        const x1 = x + tileWidth;
+
+        vertices.push(x, 0, z);
+        vertices.push(x, 0, z1);
+        vertices.push(x1, 0, z);
+        vertices.push(x, 0, z1);
+        vertices.push(x1, 0, z1);
+        vertices.push(x1, 0, z);
 
         normals.push(up.x, up.y, up.z);
         normals.push(up.x, up.y, up.z);
@@ -63,12 +64,12 @@ export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
         if (texture) {
           const { minS, minT, maxS, maxT } = texture;
 
+          uvs.push(minS, minT);
           uvs.push(minS, maxT);
-          uvs.push(minS, minT);
-          uvs.push(maxS, maxT);
-          uvs.push(minS, minT);
           uvs.push(maxS, minT);
+          uvs.push(minS, maxT);
           uvs.push(maxS, maxT);
+          uvs.push(maxS, minT);
 
         } else {
           uvs.push(0, 1);
