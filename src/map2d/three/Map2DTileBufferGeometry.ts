@@ -40,8 +40,10 @@ export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
 
         // the internal map2d (x,y) coordinates are mapped to the 3d coordinates (x, 0, y)
 
-        const z = viewHeight - y;
-        const z1 = z + tileHeight;
+        // const z = viewHeight - y;
+        // const z1 = z + tileHeight;
+        const z = viewHeight - y - tileHeight;
+        const z1 = viewHeight - y
         const x1 = x + tileWidth;
 
         vertices.push(x, 0, z);
