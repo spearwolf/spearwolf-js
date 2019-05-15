@@ -4,20 +4,25 @@ import { IMap2DRenderer } from '../IMap2DRenderer';
 import { Map2DView } from '../Map2DView';
 
 import { IMap2DLayer } from './IMap2DLayer';
-import { Matrix4 } from 'three';
 
 const $map2dLayers = Symbol('map2dLayers');
+const $dispatchEvent = Symbol('dispatchEvent');
 
+/**
+ * Represents a map2d scene.
+ *
+ * Since all map2d classes uses a left-handed coordinate system internally the scene y-axis is inverted as default.
+ */
 export class Map2D extends THREE.Object3D implements IMap2DRenderer {
 
-  static BeginRenderEvent = 'map2dbeginrender';
-  static EndRenderEvent = 'map2dendrender';
+  static get BeginRenderEvent() { return 'map2dbeginrender'; }
+  static get EndRenderEvent() { return 'map2dendrender'; }
 
   private readonly [$map2dLayers] = new Set<IMap2DLayer>();
 
   constructor() {
     super();
-    this.applyMatrix(new Matrix4().makeScale(1, -1, 1));
+    this.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
   }
 
   appendLayer(layer: IMap2DLayer) {
@@ -37,10 +42,14 @@ export class Map2D extends THREE.Object3D implements IMap2DRenderer {
   }
 
   beginRender(view: Map2DView) {
-    this.children.forEach((obj3d) => obj3d.dispatchEvent({ type: Map2D.BeginRenderEvent, map2d: this, view }));
+    this[$dispatchEvent](Map2D.BeginRenderEvent, { view });
   }
 
   endRender(view: Map2DView) {
-    this.children.forEach((obj3d) => obj3d.dispatchEvent({ type: Map2D.EndRenderEvent, map2d: this, view }));
+    this[$dispatchEvent](Map2D.EndRenderEvent, { view });
+  }
+
+  private [$dispatchEvent](type: string, options?: Object) {
+    this.children.forEach(obj3d => obj3d.dispatchEvent({ type, map2d: this, ...options }));
   }
 }

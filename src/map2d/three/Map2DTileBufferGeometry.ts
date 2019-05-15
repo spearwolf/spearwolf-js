@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { TextureLibrary } from '../../textures';
 
 import { Map2DViewTile } from '../Map2DViewTile';
+import { Object3D } from 'three';
 
 export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
   readonly type: string = 'Map2DTileBufferGeometry';
@@ -26,7 +27,7 @@ export class Map2DTileBufferGeometry extends THREE.BufferGeometry {
     const normals = [];
     const uvs = [];
 
-    const up = new THREE.Vector3(0, 0, 1);
+    const up = Object3D.DefaultUp;
 
     viewTile.fetchTileIds();
 

@@ -1,5 +1,8 @@
 import { IMap2DLayerData } from './IMap2DLayerData';
 
+const $top = Symbol('top');
+const $left = Symbol('left');
+
 /**
  * Represents a 2d section (a *tile*) of a [[Map2DViewLayer]].
  *
@@ -9,6 +12,8 @@ import { IMap2DLayerData } from './IMap2DLayerData';
  * The instances of this class are reused among the [[Map2DViewLayer]].
  *
  * The unit of measurement are *tiles* unless otherwise stated.
+ *
+ * Special care must be taken that a left-handed coordinating system is used internally by all map2d classes.
  */
 export class Map2DViewTile {
 
@@ -34,8 +39,8 @@ export class Map2DViewTile {
    */
   viewOffsetY: number;
 
-  private _top: number = 0;
-  private _left: number = 0;
+  private [$top]: number = 0;
+  private [$left]: number = 0;
 
   constructor(layerData: IMap2DLayerData, width: number, height: number) {
     this.layerData = layerData;
@@ -79,27 +84,27 @@ export class Map2DViewTile {
   }
 
   set top(top: number) {
-    if (this._top !== top) {
-      this._top = top;
+    if (this[$top] !== top) {
+      this[$top] = top;
       this.tileIdsNeedsUpdate = true;
     }
   }
 
-  get top(): number { return this._top; }
+  get top(): number { return this[$top]; }
 
   set left(left: number) {
-    if (this._left !== left) {
-      this._left = left;
+    if (this[$left] !== left) {
+      this[$left] = left;
       this.tileIdsNeedsUpdate = true;
     }
   }
 
-  get left(): number { return this._left; }
+  get left(): number { return this[$left]; }
 
   setPosition(left: number, top: number) {
-    if (this._top !== top || this._left !== left) {
-      this._top = top;
-      this._left = left;
+    if (this[$top] !== top || this[$left] !== left) {
+      this[$top] = top;
+      this[$left] = left;
       this.tileIdsNeedsUpdate = true;
     }
     return this;
@@ -107,7 +112,7 @@ export class Map2DViewTile {
 
   fetchTileIds() {
     if (this.tileIdsNeedsUpdate) {
-      this.layerData.getTileIdsWithin(this._left, this._top, this.width, this.height, this.tileIds);
+      this.layerData.getTileIdsWithin(this[$left], this[$top], this.width, this.height, this.tileIds);
       this.tileIdsNeedsUpdate = false;
     }
     return this;

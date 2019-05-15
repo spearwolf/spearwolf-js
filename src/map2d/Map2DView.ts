@@ -1,11 +1,15 @@
 import { IMap2DRenderer } from './IMap2DRenderer';
 import { Map2DViewLayer } from './Map2DViewLayer';
 
+const $renderer = Symbol('renderer');
+
 /**
  * Represents a 2d section from a 2d map along the x- and y- axis.
  * A 2d map consists of one or more layers.
  *
  * The unit of measurement are *pixels* unless otherwise stated.
+ *
+ * Special care must be taken that a left-handed coordinating system is used internally by all map2d classes.
  */
 export class Map2DView {
 
@@ -19,7 +23,7 @@ export class Map2DView {
 
   readonly layers: Map2DViewLayer[] = [];
 
-  private readonly renderer: IMap2DRenderer;
+  private readonly [$renderer]: IMap2DRenderer;
 
   /**
    * @param centerX horizontal center position
@@ -36,7 +40,7 @@ export class Map2DView {
     layerTileWidth: number,
     layerTileHeight: number,
   ) {
-    this.renderer = renderer;
+    this[$renderer] = renderer;
     this.centerX = centerX;
     this.centerY = centerY;
     this.width = width;
@@ -70,8 +74,9 @@ export class Map2DView {
   }
 
   update() {
-    this.renderer.beginRender(this);
+    const renderer = this[$renderer];
+    renderer.beginRender(this);
     this.layers.forEach((layer) => layer.update());
-    this.renderer.endRender(this);
+    renderer.endRender(this);
   }
 }
