@@ -197,4 +197,13 @@ export class VOPool<T, U> {
     vo.voArray.copy(this.voZero.voArray);
 
   }
+
+  /**
+   * Free all vertex objects
+   */
+  freeAll() {
+    // TODO clear buffer/copy this.voZero.voArray?
+    this.availableVOs.push(...this.usedVOs);
+    this.usedVOs.length = 0;
+  }
 }
