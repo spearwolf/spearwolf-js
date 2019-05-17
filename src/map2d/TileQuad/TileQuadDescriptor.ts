@@ -1,4 +1,4 @@
-import { VODescriptor, VertexObject } from '../../../sprites';
+import { VODescriptor, VertexObject } from '../../sprites';
 
 import { TileQuad } from './TileQuad';
 import { TileQuadMethods, TileQuadMethodsType } from './TileQuadMethods';

@@ -1,12 +1,12 @@
-import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../../sprites';
+import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../sprites';
 
-import { TileQuad } from './TileQuad';
-import { TileQuadBase } from './TileQuadBase';
-import { TileQuadBaseMethodsType } from './TileQuadBaseMethods';
-import { TileQuadGroup, TileQuadGroupOptions } from './TileQuadGroup';
-import { TileQuadMethodsType } from './TileQuadMethods';
+import { TileQuad } from '../TileQuad/TileQuad';
+import { TileQuadBase } from '../TileQuad/TileQuadBase';
+import { TileQuadBaseMethodsType } from '../TileQuad/TileQuadBaseMethods';
+import { TileQuadGroup, TileQuadGroupOptions } from '../TileQuad/TileQuadGroup';
+import { TileQuadMethodsType } from '../TileQuad/TileQuadMethods';
 import { TileQuadMaterial } from './TileQuadMaterial';
-import { getTileQuadBaseGroup } from './TileQuadBaseGroup';
+import { getTileQuadBaseGroup } from '../TileQuad/TileQuadBaseGroup';
 
 export interface TileQuadMeshOptions extends TileQuadGroupOptions {
 }

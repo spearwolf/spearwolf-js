@@ -5,8 +5,8 @@ import { TextureLibrary } from '../../textures';
 import { Map2DViewTile } from '../Map2DViewTile';
 
 import { IMap2DLayer } from './IMap2DLayer';
-import { TileQuadMaterial } from './TileQuad/TileQuadMaterial';
-import { TileQuadMesh } from './TileQuad/TileQuadMesh';
+import { TileQuadMaterial } from './TileQuadMaterial';
+import { TileQuadMesh } from './TileQuadMesh';
 
 const $obj3d = Symbol('obj3d');
 const $material = Symbol('material');

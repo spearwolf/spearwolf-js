@@ -1,4 +1,4 @@
-import { SpriteGroup, VOIndices } from '../../../sprites';
+import { SpriteGroup, VOIndices } from '../../sprites';
 
 import { TileQuadBase } from './TileQuadBase';
 import { TileQuadBaseMethodsType } from './TileQuadBaseMethods';

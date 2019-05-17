@@ -1,7 +1,7 @@
-import { SpriteGroupTextured, VOIndices, SpriteGroupTexturedOptions } from '../../../sprites';
-import { Texture, TextureLibrary } from '../../../textures';
+import { SpriteGroupTextured, VOIndices, SpriteGroupTexturedOptions } from '../../sprites';
+import { Texture, TextureLibrary } from '../../textures';
 
-import { Map2DViewTile } from '../../Map2DViewTile';
+import { Map2DViewTile } from '../Map2DViewTile';
 
 import { TileQuad } from './TileQuad';
 import { TileQuadMethodsType } from './TileQuadMethods';
