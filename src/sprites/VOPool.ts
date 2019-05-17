@@ -17,12 +17,14 @@ export interface VOPoolOptions<T, U> {
    voArray?: VOArray;
 
    /**
-    * Blueprint for unused vertex objects
+    * Blueprint for unused vertex objects.
+    * Set to `null` if you explicitly don't want to have a blueprint.
     */
    voZero?: VertexObject<T, U>;
 
    /**
     * Blueprint for new vertex objects
+    * Set to `null` if you explicitly don't want to have a blueprint.
     */
    voNew?: VertexObject<T, U>;
 
