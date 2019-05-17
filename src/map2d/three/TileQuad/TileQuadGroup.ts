@@ -1,5 +1,7 @@
 import { SpriteGroupTextured, VOIndices, SpriteGroupTexturedOptions } from '../../../sprites';
-import { Texture } from '../../../textures';
+import { Texture, TextureLibrary } from '../../../textures';
+
+import { Map2DViewTile } from '../../Map2DViewTile';
 
 import { TileQuad } from './TileQuad';
 import { TileQuadMethodsType } from './TileQuadMethods';
@@ -29,6 +31,54 @@ export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, Tile
    */
   touchVertexBuffers() {
     ++this.voPool.voArray.serial;
+  }
+
+  showTiles(viewTile: Map2DViewTile, textureLibrary: TextureLibrary) {
+
+    this.voPool.freeAll();
+
+    const {
+      viewWidth,
+      viewHeight,
+      viewOffsetX,
+      viewOffsetY,
+      width: tileCols,
+      height: tileRows,
+    } = viewTile;
+
+    const tileWidth = viewWidth / tileCols;
+    const tileHeight = viewHeight / tileRows;
+
+    viewTile.fetchTileIds();
+
+    let y = -viewOffsetY;
+
+    for (let row = 0; row < tileRows; ++row) {
+
+      let x = viewOffsetX;
+
+      for (let col = 0; col < tileCols; ++col) {
+
+        // the internal map2d (x,y) coordinates are mapped to the 3d coordinates (x, 0, y)
+
+        const z = viewHeight - y - tileHeight;
+
+        const tileId = viewTile.getTileIdAt(col, tileRows - row - 1);
+        if (tileId > 0) {
+
+          const texture = textureLibrary.getTextureById(tileId);
+
+          this.createSpriteByTexture(texture, tileWidth, tileHeight).translate(x, z, 0);
+
+        }
+
+        x += tileWidth;
+      }
+      y += tileHeight;
+    }
+
+    this.touchVertexBuffers();
+
   }
 
 }

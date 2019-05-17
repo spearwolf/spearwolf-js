@@ -27,3 +27,19 @@ export class TileQuadBaseGroup extends SpriteGroup<TileQuadBaseMethodsType, Tile
   }
 
 }
+
+export const getTileQuadBaseGroup = (() => {
+
+  let baseTiles: TileQuadBaseGroup = null;
+
+  return () => {
+    if (baseTiles === null) {
+
+      baseTiles = new TileQuadBaseGroup({ capacity: 1, dynamic: false });
+
+      baseTiles.createSprite(1, 1).setUv(0, 1, 1, 1, 1, 0, 0, 0);
+
+    }
+    return baseTiles;
+  };
+})();

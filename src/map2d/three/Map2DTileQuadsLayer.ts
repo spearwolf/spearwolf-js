@@ -136,7 +136,7 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
       mesh = new TileQuadMesh(material, { capacity });
     }
 
-    mesh.showTiles(viewTile, this.textureLibrary);
+    mesh.tiles.showTiles(viewTile, this.textureLibrary);
 
     this[$tiles].set(viewTile.id, mesh);
     return mesh;
