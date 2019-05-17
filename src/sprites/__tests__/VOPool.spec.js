@@ -167,6 +167,20 @@ describe('VOPool', () => {
     });
   });
 
+  describe('new VOPool(capacity, maxAllocVOSize: undef)', () => {
+    const pool = new VOPool(descriptor, { capacity: 1904 });
+
+    it('availableCount', () => assert.equal(pool.availableCount, 1904));
+    it('allocatedCount', () => assert.equal(pool.allocatedCount, 1904));
+  });
+
+  describe('new VOPool(capacity, maxAllocVOSize: 0)', () => {
+    const pool = new VOPool(descriptor, { capacity: 666, maxAllocVOSize: 0 });
+
+    it('availableCount', () => assert.equal(pool.availableCount, 666));
+    it('allocatedCount', () => assert.equal(pool.allocatedCount, 666));
+  });
+
   describe('new VOPool() : multiAlloc > maxAllocVOSize', () => {
     const pool = new VOPool(descriptor, { capacity: 200, maxAllocVOSize: 10 });
 
