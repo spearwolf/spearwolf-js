@@ -105,7 +105,7 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
   }
 
   renderViewTile(_tile: Map2DViewTile) {
-    // console.log('[Map2DSceneTHREE] update grid-tile:', tile.id);
+    // animate tiles?
   }
 
   private [$destroyTile](id: string): TileQuadMesh {
@@ -126,12 +126,12 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
     const capacity = viewTile.width * viewTile.height;
     const meshCache = this[$meshCache].get(meshCacheKey(material.uuid, capacity));
 
-    // reuse a cached mesh ..
+    // reuse a mesh from cache ..
     if (meshCache) {
       mesh = meshCache.shift();
     }
 
-    // .. or create
+    // .. or create a new
     if (!mesh) {
       mesh = new TileQuadMesh(material, { capacity });
     }
