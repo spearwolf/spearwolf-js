@@ -20,6 +20,8 @@ function updateBuffers<T, U> (spriteGroup: SpriteGroup<T, U>, getBufferVersion: 
 
 export class SpriteGroupMesh<T, U = {}, K = {}, I = {}> extends THREE.Mesh {
 
+  // TODO override .dispose() so that we can free up the vertex object buffers
+
   constructor(
     spriteGroupGeometry: SpriteGroupBufferGeometry<T, U> | SpriteGroupInstancedBufferGeometry<T, U, K, I>,
     material: THREE.Material,
