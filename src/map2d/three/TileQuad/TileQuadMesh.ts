@@ -104,15 +104,8 @@ export class TileQuadMesh extends SpriteGroupMesh<TileQuadMethodsType, TileQuad,
       y += tileHeight;
     }
 
-    this.touchVertexBuffers();
+    tiles.touchVertexBuffers();
 
-  }
-
-  /**
-   * Mark the internal vertex buffer data so that it can be uploaded to the gpu memory the next time before you render it.
-   */
-  touchVertexBuffers() {
-    ++this.tiles.voPool.voArray.serial;
   }
 
 }
