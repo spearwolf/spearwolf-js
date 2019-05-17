@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import assert from 'assert';
 
-import { VODescriptor, VOPool } from '../..';
+import { VODescriptor, VOPool } from '..';
 
 describe('VOPool', () => {
   const descriptor = new VODescriptor({

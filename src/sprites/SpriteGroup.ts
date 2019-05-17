@@ -58,7 +58,7 @@ export interface SpriteGroupOptions<T, U> {
   voZero?: VertexObject<T, U>;
 
   /**
-   * Blueprint for new vertex objects. See [[VOArray]].
+   * Blueprint for new (allocated) vertex objects. See [[VOArray]].
    */
   voNew?: VertexObject<T, U>;
 

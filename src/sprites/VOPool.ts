@@ -1,10 +1,8 @@
-import { maxOf } from '../../math';
-import { readOption, generateUuid } from '../../utils';
+import { maxOf } from '../math';
+import { readOption, generateUuid } from '../utils';
 
-import { VOArray } from '../VOArray';
-import { VODescriptor, VertexObject } from '../VODescriptor';
-
-import { createVOs } from './createVOs';
+import { VOArray } from './VOArray';
+import { VODescriptor, VertexObject } from './VODescriptor';
 
 export interface VOPoolOptions<T, U> {
 
@@ -50,6 +48,23 @@ export interface VOPoolOptions<T, U> {
 
 }
 
+/**
+ * Pre-allocate a bunch of vertex objects.
+ */
+function createVOs<T, U> (voPool: VOPool<T, U>, maxAllocSize = 0) {
+  const max = voPool.capacity - voPool.usedCount - voPool.allocatedCount;
+  const count = (maxAllocSize > 0 && maxAllocSize < max ? maxAllocSize : max);
+  const len = voPool.allocatedCount + count;
+
+  for (let i = voPool.allocatedCount; i < len; i++) {
+    const voArray = voPool.voArray.subarray(i);
+    const vertexObject = voPool.descriptor.createVO(voArray);
+
+    vertexObject.free = voPool.free.bind(voPool, vertexObject);
+
+    voPool.availableVOs.push(vertexObject);
+  }
+}
 
 export class VOPool<T, U> {
 
@@ -70,7 +85,6 @@ export class VOPool<T, U> {
 
   readonly availableVOs: VertexObject<T, U>[] = [];
   readonly usedVOs: VertexObject<T, U>[] = [];
-
 
   constructor(descriptor: VODescriptor<T, U>, options: VOPoolOptions<T, U>) {
 
@@ -133,7 +147,11 @@ export class VOPool<T, U> {
     }
 
     this.usedVOs.push(vo);
-    vo.voArray.copy(this.voNew.voArray);
+
+    const { voNew } = this;
+    if (voNew) {
+      vo.voArray.copy(voNew.voArray);
+    }
 
     return vo;
   }
@@ -147,15 +165,17 @@ export class VOPool<T, U> {
       createVOs(this, maxOf(this.maxAllocVOSize, size - this.allocatedCount - this.usedCount));
     }
 
-    for (let i = 0; i < size; ++i) {
-      const vo = this.availableVOs.shift();
-      if (vo !== undefined) {
-        this.usedVOs.push(vo);
-        vo.voArray.copy(this.voNew.voArray);
-        targetArray.push(vo);
-      } else {
-        break;
+    const allocatedVOs = this.availableVOs.splice(0, size);
+    this.usedVOs.push(...allocatedVOs);
+    targetArray.push(...allocatedVOs);
+
+    const { voNew } = this;
+    if (voNew) {
+
+      for (let i = 0, len = allocatedVOs.length; i < len; ++i) {
+        allocatedVOs[i].voArray.copy(voNew.voArray);
       }
+
     }
 
     return targetArray;
@@ -174,27 +194,32 @@ export class VOPool<T, U> {
       return;
     }
 
-    const idx = this.usedVOs.indexOf(vo);
+    const { usedVOs } = this;
+
+    const idx = usedVOs.indexOf(vo);
 
     if (idx === -1) return;
 
-    const lastIdx = this.usedVOs.length - 1;
+    const lastIdx = usedVOs.length - 1;
 
     if (idx !== lastIdx) {
-      const last = this.usedVOs[lastIdx];
+      const last = usedVOs[lastIdx];
       vo.voArray.copy(last.voArray);
 
       const tmp = last.voArray;
       last.voArray = vo.voArray;
       vo.voArray = tmp;
 
-      this.usedVOs.splice(idx, 1, last);
+      usedVOs.splice(idx, 1, last);
     }
 
     this.usedVOs.pop();
     this.availableVOs.unshift(vo);
 
-    vo.voArray.copy(this.voZero.voArray);
+    const { voZero } = this;
+    if (voZero) {
+      vo.voArray.copy(voZero.voArray);
+    }
 
   }
 
@@ -202,8 +227,17 @@ export class VOPool<T, U> {
    * Free all vertex objects
    */
   freeAll() {
-    // TODO clear buffer/copy this.voZero.voArray?
-    this.availableVOs.push(...this.usedVOs);
-    this.usedVOs.length = 0;
+
+    const { voZero, usedVOs } = this;
+
+    if (voZero) {
+      for (let i = 0, len = usedVOs.length; i < len; ++i) {
+        usedVOs[i].voArray.copy(voZero.voArray);
+      }
+    }
+
+    this.availableVOs.splice(0, 0, ...usedVOs);
+    usedVOs.length = 0;
+
   }
 }

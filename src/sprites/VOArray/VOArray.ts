@@ -198,4 +198,5 @@ export class VOArray {
     return new VOArray(size, bytesPerVO, this.arrayDataTypes, new DataView(this.buffer, byteBegin, byteLength));
 
   }
+
 }

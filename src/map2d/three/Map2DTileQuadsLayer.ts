@@ -15,6 +15,7 @@ const $tiles = Symbol('tiles');
 
 const $destroyTile = Symbol('destroyTile');
 const $createTileMesh = Symbol('createTileMesh');
+const $meshCache = Symbol('meshCache');
 
 function makeTexture(htmlElement: HTMLImageElement) {
 
@@ -28,6 +29,8 @@ function makeTexture(htmlElement: HTMLImageElement) {
   return texture;
 
 }
+
+const meshCacheKey = (uuid: string, capacity: number) => `${uuid}:${capacity}`;
 
 /**
  * Represents a map2d layer.
@@ -48,6 +51,8 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
 
   private readonly [$tiles]: Map<string, TileQuadMesh> = new Map();
 
+  private readonly [$meshCache]: Map<string, Array<TileQuadMesh>> = new Map();
+
   constructor(textureLibrary: TextureLibrary) {
 
     this.textureLibrary = textureLibrary;
@@ -56,6 +61,8 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
     this[$texture] = texture;
     this[$material] = new TileQuadMaterial(texture);
 
+    // TODO allow multiple textures/materials per layer ..
+
   }
 
   getObject3D() {
@@ -63,11 +70,11 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
   }
 
   dispose() {
-    const tiles = this[$tiles];
-    Array.from(tiles.values()).forEach((tile) => {
-      tile.geometry.dispose();
-    });
-    tiles.clear();
+    Array.from(this[$tiles].values()).forEach((tile) => tile.geometry.dispose());
+    this[$tiles].clear();
+
+    Array.from(this[$meshCache].values()).forEach((meshCache) => meshCache.forEach(mesh => mesh.geometry.dispose()));
+    this[$meshCache].clear();
 
     this[$texture].dispose();
     this[$material].dispose();
@@ -82,8 +89,18 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
   removeViewTile(tileId: string) {
     const mesh = this[$destroyTile](tileId);
     if (mesh !== null) {
+
+      // remove mesh from map2d scene
       this[$obj3d].remove(mesh);
-      mesh.geometry.dispose();
+
+      // add mesh to internal cache so it is ready for later reuse
+      const cacheKey = meshCacheKey(mesh.material.uuid, mesh.tiles.capacity);
+      const meshCache = this[$meshCache].get(cacheKey);
+      if (meshCache) {
+        meshCache.push(mesh);
+      } else {
+        this[$meshCache].set(cacheKey, [mesh]);
+      }
     }
   }
 
@@ -91,7 +108,7 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
     // console.log('[Map2DSceneTHREE] update grid-tile:', tile.id);
   }
 
-  private [$destroyTile](id: string): THREE.Mesh {
+  private [$destroyTile](id: string): TileQuadMesh {
     const tiles = this[$tiles];
     if (tiles.has(id)) {
       const mesh = tiles.get(id);
@@ -101,14 +118,28 @@ export class Map2DTileQuadsLayer implements IMap2DLayer {
     return null;
   }
 
-  private [$createTileMesh](viewTile: Map2DViewTile): THREE.Mesh {
+  private [$createTileMesh](viewTile: Map2DViewTile): TileQuadMesh {
 
-    // TODO cache/re-use TileQuadMesh instances
-    const mesh = new TileQuadMesh(this[$material], { capacity: viewTile.width * viewTile.height });
+    let mesh: TileQuadMesh = null;
+
+    const material = this[$material];
+    const capacity = viewTile.width * viewTile.height;
+    const meshCache = this[$meshCache].get(meshCacheKey(material.uuid, capacity));
+
+    // reuse a cached mesh ..
+    if (meshCache) {
+      mesh = meshCache.shift();
+    }
+
+    // .. or create
+    if (!mesh) {
+      mesh = new TileQuadMesh(material, { capacity });
+    }
 
     mesh.showTiles(viewTile, this.textureLibrary);
 
     this[$tiles].set(viewTile.id, mesh);
     return mesh;
+
   }
 }

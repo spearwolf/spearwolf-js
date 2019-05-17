@@ -1,16 +1,11 @@
-import { SpriteGroupTextured, VOIndices } from '../../../sprites';
+import { SpriteGroupTextured, VOIndices, SpriteGroupTexturedOptions } from '../../../sprites';
 import { Texture } from '../../../textures';
 
 import { TileQuad } from './TileQuad';
 import { TileQuadMethodsType } from './TileQuadMethods';
 import { getTileQuadDescriptor, TileQuadVertexObject } from './TileQuadDescriptor';
 
-export interface TileQuadGroupOptions {
-
-  capacity?: number;
-
-  dynamic?: boolean;
-
+export interface TileQuadGroupOptions extends SpriteGroupTexturedOptions<TileQuadMethodsType, TileQuad> {
 }
 
 export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, TileQuad> {
@@ -21,6 +16,7 @@ export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, Tile
       indices: VOIndices.buildQuads,
 
       dynamic: true,
+      autotouch: false,
 
       setSize: (sprite: TileQuadVertexObject, w: number, h: number) => sprite.setSize(w, h),
       setTexCoordsByTexture: (sprite: TileQuadVertexObject, texture: Texture) => sprite.setTexCoordsByTexture(texture),
