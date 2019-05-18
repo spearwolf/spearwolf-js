@@ -59,16 +59,17 @@ export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, Tile
 
       for (let col = 0; col < tileCols; ++col) {
 
-        // the internal map2d (x,y) coordinates are mapped to the 3d coordinates (x, 0, y)
-
         const z = viewHeight - y - tileHeight;
 
         const tileId = viewTile.getTileIdAt(col, tileRows - row - 1);
         if (tileId > 0) {
 
           const texture = textureLibrary.getTextureById(tileId);
+          const tile = this.voPool.alloc();
 
-          this.createSpriteByTexture(texture, tileWidth, tileHeight).translate(x, z, 0);
+          tile.setSize(tileWidth, tileHeight);
+          tile.setTexCoordsByTexture(texture);
+          tile.translate(x, z, 0);
 
         }
 
