@@ -1,19 +1,20 @@
 import * as THREE from 'three';
 
-import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../sprites';
-import { TextureAtlas } from '../../textures';
+import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../../sprites';
+import { TextureAtlas } from '../../../textures';
 
-import { BitmapChar } from './BitmapChar';
-import { BitmapCharBase } from './BitmapCharBase';
-import { BitmapCharBaseGroup } from './BitmapCharBaseGroup';
-import { BitmapCharBaseMethodsType } from './BitmapCharBaseMethods';
-import { BitmapCharGroup, BitmapCharGroupOptions } from './BitmapCharGroup';
-import { BitmapCharMethodsType } from './BitmapCharMethods';
+import { BitmapChar } from '../BitmapChar';
+import { BitmapCharBase } from '../BitmapCharBase';
+import { getBitmapCharBaseGroup } from '../BitmapCharBaseGroup';
+import { BitmapCharBaseMethodsType } from '../BitmapCharBaseMethods';
+import { BitmapCharGroup, BitmapCharGroupOptions } from '../BitmapCharGroup';
+import { BitmapCharMethodsType } from '../BitmapCharMethods';
+import { BitmapText2DAlignment } from '../BitmapText2DAlignment';
+import { BitmapText2DLine } from '../BitmapText2DLine';
+import { BitmapText2DMeasurement } from '../BitmapText2DMeasurement';
+import { BitmapCharVertexObject } from '../BitmapCharDescriptor';
+
 import { BitmapFontMaterial } from './BitmapFontMaterial';
-import { BitmapText2DAlignment } from './BitmapText2DAlignment';
-import { BitmapText2DLine } from './BitmapText2DLine';
-import { BitmapText2DMeasurement } from './BitmapText2DMeasurement';
-import { BitmapCharVertexObject } from './BitmapCharDescriptor';
 
 function makeTexture(htmlElement: HTMLImageElement) {
 
@@ -34,7 +35,6 @@ export interface BitmapText2DOptions extends BitmapCharGroupOptions {
 export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapChar, BitmapCharBaseMethodsType, BitmapCharBase> {
 
   fontAtlas: TextureAtlas;
-  baseChars: BitmapCharBaseGroup;
   bitmapChars: BitmapCharGroup;
   material: BitmapFontMaterial;
 
@@ -44,21 +44,18 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
 
   constructor(fontAtlas: TextureAtlas, options?: BitmapText2DOptions) {
 
-    const baseChars = new BitmapCharBaseGroup({ capacity: 1, dynamic: false });
     const bitmapCharGroup = new BitmapCharGroup(options);
+    const baseChars = getBitmapCharBaseGroup();
     const geometry = new SpriteGroupInstancedBufferGeometry(baseChars, bitmapCharGroup);
     const material = new BitmapFontMaterial(makeTexture(fontAtlas.baseTexture.imgEl as HTMLImageElement));
 
     super(geometry, material);
 
     this.fontAtlas = fontAtlas;
-    this.baseChars = baseChars;
     this.bitmapChars = bitmapCharGroup;
     this.material = material;
 
     this.type = 'BitmapText2D';
-
-    this.baseChars.createSprite(1, 1).setUv(0, 0, 1, 0, 1, 1, 0, 1); // TODO re-use a cached/global instance here?
 
     this.lineHeight = fontAtlas.getFeature('lineHeight') as number;
     this.hSpacing = fontAtlas.getFeature('hSpacing') as number || 1;

@@ -27,3 +27,19 @@ export class BitmapCharBaseGroup extends SpriteGroup<BitmapCharBaseMethodsType, 
   }
 
 }
+
+export const getBitmapCharBaseGroup = (() => {
+
+  let baseChars: BitmapCharBaseGroup = null;
+
+  return () => {
+    if (baseChars === null) {
+
+      baseChars = new BitmapCharBaseGroup({ capacity: 1, dynamic: false });
+
+      baseChars.createSprite(1, 1).setUv(0, 0, 1, 0, 1, 1, 0, 1);
+
+    }
+    return baseChars;
+  };
+})();

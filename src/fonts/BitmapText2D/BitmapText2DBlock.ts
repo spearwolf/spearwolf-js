@@ -1,5 +1,6 @@
+import { BitmapText2D } from './three/BitmapText2D';
+
 import { BitmapCharVertexObject } from './BitmapCharDescriptor';
-import { BitmapText2D } from './BitmapText2D';
 import { BitmapText2DAlignment } from './BitmapText2DAlignment';
 
 export class BitmapText2DBlock {
