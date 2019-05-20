@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../../sprites';
 import { TextureAtlas } from '../../../textures';
+import { pick } from '../../../utils';
 
 import { BitmapChar } from '../BitmapChar';
 import { BitmapCharBase } from '../BitmapCharBase';
@@ -14,7 +15,7 @@ import { BitmapText2DLine } from '../BitmapText2DLine';
 import { BitmapText2DMeasurement } from '../BitmapText2DMeasurement';
 import { BitmapCharVertexObject } from '../BitmapCharDescriptor';
 
-import { BitmapFontMaterial } from './BitmapFontMaterial';
+import { BitmapFontMaterial, BitmapFontShaderHooks } from './BitmapFontMaterial';
 
 function makeTexture(htmlElement: HTMLImageElement) {
 
@@ -29,7 +30,9 @@ function makeTexture(htmlElement: HTMLImageElement) {
 
 }
 
-export interface BitmapText2DOptions extends BitmapCharGroupOptions {
+const pickShaderHooks = pick(['vertexShaderPreHook', 'vertexShaderTransformHook']);
+
+export interface BitmapText2DOptions extends BitmapCharGroupOptions, BitmapFontShaderHooks {
 }
 
 export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapChar, BitmapCharBaseMethodsType, BitmapCharBase> {
@@ -47,7 +50,10 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
     const bitmapCharGroup = new BitmapCharGroup(options);
     const baseChars = getBitmapCharBaseGroup();
     const geometry = new SpriteGroupInstancedBufferGeometry(baseChars, bitmapCharGroup);
-    const material = new BitmapFontMaterial(makeTexture(fontAtlas.baseTexture.imgEl as HTMLImageElement));
+    const material = new BitmapFontMaterial(
+      makeTexture(fontAtlas.baseTexture.imgEl as HTMLImageElement),
+      pickShaderHooks(options),
+    );
 
     super(geometry, material);
 

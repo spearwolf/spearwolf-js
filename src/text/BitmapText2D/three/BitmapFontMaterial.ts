@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 
+const VERTEX_SHADER_PRE_HOOK = '// VERTEX_SHADER_PRE_HOOK';
+const VERTEX_SHADER_TRANSFORM_HOOK = '// VERTEX_SHADER_TRANSFORM_HOOK';
+
 const vertexShader = `
 
   uniform float time;
@@ -12,16 +15,22 @@ const vertexShader = `
 
   varying vec2 vTexCoords;
 
+  ${VERTEX_SHADER_PRE_HOOK}
+
   void main(void)
   {
-    vec3 p = vec3(pos.x + (position.x * pos.z), pos.y + (position.y * pos.w) + baselineOffset, zPos);
+    vec4 p = vec4(pos.x + (position.x * pos.z), pos.y + (position.y * pos.w) + baselineOffset, zPos, 1.0);
 
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(p.x, p.y + (125.0 * sin((2.0 * time) + (p.x / 300.0) + (p.z / 100.0))), p.z, 1.0);;
+    ${VERTEX_SHADER_TRANSFORM_HOOK}
+
+    gl_Position = projectionMatrix * modelViewMatrix * p;
 
     vTexCoords = vec2(tex.x + (uv.x * tex.z), tex.y + (uv.y * tex.w));
   }
 
 `;
+
+// gl_Position = projectionMatrix * modelViewMatrix * vec4(p.x, p.y + (125.0 * sin((2.0 * time) + (p.x / 300.0) + (p.z / 100.0))), p.z, 1.0);;
 
 const fragmentShader = `
 
@@ -39,12 +48,33 @@ const fragmentShader = `
 
 `;
 
+export interface BitmapFontShaderHooks {
+
+  vertexShaderPreHook?: string;
+
+  vertexShaderTransformHook?: string;
+
+}
+
+const makeVertexShader = (hooks?: BitmapFontShaderHooks) => {
+
+  if (hooks) {
+
+    const vs = vertexShader.replace(VERTEX_SHADER_PRE_HOOK, hooks.vertexShaderPreHook || '');
+    return vs.replace(VERTEX_SHADER_TRANSFORM_HOOK, hooks.vertexShaderTransformHook || '');
+
+  }
+
+  return vertexShader;
+
+}
+
 export class BitmapFontMaterial extends THREE.ShaderMaterial {
 
-  constructor(fontTexture: THREE.Texture) {
+  constructor(fontTexture: THREE.Texture, shaderHooks?: BitmapFontShaderHooks) {
     super({
 
-      vertexShader,
+      vertexShader: makeVertexShader(shaderHooks),
       fragmentShader,
 
       uniforms: {
