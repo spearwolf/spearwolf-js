@@ -30,8 +30,6 @@ const vertexShader = `
 
 `;
 
-// gl_Position = projectionMatrix * modelViewMatrix * vec4(p.x, p.y + (125.0 * sin((2.0 * time) + (p.x / 300.0) + (p.z / 100.0))), p.z, 1.0);;
-
 const fragmentShader = `
 
   uniform sampler2D fontTexture;
