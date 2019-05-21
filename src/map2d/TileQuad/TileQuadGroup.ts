@@ -3,16 +3,16 @@ import { Texture, TextureLibrary } from '../../textures';
 
 import { Map2DViewTile } from '../Map2DViewTile';
 
-import { TileQuad } from './TileQuad';
+import { ITileQuad } from './ITileQuad';
 import { TileQuadMethodsType } from './TileQuadMethods';
 import { getTileQuadDescriptor, TileQuadVertexObject } from './TileQuadDescriptor';
 
-export interface TileQuadGroupOptions extends SpriteGroupTexturedOptions<TileQuadMethodsType, TileQuad> {
+export interface ITileQuadGroupOptions extends SpriteGroupTexturedOptions<TileQuadMethodsType, ITileQuad> {
 }
 
-export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, TileQuad> {
+export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, ITileQuad> {
 
-  constructor(options?: TileQuadGroupOptions) {
+  constructor(options?: ITileQuadGroupOptions) {
     super(getTileQuadDescriptor(), Object.assign({
 
       indices: VOIndices.buildQuads,

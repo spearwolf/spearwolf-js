@@ -1,22 +1,22 @@
 import { SpriteGroupMesh, SpriteGroupInstancedBufferGeometry } from '../../sprites';
 
-import { TileQuad } from '../TileQuad/TileQuad';
-import { TileQuadBase } from '../TileQuad/TileQuadBase';
-import { TileQuadBaseMethodsType } from '../TileQuad/TileQuadBaseMethods';
-import { TileQuadGroup, TileQuadGroupOptions } from '../TileQuad/TileQuadGroup';
-import { TileQuadMethodsType } from '../TileQuad/TileQuadMethods';
-import { TileQuadMaterial } from './TileQuadMaterial';
 import { getTileQuadBaseGroup } from '../TileQuad/TileQuadBaseGroup';
+import { ITileQuad } from '../TileQuad/ITileQuad';
+import { ITileQuadBase } from '../TileQuad/ITileQuadBase';
+import { TileQuadBaseMethodsType } from '../TileQuad/TileQuadBaseMethods';
+import { TileQuadGroup, ITileQuadGroupOptions } from '../TileQuad/TileQuadGroup';
+import { TileQuadMaterial } from './TileQuadMaterial';
+import { TileQuadMethodsType } from '../TileQuad/TileQuadMethods';
 
-export interface TileQuadMeshOptions extends TileQuadGroupOptions {
+export interface ITileQuadMeshOptions extends ITileQuadGroupOptions {
 }
 
-export class TileQuadMesh extends SpriteGroupMesh<TileQuadMethodsType, TileQuad, TileQuadBaseMethodsType, TileQuadBase> {
+export class TileQuadMesh extends SpriteGroupMesh<TileQuadMethodsType, ITileQuad, TileQuadBaseMethodsType, ITileQuadBase> {
 
   tiles: TileQuadGroup;
   material: TileQuadMaterial;
 
-  constructor(material: TileQuadMaterial, options?: TileQuadMeshOptions) {
+  constructor(material: TileQuadMaterial, options?: ITileQuadMeshOptions) {
 
     const tiles = new TileQuadGroup({
 

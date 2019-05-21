@@ -1,10 +1,10 @@
 import { SpriteGroup, VOIndices } from '../../sprites';
 
-import { TileQuadBase } from './TileQuadBase';
+import { ITileQuadBase } from './ITileQuadBase';
 import { TileQuadBaseMethodsType } from './TileQuadBaseMethods';
 import { getTileQuadBaseDescriptor, TileQuadBaseVertexObject } from './TileQuadBaseDescriptor';
 
-export interface TileQuadBaseGroupOptions {
+export interface ITileQuadBaseGroupOptions {
 
   capacity?: number;
 
@@ -12,9 +12,9 @@ export interface TileQuadBaseGroupOptions {
 
 }
 
-export class TileQuadBaseGroup extends SpriteGroup<TileQuadBaseMethodsType, TileQuadBase> {
+export class TileQuadBaseGroup extends SpriteGroup<TileQuadBaseMethodsType, ITileQuadBase> {
 
-  constructor(options?: TileQuadBaseGroupOptions) {
+  constructor(options?: ITileQuadBaseGroupOptions) {
     super(getTileQuadBaseDescriptor(), Object.assign({
 
       indices: VOIndices.buildQuads,

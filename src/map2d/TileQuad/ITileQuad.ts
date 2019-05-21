@@ -1,5 +1,5 @@
 
-export interface TileQuad {
+export interface ITileQuad {
 
   yPos0: number;
 

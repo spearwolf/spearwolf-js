@@ -1,6 +1,6 @@
 import { VODescriptor, VertexObject } from '../../sprites';
 
-import { TileQuad } from './TileQuad';
+import { ITileQuad } from './ITileQuad';
 import { TileQuadMethods, TileQuadMethodsType } from './TileQuadMethods';
 
 const TileQuadDescription = {
@@ -19,14 +19,14 @@ const TileQuadDescription = {
 
 };
 
-export type TileQuadDescriptorType = VODescriptor<TileQuadMethodsType, TileQuad>;
-export type TileQuadVertexObject = VertexObject<TileQuadMethodsType, TileQuad>;
+export type TileQuadDescriptorType = VODescriptor<TileQuadMethodsType, ITileQuad>;
+export type TileQuadVertexObject = VertexObject<TileQuadMethodsType, ITileQuad>;
 
 let g_tileQuadDescriptor: TileQuadDescriptorType = null;
 
 export const getTileQuadDescriptor = () => {
   if (g_tileQuadDescriptor == null) {
-    g_tileQuadDescriptor = new VODescriptor<TileQuadMethodsType, TileQuad>(TileQuadDescription);
+    g_tileQuadDescriptor = new VODescriptor<TileQuadMethodsType, ITileQuad>(TileQuadDescription);
   }
   return g_tileQuadDescriptor;
 };
