@@ -26,7 +26,7 @@ export class SpriteGroupTextured<T, U> extends SpriteGroup<T, U> {
   /**
    * Create a sprite.
    */
-  createSpriteByTexture(texture?: Texture, width?: number, height?: number) {
+  createSpriteFromTexture(texture?: Texture, width?: number, height?: number) {
     let w: number;
     let h: number;
 
@@ -46,6 +46,10 @@ export class SpriteGroupTextured<T, U> extends SpriteGroup<T, U> {
     }
 
     return sprite;
+  }
+
+  createSpritesFromTextures(textures: Texture[]) {
+    return textures.map(tex => this.createSpriteFromTexture(tex));
   }
 
 }

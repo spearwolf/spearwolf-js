@@ -107,6 +107,14 @@ export class TextureAtlas {
     return sample(this._allFrames);
   }
 
+  randomFrames(count: number) {
+    const frames: Texture[] = [];
+    for (let i = 0; i < count; i++) {
+      frames.push(sample(this._allFrames))
+    }
+    return frames;
+  }
+
   frameNames(match?: string | RegExp) {
     if (match != null) {
       const regex = typeof match === 'string' ? new RegExp(match) : match;
