@@ -1,4 +1,4 @@
-import { VODescriptor, VertexObject } from '../../sprites';
+import { VODescriptor, VertexObject } from '../VODescriptor';
 
 import { ISimpleSpriteBase } from './ISimpleSpriteBase';
 import { SimpleSpriteBaseMethodsType, SimpleSpriteBaseMethods } from './SimpleSpriteBaseMethods';
