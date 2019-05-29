@@ -1,15 +1,15 @@
 
 export interface ISimpleSprite {
 
-  yPos: number;
+  y: number;
 
   left: number;
-  bottom: number;
+  top: number;
 
   width: number;
   height: number;
 
-  setPos: (left: number, bottom: number, width: number, height: number) => void;
+  setPos: (left: number, top: number, width: number, height: number) => void;
 
   originS: number;
   originT: number;

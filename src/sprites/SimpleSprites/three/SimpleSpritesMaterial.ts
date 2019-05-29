@@ -5,7 +5,7 @@ const vertexShader = `
   attribute vec4 pos;
   attribute vec4 tex;
 
-  attribute float yPos;
+  attribute float y;
 
   varying vec2 vTexCoords;
 
@@ -13,7 +13,7 @@ const vertexShader = `
   {
     vec4 v = vec4(
       pos.x + (position.x * pos.z),
-      yPos,
+      y,
       pos.y + (position.y * pos.w),
       1.0);
 

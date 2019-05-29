@@ -11,10 +11,10 @@ export const SimpleSpriteMethods = {
     this.height = h;
   },
 
-  translate(this: ISimpleSprite, left: number, bottom: number, yPos: number) {
+  translate(this: ISimpleSprite, left: number, top: number, y: number) {
     this.left = left;
-    this.bottom = bottom;
-    this.yPos = yPos;
+    this.top = top;
+    this.y = y;
   },
 
 };
