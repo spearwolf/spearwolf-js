@@ -1,8 +1,9 @@
+import { Texture } from '../../textures';
 import { ISimpleSprite } from './ISimpleSprite';
 
 export const SimpleSpriteMethods = {
 
-  setTexCoordsByTexture(this: ISimpleSprite, { minS, minT, maxS, maxT }: { minS: number, minT: number, maxS: number, maxT: number }) {
+  setTexCoordsByTexture(this: ISimpleSprite, { minS, minT, maxS, maxT }: Texture) {
     this.setTex(minS, minT, maxS - minS, maxT - minT);
   },
 
