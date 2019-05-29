@@ -7,14 +7,14 @@ export const BitmapCharMethods = {
   },
 
   setSize(this: BitmapChar, w: number, h: number) {
-    this.width0 = w;
-    this.height0 = h;
+    this.width = w;
+    this.height = h;
   },
 
   translate(this: BitmapChar, x: number, y: number, z: number) {
-    this.originX0 = x;
-    this.originY0 = y;
-    this.zPos0 = z;
+    this.originX = x;
+    this.originY = y;
+    this.zPos = z;
   },
 
 };

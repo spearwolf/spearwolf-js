@@ -7,14 +7,14 @@ export const SimpleSpriteMethods = {
   },
 
   setSize(this: ISimpleSprite, w: number, h: number) {
-    this.width0 = w;
-    this.height0 = h;
+    this.width = w;
+    this.height = h;
   },
 
   translate(this: ISimpleSprite, left: number, bottom: number, yPos: number) {
-    this.left0 = left;
-    this.bottom0 = bottom;
-    this.yPos0 = yPos;
+    this.left = left;
+    this.bottom = bottom;
+    this.yPos = yPos;
   },
 
 };

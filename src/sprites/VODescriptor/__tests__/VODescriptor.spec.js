@@ -555,3 +555,40 @@ describe('VODescriptor with mixed element types (using the attribute object nota
     assert.equal(descriptor.attr.translate.byteOffset, 16, 'translate.byteOffset');
   });
 });
+
+describe('VODescriptor with a single vertex types', () => {
+  const descriptor = new VODescriptor({
+
+    // vertex elements layout
+    // ----------------------
+    //
+    // vertex: (x)(y)(z)(color)
+    //
+    attributes: {
+      position: ['x', 'y', 'z'],
+      color: {
+        type: 'uint32',
+      },
+    },
+  });
+
+  it('vertexCount', () => {
+    assert.equal(descriptor.vertexCount, 1);
+  });
+
+  it('vertexAttrCount', () => {
+    assert.equal(descriptor.vertexAttrCount, 4);
+  });
+
+  it('xyz', () => {
+    const vo = descriptor.createVO();
+
+    vo.x = 1;
+    vo.y = 2;
+    vo.z = 3;
+    vo.color = 0xff0066;
+
+    assert.deepEqual(vo.toArray(), [ 1, 2, 3, 0xff0066 ]);
+  });
+
+});

@@ -111,7 +111,7 @@ export class BitmapText2D extends SpriteGroupMesh<BitmapCharMethodsType, BitmapC
         bitmapChars.setSpriteSize(sprite, tex.width, tex.height, descriptor);
         bitmapChars.setTexCoordsByTexture(sprite, tex, descriptor);
 
-        sprite.baselineOffset0 = char.bo;
+        sprite.baselineOffset = char.bo;
 
         sprite.translate(lineX + char.x, y + measure.height - char.y, z);
 

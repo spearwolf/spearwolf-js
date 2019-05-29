@@ -111,11 +111,13 @@ export class VOAttrDescriptor {
   }
 
   static defineProperties(attrDesc: any, propertiesObject: any, descriptor: any) {
+
     const { name } = attrDesc;
     const getArray = (TYPED_ARRAY_GETTER as any)[attrDesc.type];
     const { vertexCount } = descriptor;
     const vertexAttrCount = attrDesc.vertexAttrCount(descriptor);
     const offset = attrDesc.byteOffset / attrDesc.bytesPerElement;
+    const hasMultipleVertices = descriptor.vertexCount > 1;
 
     if (attrDesc.size === 1) {
       if (attrDesc.uniform) {
@@ -147,7 +149,7 @@ export class VOAttrDescriptor {
 
           valueGetters.push(curValueGetter);
 
-          propertiesObject[name + i] = {
+          propertiesObject[`${name}${hasMultipleVertices ? i : ''}`] = {
             get: curValueGetter,
             set: setVNv(getArray, 1, 1, 0, offset + (i * vertexAttrCount)),
             enumerable: true,
@@ -199,7 +201,7 @@ export class VOAttrDescriptor {
           const curVertexValueGetters = [];
 
           for (let j = 0; j < attrDesc.size; ++j) {
-            const setterName = attrPostfix(attrDesc, name, j) + i;
+            const setterName = `${attrPostfix(attrDesc, name, j)}${hasMultipleVertices ? i : ''}`;
             const curValueGetter = getV1u(getArray, offset + (i * vertexAttrCount) + j);
 
             curVertexValueGetters.push(curValueGetter);

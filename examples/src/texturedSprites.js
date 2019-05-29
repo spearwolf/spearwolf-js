@@ -117,7 +117,7 @@ const init = async ({ canvas, scene }) => {
   for (let z = -0.5 * LAYERS * STEP_Z, j = 0; j < LAYERS; j++, z+= STEP_Z) {
     for (let x = -0.5 * COUNT * STEP_X, i = 0; i < COUNT; i++, x+= STEP_X) {
 
-      spriteGroup.createSpriteByTexture(atlas.randomFrame()).translate(x, 0, z);
+      spriteGroup.createSpriteFromTexture(atlas.randomFrame()).translate(x, 0, z);
 
     }
   }
