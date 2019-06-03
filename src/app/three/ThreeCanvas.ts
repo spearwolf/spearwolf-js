@@ -1,6 +1,14 @@
 import * as THREE from 'three';
 
-import { readOption, pick } from '../../utils';
+import { readOption, pick, generateUuid } from '../../utils';
+
+const CSS_CLASS_PIXELATE = `pixelate-${generateUuid()}`;
+const CSS_PIXELATE = `
+  .${CSS_CLASS_PIXELATE} {
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
+`;
 
 const filterThreeParameters = pick([
   'precision',
@@ -19,6 +27,8 @@ export type ThreeCanvasResizeStrategy = 'canvas'| 'container';
 export interface ThreeCanvasOptions {
 
   resizeStrategy?: ThreeCanvasResizeStrategy;
+
+  pixelate?: boolean;
 
   pixelRatio?: number;
 
@@ -129,6 +139,14 @@ export class ThreeCanvas extends THREE.EventDispatcher {
         el.appendChild(this.canvas);
         defaultResizeStrategy = 'container';
       }
+    }
+
+    if (readOption(options, 'pixelate')) {
+      const styleEl = document.createElement('style');
+      styleEl.innerHTML = CSS_PIXELATE;
+      document.head.appendChild(styleEl);
+      this.canvas.classList.add(CSS_CLASS_PIXELATE);
+      options.pixelRatio = 1;
     }
 
     this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy) as ThreeCanvasResizeStrategy;

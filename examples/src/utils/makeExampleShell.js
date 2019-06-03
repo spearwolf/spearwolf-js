@@ -10,7 +10,10 @@ import { ThreeCanvas, readOption } from '../../../src';
 
 export const makeExampleShell = async (el, options, initializer) => {
 
-  const canvas = new ThreeCanvas(el, options);
+  const canvas = new ThreeCanvas(el, {
+    ...options,
+    pixelate: true,
+  });
 
   debug('threeCanvas', canvas);
 
