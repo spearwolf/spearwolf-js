@@ -1,5 +1,8 @@
+[![npm version](https://badge.fury.io/js/spearwolf-js.svg)](https://badge.fury.io/js/spearwolf-js)
+
 # spearwolf-js
-various javascript (+ typescript types) helpers and classes for various [three.js](https://threejs.org/)/webgl experiments!
+
+A typescript library for my 2.5d browser game dev experiments based on [three.js](https://threejs.org/).
 
 ## Development Setup
 
@@ -17,33 +20,8 @@ To start the examples, run:
 $ npm start
 ```
 
-To build and watch all tests, run:
+To run all tests:
 
 ```sh
-$ npm run test:watch
+$ npm test
 ```
-
-to run the tests in your browser, start:
-
-```sh
-$ npm run test:serve
-```
-
-.. you should run both `test:*` tasks in parallel for development.
-
-## Project Structure
-
-- __`src`__: contains the source code. codebase is written in state-of-the-art modern javascript (ES2017 or whatever the latest version is at the moment)
-
-  - `utils`: low-level, commonly used utility functions
-  
-  - `core`: commonly used high-level objects, classes and concepts
-  
-  - `sprites`: vertex-objects, sprites and sprite-groups
-
-- __`types`__: contains manually handwritten type definitions for typescript. Use `npm run test:types` to test the types.
-
-  - `types/test/`: contains the tests for the type definitions
-
-- __`tests`__: the starting point for the tests. the tests are written with [Mocha](https://mochajs.org/). Put in here all your assets needed for testing.
-
