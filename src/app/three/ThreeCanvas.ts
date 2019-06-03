@@ -114,9 +114,12 @@ export class ThreeCanvas extends THREE.EventDispatcher {
     const pixelate = readOption(options, 'pixelate', false);
 
     if (pixelate) {
-      const styleEl = document.createElement('style');
-      styleEl.innerHTML = CSS_PIXELATE;
-      document.head.appendChild(styleEl);
+      if (!document.getElementById(CSS_CLASS_PIXELATE)) {
+        const styleEl = document.createElement('style');
+        styleEl.innerHTML = CSS_PIXELATE;
+        styleEl.setAttribute('id', CSS_CLASS_PIXELATE);
+        document.head.appendChild(styleEl);
+      }
       this.canvas.classList.add(CSS_CLASS_PIXELATE);
       options.pixelRatio = 1;
     }
