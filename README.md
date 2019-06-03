@@ -2,7 +2,7 @@
 
 # spearwolf-js
 
-A typescript library for my 2.5d browser game dev experiments based on [three.js](https://threejs.org/)
+A typescript library for my personal 2.5d browser game dev experiments based on [three.js](https://threejs.org/)
 
 ## Development Setup
 
