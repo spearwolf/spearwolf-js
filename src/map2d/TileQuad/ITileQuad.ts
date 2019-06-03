@@ -1,21 +1,21 @@
 
 export interface ITileQuad {
 
-  yPos0: number;
+  y: number;
 
-  left0: number;
-  bottom0: number;
+  left: number;
+  top: number;
 
-  width0: number;
-  height0: number;
+  width: number;
+  height: number;
 
-  setPos: (left: number, bottom: number, width: number, height: number) => void;
+  setPos: (left: number, top: number, width: number, height: number) => void;
 
-  originS0: number;
-  originT0: number;
+  originS: number;
+  originT: number;
 
-  maxS0: number;
-  maxT0: number;
+  maxS: number;
+  maxT: number;
 
   setTex: (oiginS: number, originT: number, maxS: number, maxT: number) => void;
 

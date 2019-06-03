@@ -26,11 +26,4 @@ export class SimpleSpriteGroup extends SpriteGroupTextured<SimpleSpriteMethodsTy
     }, options));
   }
 
-  /**
-   * Mark the internal vertex buffer so that it can be uploaded to the gpu memory the next time before we render it
-   */
-  touchVertexBuffers() {
-    ++this.voPool.voArray.serial;
-  }
-
 }

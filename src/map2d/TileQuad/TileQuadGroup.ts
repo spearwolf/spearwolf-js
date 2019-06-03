@@ -26,13 +26,6 @@ export class TileQuadGroup extends SpriteGroupTextured<TileQuadMethodsType, ITil
     }, options));
   }
 
-  /**
-   * Mark the internal vertex buffer so that it can be uploaded to the gpu memory the next time before we render it
-   */
-  touchVertexBuffers() {
-    ++this.voPool.voArray.serial;
-  }
-
   showTiles(viewTile: Map2DViewTile, textureLibrary: TextureLibrary) {
 
     this.voPool.freeAll();

@@ -7,14 +7,14 @@ export const TileQuadMethods = {
   },
 
   setSize(this: ITileQuad, w: number, h: number) {
-    this.width0 = w;
-    this.height0 = h;
+    this.width = w;
+    this.height = h;
   },
 
-  translate(this: ITileQuad, left: number, bottom: number, yPos: number) {
-    this.left0 = left;
-    this.bottom0 = bottom;
-    this.yPos0 = yPos;
+  translate(this: ITileQuad, left: number, top: number, y: number) {
+    this.left = left;
+    this.top = top;
+    this.y = y;
   },
 
 };

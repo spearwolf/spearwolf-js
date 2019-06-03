@@ -6,10 +6,10 @@ import { TileQuadMethods, TileQuadMethodsType } from './TileQuadMethods';
 const TileQuadDescription = {
 
   attributes: [{
-    name: 'yPos',
+    name: 'y',
   }, {
     name: 'pos',
-    scalars: ['left', 'bottom', 'width', 'height'],
+    scalars: ['left', 'top', 'width', 'height'],
   }, {
     name: 'tex',
     scalars: ['originS', 'originT', 'maxS', 'maxT'],
