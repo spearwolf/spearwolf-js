@@ -14,14 +14,14 @@ After cloning the repo, run:
 $ npm install
 ```
 
-To start the examples, run:
-
-```sh
-$ npm start
-```
-
 To run all tests:
 
 ```sh
 $ npm test
+```
+
+To start the examples, run:
+
+```sh
+$ npm start
 ```
