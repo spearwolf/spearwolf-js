@@ -3,7 +3,6 @@
 import * as THREE from 'three';
 
 import { makeExampleShell } from './utils/makeExampleShell';
-import { makeTexture } from './utils/makeTexture';
 import { debug } from './utils/debug';
 
 import { VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
@@ -128,8 +127,6 @@ const init = async ({ canvas, scene }) => {
   //
   // ----------------------------------------------------------------------------------
 
-  const anisotrophy = canvas.renderer.capabilities.getMaxAnisotropy();
-
   const material = new THREE.ShaderMaterial({
 
     vertexShader: `
@@ -160,7 +157,7 @@ const init = async ({ canvas, scene }) => {
 
     uniforms: {
       time: timeUniform,
-      tex: { value: makeTexture(atlas.baseTexture.imgEl, anisotrophy) },
+      tex: { value: canvas.texUtils.makeTexture(atlas, Infinity) },
     },
 
     side: THREE.DoubleSide,

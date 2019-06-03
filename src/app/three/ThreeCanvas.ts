@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import { readOption, pick, generateUuid } from '../../utils';
+import { TextureUtils } from '../../textures';
 
 const CSS_CLASS_PIXELATE = `pixelate-${generateUuid()}`;
 const CSS_PIXELATE = `
@@ -10,7 +11,7 @@ const CSS_PIXELATE = `
   }
 `;
 
-const filterThreeParameters = pick([
+const pickThreeParameters = pick([
   'precision',
   'alpha',
   'premultipliedAlpha',
@@ -22,17 +23,13 @@ const filterThreeParameters = pick([
   'logarithmicDepthBuffer',
 ]);
 
+const $lockPixelRatio = Symbol('lockPixelRatio');
+const $lastPixelRatio = Symbol('lastPixelRatio');
+const $rafID = Symbol('rafID');
+
 export type ThreeCanvasResizeStrategy = 'canvas'| 'container';
 
-export interface ThreeCanvasOptions {
-
-  resizeStrategy?: ThreeCanvasResizeStrategy;
-
-  pixelate?: boolean;
-
-  pixelRatio?: number;
-
-  clearColor?: string | THREE.Color;
+export interface ThreeWebGLRendererOptions {
 
   /**
    * Default is `mediump`.
@@ -82,11 +79,32 @@ export interface ThreeCanvasOptions {
 
 }
 
+export interface ThreeCanvasOptions extends ThreeWebGLRendererOptions {
+
+  resizeStrategy?: ThreeCanvasResizeStrategy;
+
+  /**
+   * Restrict the *device pixel ratio* to 1 and activate pixel art mode
+   * (set the `image-rendering` css prop for the `<canvas>` element)
+   */
+  pixelate?: boolean;
+
+  /**
+   * Set a fixed device pixel ratio. Otherwise DPR is read from `window.devicePixelRatio`
+   */
+  pixelRatio?: number;
+
+  clearColor?: string | THREE.Color;
+
+}
+
 export class ThreeCanvas extends THREE.EventDispatcher {
 
   readonly renderer: THREE.WebGLRenderer;
 
   readonly canvas: HTMLCanvasElement;
+
+  readonly texUtils: TextureUtils;
 
   resizeStrategy: ThreeCanvasResizeStrategy;
 
@@ -122,9 +140,10 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
   pause = false;
 
-  private _pixelRatio = 0;
+  private [$lockPixelRatio] = 0;
+  private [$lastPixelRatio] = 0;
 
-  private _rafID = 0;
+  private [$rafID] = 0;
 
   constructor(el: HTMLElement, options?: ThreeCanvasOptions) {
     super();
@@ -151,15 +170,17 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
     this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy) as ThreeCanvasResizeStrategy;
 
-    this._pixelRatio = readOption(options, 'pixelRatio', 0) as number;
+    this[$lockPixelRatio] = readOption(options, 'pixelRatio', 0) as number;
 
     const threeParams = Object.assign({
       precision: 'mediump',
-    }, filterThreeParameters(options), {
+    }, pickThreeParameters(options), {
       canvas: this.canvas,
     });
 
     this.renderer = new THREE.WebGLRenderer(threeParams);
+
+    this.texUtils = new TextureUtils(this.renderer);
 
     const clearColor = readOption(options, 'clearColor', new THREE.Color()) as THREE.Color | string;
 
@@ -172,27 +193,27 @@ export class ThreeCanvas extends THREE.EventDispatcher {
   }
 
   get pixelRatio() {
-    return this._pixelRatio || window.devicePixelRatio || 1;
+    return this[$lockPixelRatio] || window.devicePixelRatio || 1;
   }
 
   resize() {
-    const { canvas } = this;
+    const { canvas, pixelRatio } = this;
 
     const {
       clientWidth: wPx,
       clientHeight: hPx,
     } = this.resizeStrategy === 'container' ? canvas.parentNode as HTMLElement : canvas;
 
-    if (wPx !== this.width || hPx !== this.height) {
+    if (pixelRatio !== this[$lastPixelRatio] || wPx !== this.width || hPx !== this.height) {
 
       this.width = wPx;
       this.height = hPx;
+      this[$lastPixelRatio] = pixelRatio;
 
       this.renderer.setPixelRatio(this.pixelRatio);
       this.renderer.setSize(wPx, hPx);
 
       this.dispatchResizeEvent();
-
     }
   }
 
@@ -255,14 +276,14 @@ export class ThreeCanvas extends THREE.EventDispatcher {
       if (!this.pause) {
         this.frame(now);
       }
-      this._rafID = window.requestAnimationFrame(renderFrame);
+      this[$rafID] = window.requestAnimationFrame(renderFrame);
     }
-    this._rafID = window.requestAnimationFrame(renderFrame);
+    this[$rafID] = window.requestAnimationFrame(renderFrame);
     this.pause = false;
   }
 
   stop() {
-    window.cancelAnimationFrame(this._rafID);
+    window.cancelAnimationFrame(this[$rafID]);
   }
 
 }

@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-env browser */
 import { makeExampleShell } from './utils/makeExampleShell';
-import { makeTexture } from './utils/makeTexture';
-
 import { TextureAtlas, SimpleSprites, SimpleSpritesMaterial } from '../../src';
 
 makeExampleShell(
@@ -21,7 +19,7 @@ makeExampleShell(
     const capacity = 256;
 
     const atlas = await TextureAtlas.load('amigaballs.json', '/assets/');
-    const texture = makeTexture(atlas.baseTexture.imgEl);
+    const texture = canvas.texUtils.makeTexture(atlas);
     const material = new SimpleSpritesMaterial(texture);
     const mesh = new SimpleSprites(material, { capacity, dynamic: true, autotouch: true });
 
