@@ -1,37 +1,42 @@
-import { WebGLRenderer, Texture, LinearFilter, NearestFilter } from 'three';
-import { TextureAtlas } from './TextureAtlas';
+import * as THREE from 'three';
 
-const $renderer = Symbol('renderer');
+import { TextureAtlas } from './TextureAtlas';
+import { TextureLibrary } from './TextureLibrary';
+import { Texture } from './Texture';
+
+const $maxAnisotrophy = Symbol('maxAnisotrophy');
 
 export class TextureUtils {
 
-  DefaultTexAnisotrophy = 0;
+  DefaultAnisotrophy: number;
+  DefaultFilter: THREE.TextureFilter;
 
-  private [$renderer]: WebGLRenderer;
+  private readonly [$maxAnisotrophy]: number;
 
-  constructor(renderer: WebGLRenderer) {
-    this[$renderer] = renderer;
+  constructor({ maxAnisotrophy, defaultAnisotrophy, defaultFilter }: { maxAnisotrophy: number, defaultAnisotrophy?: number, defaultFilter?: THREE.TextureFilter }) {
+    this[$maxAnisotrophy] = maxAnisotrophy;
+    this.DefaultAnisotrophy = defaultAnisotrophy || 0;
+    this.DefaultFilter = defaultFilter || THREE.NearestFilter;
   }
 
-  makeTexture(source: TextureAtlas, anisotropy = this.DefaultTexAnisotrophy) {
-   
-    const texture = new Texture(source.baseTexture.imgEl);
+  makeTexture(source: TextureAtlas|TextureLibrary|Texture, filter: THREE.TextureFilter = this.DefaultFilter, anisotropy = this.DefaultAnisotrophy) {
+
+    let texture: THREE.Texture = null;
+
+    if (source instanceof TextureLibrary) {
+      texture = new THREE.Texture(source.atlas.baseTexture.imgEl);
+    } else if (source instanceof TextureAtlas) {
+      texture = new THREE.Texture(source.baseTexture.imgEl);
+    } else { // is a Texture!
+      texture = new THREE.Texture((source as Texture).imgEl);
+    }
 
     texture.flipY = false;
 
-    if (anisotropy === 0) {
+    texture.magFilter = filter;
+    texture.minFilter = filter;
 
-      texture.magFilter = NearestFilter;
-      texture.minFilter = NearestFilter;
-
-    } else {
-
-      texture.minFilter = LinearFilter;
-      texture.magFilter = LinearFilter;
-
-      texture.anisotropy = anisotropy === Infinity ? this[$renderer].capabilities.getMaxAnisotropy() : anisotropy;
-
-    }
+    texture.anisotropy = anisotropy === Infinity ? this[$maxAnisotrophy] : anisotropy;
 
     texture.needsUpdate = true;
 

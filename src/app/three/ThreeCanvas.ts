@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import { readOption, pick, generateUuid } from '../../utils';
 import { TextureUtils } from '../../textures';
+import { ThreeWebGLRendererOptions } from './ThreeWebGLRendererOptions';
 
 const CSS_CLASS_PIXELATE = `pixelate-${generateUuid()}`;
 const CSS_PIXELATE = `
@@ -28,56 +29,6 @@ const $lastPixelRatio = Symbol('lastPixelRatio');
 const $rafID = Symbol('rafID');
 
 export type ThreeCanvasResizeStrategy = 'canvas'| 'container';
-
-export interface ThreeWebGLRendererOptions {
-
-  /**
-   * Default is `mediump`.
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  precision?: 'highp' | 'mediump' | 'lowp';
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  alpha?: boolean;
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  premultipliedAlpha?: boolean;
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  antialias?: boolean;
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  stencil?: boolean;
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  preserveDrawingBuffer?: boolean;
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  powerPreference?: 'high-performance' | 'low-power' | 'default';
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  depth?: boolean;
-
-  /**
-   * See [THREE.WebGLRenderer](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderer)
-   */
-  logarithmicDepthBuffer?: boolean;
-
-}
 
 export interface ThreeCanvasOptions extends ThreeWebGLRendererOptions {
 
@@ -160,7 +111,9 @@ export class ThreeCanvas extends THREE.EventDispatcher {
       }
     }
 
-    if (readOption(options, 'pixelate')) {
+    const pixelate = readOption(options, 'pixelate', false);
+
+    if (pixelate) {
       const styleEl = document.createElement('style');
       styleEl.innerHTML = CSS_PIXELATE;
       document.head.appendChild(styleEl);
@@ -180,7 +133,11 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
     this.renderer = new THREE.WebGLRenderer(threeParams);
 
-    this.texUtils = new TextureUtils(this.renderer);
+    this.texUtils = new TextureUtils({
+      maxAnisotrophy: this.renderer.capabilities.getMaxAnisotropy(),
+      defaultAnisotrophy: pixelate ? 0 : Infinity,
+      defaultFilter: pixelate ? THREE.NearestFilter : THREE.LinearFilter,
+    });
 
     const clearColor = readOption(options, 'clearColor', new THREE.Color()) as THREE.Color | string;
 
