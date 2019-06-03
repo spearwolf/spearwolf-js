@@ -157,7 +157,7 @@ const init = async ({ canvas, scene }) => {
 
     uniforms: {
       time: timeUniform,
-      tex: { value: canvas.texUtils.makeTexture(atlas, THREE.NearestFilter, Infinity) },
+      tex: { value: canvas.texUtils.makeTexture(atlas, { anisotrophy: Infinity }) },
     },
 
     side: THREE.DoubleSide,

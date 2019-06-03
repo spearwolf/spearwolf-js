@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { readOption } from '../utils';
+
 import { TextureAtlas } from './TextureAtlas';
 import { TextureLibrary } from './TextureLibrary';
 import { Texture } from './Texture';
@@ -19,7 +21,12 @@ export class TextureUtils {
     this.DefaultFilter = defaultFilter || THREE.NearestFilter;
   }
 
-  makeTexture(source: TextureAtlas|TextureLibrary|Texture, filter: THREE.TextureFilter = this.DefaultFilter, anisotropy = this.DefaultAnisotrophy) {
+  makeTexture(
+    source: TextureAtlas | TextureLibrary | Texture,
+    options?: {
+      filter?: THREE.TextureFilter,
+      anisotropy?: number,
+    }) {
 
     let texture: THREE.Texture = null;
 
@@ -33,8 +40,12 @@ export class TextureUtils {
 
     texture.flipY = false;
 
+    const filter = readOption(options, 'filter', this.DefaultFilter) as THREE.TextureFilter
+
     texture.magFilter = filter;
     texture.minFilter = filter;
+
+    const anisotropy = readOption(options, 'anisotrophy', this.DefaultAnisotrophy) as number;
 
     texture.anisotropy = anisotropy === Infinity ? this[$maxAnisotrophy] : anisotropy;
 
