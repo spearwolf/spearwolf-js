@@ -32,7 +32,7 @@ export const createLinkedTypedArrays = (buffer: ArrayBuffer, bufferByteOffset: n
   arrayTypes.forEach((type) => {
     const TypedArray = TYPED_ARRAY[type];
     const arr = new TypedArray(buffer, bufferByteOffset, bufferByteLength / TypedArray.BYTES_PER_ELEMENT);
-    typedArrays[typedArrayProp(type)] = arr;
+    typedArrays[typedArrayProp(type)] = arr as any;
   });
 
   return typedArrays;

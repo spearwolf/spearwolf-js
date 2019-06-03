@@ -45,7 +45,7 @@ export interface TextureAtlasDescription {
 
 }
 
-const filterFrameFeatures = unpick(['frame']);
+const filterFrameFeatures = unpick(['frame']) as any;
 
 export class TextureAtlas {
 
