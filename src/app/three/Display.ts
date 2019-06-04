@@ -11,6 +11,15 @@ const CSS_PIXELATE = `
   }
 `;
 
+function installGlobalScriptNode(id: string, css: string) {
+  if (!document.getElementById(id)) {
+    const styleEl = document.createElement('style');
+    styleEl.innerHTML = css;
+    styleEl.setAttribute('id', id);
+    document.head.appendChild(styleEl);
+  }
+}
+
 const getWebGLRendererParameters = pick([
   'alpha',
   'antialias',
@@ -23,9 +32,14 @@ const getWebGLRendererParameters = pick([
   'stencil',
 ]);
 
+const $dispatchResizeEvent = Symbol('dispatchResizeEvent');
+const $dispatchFrameEvent = Symbol('dispatchFrameEvent');
 const $lockPixelRatio = Symbol('lockPixelRatio');
 const $lastPixelRatio = Symbol('lastPixelRatio');
 const $rafID = Symbol('rafID');
+
+const RESIZE = 'resize';
+const FRAME = 'frame';
 
 export type DisplayResizeStrategy = 'canvas' | 'container';
 
@@ -110,30 +124,26 @@ export class Display extends THREE.EventDispatcher {
       }
     }
 
-    const pixelate = readOption(options, 'pixelate', false);
+    const pixelate = Boolean(readOption(options, 'pixelate', false));
+    let pixelRatio = Number(readOption(options, 'pixelRatio', 0));
 
     if (pixelate) {
-      if (!document.getElementById(CSS_CLASS_PIXELATE)) {
-        const styleEl = document.createElement('style');
-        styleEl.innerHTML = CSS_PIXELATE;
-        styleEl.setAttribute('id', CSS_CLASS_PIXELATE);
-        document.head.appendChild(styleEl);
-      }
+      installGlobalScriptNode(CSS_CLASS_PIXELATE, CSS_PIXELATE);
       this.canvas.classList.add(CSS_CLASS_PIXELATE);
-      options.pixelRatio = 1;
+      pixelRatio = 1;
     }
+
+    this[$lockPixelRatio] = pixelRatio;
 
     this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy) as DisplayResizeStrategy;
 
-    this[$lockPixelRatio] = Number(readOption(options, 'pixelRatio', 0));
-
-    const threeParams = Object.assign({
+    const rendererArgs = Object.assign({
       precision: 'mediump',
     }, getWebGLRendererParameters(options), {
       canvas: this.canvas,
     });
 
-    this.renderer = new THREE.WebGLRenderer(threeParams);
+    this.renderer = new THREE.WebGLRenderer(rendererArgs);
 
     this.texUtils = new TextureUtils({
       maxAnisotrophy: this.renderer.capabilities.getMaxAnisotropy(),
@@ -172,14 +182,16 @@ export class Display extends THREE.EventDispatcher {
       this.renderer.setPixelRatio(this.pixelRatio);
       this.renderer.setSize(wPx, hPx);
 
-      this.dispatchResizeEvent();
+      if (this.frameNo > 0) {
+        this[$dispatchResizeEvent]();
+      }
     }
   }
 
-  dispatchResizeEvent() {
+  private [$dispatchResizeEvent]() {
     this.dispatchEvent({
 
-      type: 'resize',
+      type: RESIZE,
 
       display: this,
 
@@ -189,10 +201,10 @@ export class Display extends THREE.EventDispatcher {
     });
   }
 
-  dispatchFrameEvent(type: string) {
+  private [$dispatchFrameEvent]() {
     this.dispatchEvent({
 
-      type,
+      type: FRAME,
 
       display: this,
 
@@ -206,7 +218,7 @@ export class Display extends THREE.EventDispatcher {
     });
   }
 
-  frame(now = window.performance.now()) {
+  renderFrame(now = window.performance.now()) {
 
     this.lastNow = this.now;
     this.now = now / 1000.0;
@@ -218,21 +230,21 @@ export class Display extends THREE.EventDispatcher {
     this.resize();
 
     if (this.frameNo === 0) {
-      this.dispatchResizeEvent();
+      this[$dispatchResizeEvent]();
     }
 
     this.renderer.clear();
 
-    this.dispatchFrameEvent('frame');
+    this[$dispatchFrameEvent]();
 
-    this.frameNo++;
+    ++this.frameNo;
 
   }
 
   start() {
     const renderFrame = (now: number) => {
       if (!this.pause) {
-        this.frame(now);
+        this.renderFrame(now);
       }
       this[$rafID] = window.requestAnimationFrame(renderFrame);
     }
