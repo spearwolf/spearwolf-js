@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 /* eslint-env browser */
 import * as THREE from 'three';
-import { ThreeCanvas } from '../../src';
+import { Display } from '../../src';
 
-const tc = new ThreeCanvas(document.getElementById('container'), {
+const display = new Display(document.getElementById('container'), {
   alpha: false,
   clearColor: 'skyblue',
 });
 
-tc.addEventListener('resize', (ev) => {
+display.addEventListener('resize', (ev) => {
   console.log('Resize to:', ev);
 })
 
-const camera = new THREE.PerspectiveCamera(75, tc.width / tc.height, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(75, display.width / display.height, 0.1, 100);
 camera.position.z = 30;
 camera.position.y = 10;
 camera.lookAt(0, 0, 0);
@@ -45,7 +45,7 @@ cube.material.onBeforeCompile = (shader) => {
 
 const yAxis = new THREE.Vector3(0, 1, 0);
 
-tc.addEventListener('frame', ({ renderer, now, width, height, deltaTime }) => {
+display.addEventListener('frame', ({ display, now, width, height, deltaTime }) => {
 
   timeUniform.value = 0.5 * now % Math.PI * 2;
 
@@ -54,12 +54,12 @@ tc.addEventListener('frame', ({ renderer, now, width, height, deltaTime }) => {
 
   scene.rotateOnAxis(yAxis, deltaTime);
 
-  renderer.render(scene, camera);
+  display.renderer.render(scene, camera);
 
 });
 
-tc.start();
+display.start();
 
-console.log('threeCanvas', tc);
+console.log('display', display);
 // @ts-ignore
-window.threeCanvas = tc;
+window.display = display;

@@ -5,14 +5,14 @@ import * as THREE from 'three';
 import { makeWireframe } from './utils/makeWireframe';
 import { debug } from './utils/debug';
 
-import { ThreeCanvas, VODescriptor, VOIndices, SpriteGroup, SpriteGroupBufferGeometry, SpriteGroupMesh } from '../../src';
+import { Display, VODescriptor, VOIndices, SpriteGroup, SpriteGroupBufferGeometry, SpriteGroupMesh } from '../../src';
 
-const threeCanvas = new ThreeCanvas(document.getElementById('container'), {
+const display = new Display(document.getElementById('container'), {
   alpha: false,
   clearColor: 'skyblue',
 });
 
-const camera = new THREE.PerspectiveCamera(75, threeCanvas.width / threeCanvas.height, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(75, display.width / display.height, 0.1, 100);
 camera.position.z = 30;
 camera.position.y = 10;
 camera.lookAt(0, 0, 0);
@@ -76,20 +76,20 @@ scene.add(cube);
 
 const yAxis = new THREE.Vector3(0, 1, 0);
 
-threeCanvas.addEventListener('frame', ({ renderer, width, height, deltaTime }) => {
+display.addEventListener('frame', ({ display, width, height, deltaTime }) => {
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 
   scene.rotateOnAxis(yAxis, deltaTime);
 
-  renderer.render(scene, camera);
+  display.renderer.render(scene, camera);
 
 });
 
-threeCanvas.start();
+display.start();
 
-debug('threeCanvas', threeCanvas);
+debug('display', display);
 debug('cube', cube);
 debug('triangleDescriptor', triangleDescriptor);
 debug('spriteGroup', spriteGroup);

@@ -10,24 +10,23 @@ makeExampleShell(
     autoRotate: true,
     showCube: false,
   },
-  async ({ camera, scene, canvas }) => {
+  async ({ camera, scene, display }) => {
 
     camera.position.y = 400;
     camera.position.z = 0;
     camera.lookAt(0, 0, 0);
 
-    const capacity = 256;
+    const CAPACITY = 256;
 
     const atlas = await TextureAtlas.load('amigaballs.json', '/assets/');
-    const texture = canvas.texUtils.makeTexture(atlas);
-    const material = new SimpleSpritesMaterial(texture);
-    const mesh = new SimpleSprites(material, { capacity, dynamic: true, autotouch: true });
+    const material = new SimpleSpritesMaterial(display.texUtils.makeTexture(atlas));
+    const mesh = new SimpleSprites(material, { capacity: CAPACITY, dynamic: true, autotouch: true });
 
     scene.add(mesh);
 
-    const sprites = mesh.sprites.createSpritesFromTextures(atlas.randomFrames(capacity));
+    const sprites = mesh.sprites.createSpritesFromTextures(atlas.randomFrames(CAPACITY));
 
-    canvas.addEventListener('frame', ({ now }) => {
+    display.addEventListener('frame', ({ now }) => {
 
       for (let i = 0, t = now * .5; i < sprites.length; i++, t+= .046) {
 

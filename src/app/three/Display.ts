@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import { readOption, pick, generateUuid } from '../../utils';
 import { TextureUtils } from '../../textures';
-import { ThreeWebGLRendererOptions } from './ThreeWebGLRendererOptions';
 
 const CSS_CLASS_PIXELATE = `pixelate-${generateUuid()}`;
 const CSS_PIXELATE = `
@@ -12,27 +11,27 @@ const CSS_PIXELATE = `
   }
 `;
 
-const pickThreeParameters = pick([
-  'precision',
+const getWebGLRendererParameters = pick([
   'alpha',
-  'premultipliedAlpha',
   'antialias',
-  'stencil',
-  'preserveDrawingBuffer',
-  'powerPreference',
   'depth',
   'logarithmicDepthBuffer',
+  'powerPreference',
+  'precision',
+  'premultipliedAlpha',
+  'preserveDrawingBuffer',
+  'stencil',
 ]);
 
 const $lockPixelRatio = Symbol('lockPixelRatio');
 const $lastPixelRatio = Symbol('lastPixelRatio');
 const $rafID = Symbol('rafID');
 
-export type ThreeCanvasResizeStrategy = 'canvas'| 'container';
+export type DisplayResizeStrategy = 'canvas' | 'container';
 
-export interface ThreeCanvasOptions extends ThreeWebGLRendererOptions {
+export interface DisplayOptions extends THREE.WebGLRendererParameters {
 
-  resizeStrategy?: ThreeCanvasResizeStrategy;
+  resizeStrategy?: DisplayResizeStrategy;
 
   /**
    * Restrict the *device pixel ratio* to 1 and activate pixel art mode
@@ -49,7 +48,7 @@ export interface ThreeCanvasOptions extends ThreeWebGLRendererOptions {
 
 }
 
-export class ThreeCanvas extends THREE.EventDispatcher {
+export class Display extends THREE.EventDispatcher {
 
   readonly renderer: THREE.WebGLRenderer;
 
@@ -57,7 +56,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
   readonly texUtils: TextureUtils;
 
-  resizeStrategy: ThreeCanvasResizeStrategy;
+  resizeStrategy: DisplayResizeStrategy;
 
   /**
    * _css_ pixels
@@ -96,7 +95,7 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
   private [$rafID] = 0;
 
-  constructor(el: HTMLElement, options?: ThreeCanvasOptions) {
+  constructor(el: HTMLElement, options?: DisplayOptions) {
     super();
 
     let defaultResizeStrategy = 'canvas';
@@ -124,13 +123,13 @@ export class ThreeCanvas extends THREE.EventDispatcher {
       options.pixelRatio = 1;
     }
 
-    this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy) as ThreeCanvasResizeStrategy;
+    this.resizeStrategy = readOption(options, 'resizeStrategy', defaultResizeStrategy) as DisplayResizeStrategy;
 
-    this[$lockPixelRatio] = readOption(options, 'pixelRatio', 0) as number;
+    this[$lockPixelRatio] = Number(readOption(options, 'pixelRatio', 0));
 
     const threeParams = Object.assign({
       precision: 'mediump',
-    }, pickThreeParameters(options), {
+    }, getWebGLRendererParameters(options), {
       canvas: this.canvas,
     });
 
@@ -180,12 +179,12 @@ export class ThreeCanvas extends THREE.EventDispatcher {
   dispatchResizeEvent() {
     this.dispatchEvent({
 
+      type: 'resize',
+
+      display: this,
+
       width: this.width,
       height: this.height,
-
-      threeCanvas: this,
-
-      type: 'resize',
 
     });
   }
@@ -195,15 +194,14 @@ export class ThreeCanvas extends THREE.EventDispatcher {
 
       type,
 
-      threeCanvas: this,
-      renderer: this.renderer,
-
-      now: this.now,
-      frameNo: this.frameNo,
-      deltaTime: this.deltaTime,
+      display: this,
 
       width: this.width,
       height: this.height,
+
+      now: this.now,
+      deltaTime: this.deltaTime,
+      frameNo: this.frameNo,
 
     });
   }

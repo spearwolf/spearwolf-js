@@ -7,7 +7,7 @@ import { debug } from './utils/debug';
 
 import { VODescriptor, VOIndices, SpriteGroupTextured, SpriteGroupBufferGeometry, SpriteGroupMesh, TextureAtlas } from '../../src';
 
-const init = async ({ canvas, scene }) => {
+const init = async ({ display, scene }) => {
 
   // ----------------------------------------------------------------------------------
   //
@@ -88,7 +88,7 @@ const init = async ({ canvas, scene }) => {
 
   const timeUniform = { value: 0.0 };
 
-  canvas.addEventListener('frame', ({ now }) => {
+  display.addEventListener('frame', ({ now }) => {
 
     timeUniform.value = 0.5 * now % Math.PI * 2;
 
@@ -157,7 +157,7 @@ const init = async ({ canvas, scene }) => {
 
     uniforms: {
       time: timeUniform,
-      tex: { value: canvas.texUtils.makeTexture(atlas, { anisotrophy: Infinity }) },
+      tex: { value: display.texUtils.makeTexture(atlas, { anisotrophy: Infinity }) },
     },
 
     side: THREE.DoubleSide,

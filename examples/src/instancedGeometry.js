@@ -15,7 +15,7 @@ import {
   sample,
 } from '../../src';
 
-const init = async ({ canvas, scene }) => {
+const init = async ({ display, scene }) => {
 
   // ----------------------------------------------------------------------------------
   //
@@ -107,7 +107,7 @@ const init = async ({ canvas, scene }) => {
 
   const timeUniform = { value: 0.0 };
 
-  canvas.addEventListener('frame', ({ now }) => {
+  display.addEventListener('frame', ({ now }) => {
 
     timeUniform.value = (now * 0.5) % Math.PI * 2;
 
@@ -173,7 +173,7 @@ const init = async ({ canvas, scene }) => {
 
   scene.add(mesh);
 
-  canvas.addEventListener('frame', ({ deltaTime }) => {
+  display.addEventListener('frame', ({ deltaTime }) => {
 
     mesh.rotateOnAxis(new THREE.Vector3(0, 0, 1), deltaTime);
 

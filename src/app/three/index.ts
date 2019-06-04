@@ -1,2 +1,2 @@
 
-export * from './ThreeCanvas';
+export * from './Display';
