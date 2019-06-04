@@ -5,8 +5,18 @@ import { readOption } from '../utils';
 import { TextureAtlas } from './TextureAtlas';
 import { TextureLibrary } from './TextureLibrary';
 import { Texture } from './Texture';
+import { ImageSource } from './PowerOf2Image';
 
 const $maxAnisotrophy = Symbol('maxAnisotrophy');
+
+export interface TextureUtilsOptions {
+
+  maxAnisotrophy: number;
+  defaultAnisotrophy?: number;
+
+  defaultFilter?: THREE.TextureFilter;
+
+}
 
 export class TextureUtils {
 
@@ -15,10 +25,10 @@ export class TextureUtils {
 
   private readonly [$maxAnisotrophy]: number;
 
-  constructor({ maxAnisotrophy, defaultAnisotrophy, defaultFilter }: { maxAnisotrophy: number, defaultAnisotrophy?: number, defaultFilter?: THREE.TextureFilter }) {
-    this[$maxAnisotrophy] = maxAnisotrophy;
-    this.DefaultAnisotrophy = defaultAnisotrophy || 0;
-    this.DefaultFilter = defaultFilter || THREE.NearestFilter;
+  constructor(options: TextureUtilsOptions) {
+    this[$maxAnisotrophy] = options.maxAnisotrophy;
+    this.DefaultAnisotrophy = options.defaultAnisotrophy || 0;
+    this.DefaultFilter = options.defaultFilter || THREE.NearestFilter;
   }
 
   makeTexture(
@@ -26,19 +36,22 @@ export class TextureUtils {
     options?: {
       filter?: THREE.TextureFilter,
       anisotropy?: number,
+      flipy?: boolean,
     }) {
 
-    let texture: THREE.Texture = null;
+    let image: ImageSource;
 
     if (source instanceof TextureLibrary) {
-      texture = new THREE.Texture(source.atlas.baseTexture.imgEl);
+      image = source.atlas.baseTexture.imgEl;
     } else if (source instanceof TextureAtlas) {
-      texture = new THREE.Texture(source.baseTexture.imgEl);
+      image = source.baseTexture.imgEl;
     } else { // is a Texture!
-      texture = new THREE.Texture((source as Texture).imgEl);
+      image = source.imgEl;
     }
 
-    texture.flipY = false;
+    const texture = new THREE.Texture(image);
+
+    texture.flipY = Boolean(readOption(options, 'flipy', false));
 
     const filter = readOption(options, 'filter', this.DefaultFilter) as THREE.TextureFilter
 
@@ -46,8 +59,9 @@ export class TextureUtils {
     texture.minFilter = filter;
 
     const anisotropy = readOption(options, 'anisotrophy', this.DefaultAnisotrophy) as number;
+    const maxAnisotrophy = this[$maxAnisotrophy];
 
-    texture.anisotropy = anisotropy === Infinity ? this[$maxAnisotrophy] : anisotropy;
+    texture.anisotropy = anisotropy === Infinity || anisotropy > maxAnisotrophy ? maxAnisotrophy : anisotropy;
 
     texture.needsUpdate = true;
 
