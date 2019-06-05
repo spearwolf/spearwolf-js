@@ -25,3 +25,15 @@ To start the examples, run:
 ```sh
 $ npm start
 ```
+
+## How to use in your project using unkpg.com CDN
+
+```html
+
+  <!-- 🚨 OPTIONAL: fetch() polyfill to support IE 11 -->
+  <script nomodule src="https://unpkg.com/whatwg-fetch@latest"></script>
+
+  <script src="https://unpkg.com/three@latest"></script>
+  <script src="https://unpkg.com/spearwolf-js@latest"></script>
+
+```
