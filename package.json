@@ -1,8 +1,8 @@
 {
   "name": "spearwolf-js",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A typescript library for my personal 2.5d browser game dev expriments based on three.js",
-  "main": "dist/spearwolf.js",
+  "main": "dist/spearwolf.min.js",
   "module": "build/index.js",
   "types": "src/index.ts",
   "sideEffects": false,
@@ -10,17 +10,16 @@
     "example": "examples"
   },
   "scripts": {
-    "build:umd": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.umd.js",
-    "build:esm-bundle": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.esm.js",
+    "build:umd": "cross-env NODE_ENV=production rollup -c ./rollup.config.js",
     "build:esm": "cross-env BABEL_ENV=production babel src/ --extensions \".ts\" --out-dir ./build/ --source-maps",
-    "watch:esm": "cross-env BABEL_ENV=production babel src/ --extensions \".ts\" --out-dir ./build/ --source-maps --watch",
+    "watch:build:esm": "cross-env BABEL_ENV=production babel src/ --extensions \".ts\" --out-dir ./build/ --source-maps --watch",
     "build": "run-p build:*",
-    "prepublishOnly": "run-p build:*",
+    "prepublishOnly": "npm-run-all --serial clean --parallel build:*",
     "clean": "rimraf build coverage dist",
     "start": "webpack-dev-server",
     "test:eslint": "eslint .",
     "test:karma": "cross-env NODE_ENV=test karma start --single-run",
-    "test:watch": "cross-env NODE_ENV=test karma start",
+    "watch:test": "cross-env NODE_ENV=test karma start",
     "test:types": "tsc -p ./tests/types/tsconfig.json",
     "test": "npm-run-all --parallel test:eslint test:types --serial test:karma"
   },
@@ -40,6 +39,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-typescript": "^7.3.3",
     "assert": "^2.0.0",
@@ -76,5 +76,8 @@
   },
   "peerDependencies": {
     "three": "^0.105.0"
+  },
+  "dependencies": {
+    "@babel/runtime-corejs3": "^7.4.5"
   }
 }

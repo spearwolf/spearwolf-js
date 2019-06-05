@@ -9,30 +9,44 @@
     body {
       color: #333;
       background-color: #fff;
+      font-family: monospace;
+      font-size: 16px;
     }
-    #output {
+    dl {
       margin: 1em;
       padding: 1em;
-
-      font-family: monospace;
+    }
+    dt {
+      margin-top: .66em;
+      margin-bottom: .1em;
+    }
+    dd {
+      display: inline;
+      font-size: 130%;
       background-color: #eee;
     }
   </style>
 </head>
 <body>
   <dl>
-    <dt>THREE.REVISION</dt>
+    <dt>/three/build/three.min.js &rarr; REVISION</dt>
     <dd id=threeRevision></dd>
-    <dt>spearwolf.VERSION</dt>
+    <dt>/spearwolf.min.js &rarr; VERSION</dt>
     <dd id=spearwolfVersion></dd>
   </dl>
-  <script src="/three/build/three.min.js"></script>
-  <script src="/spearwolf.js"></script>
   <script>
 
     console.log('hej ho ♥');
 
+  </script>
+  <script src="/three/build/three.min.js"></script>
+  <script>
+
     document.getElementById('threeRevision').textContent = THREE.REVISION;
+
+  </script>
+  <script src="/spearwolf.min.js"></script>
+  <script>
 
     document.getElementById('spearwolfVersion').textContent = spearwolf.VERSION;
 
